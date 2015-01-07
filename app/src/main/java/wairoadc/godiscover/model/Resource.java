@@ -5,10 +5,14 @@ import java.util.ArrayList;
 /**
  * Created by Lucas on 7/01/2015.
  */
+
+// Resource: Defines the structure for resources, which are the path for resources to be used by the app.
 public class Resource {
-    private int id;
-    private String resource;
-    private Type type;
+    private int id; // Id for the resource on the database.
+    private String path; // Path of the resource on the application.
+    private Type type; // Type of the resource.
+
+// Getters and setters for the id, path and type.
 
     public int getId() {
         return id;
@@ -19,11 +23,11 @@ public class Resource {
     }
 
     public String getResource() {
-        return resource;
+        return path;
     }
 
     public void setResource(String resource) {
-        this.resource = resource;
+        this.path = resource;
     }
 
     public Type getType() {

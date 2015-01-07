@@ -5,12 +5,16 @@ import java.util.ArrayList;
 /**
  * Created by Lucas on 7/01/2015.
  */
+
+// Track: Defines the structure for a track which consists of a series of spots, and some other basic information.
 public class Track {
-    private int id;
-    private String name;
-    private String description;
-    private String map;
-    private ArrayList<Spot> Spots;
+    private int id; // Id for the track on the database.
+    private String name; // Name or title of the track.
+    private String description; // Some basic information about the track.
+    private String mapPath; // Path to the base map of the track.
+    private ArrayList<Spot> Spots; // List of the spots that make up the track.
+
+// Getters and setters for the attributes of the track.
 
     public ArrayList<Spot> getSpots() {
         return Spots;
@@ -45,10 +49,10 @@ public class Track {
     }
 
     public String getMap() {
-        return map;
+        return mapPath;
     }
 
     public void setMap(String map) {
-        this.map = map;
+        this.mapPath = map;
     }
 }

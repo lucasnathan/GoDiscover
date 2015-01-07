@@ -5,16 +5,20 @@ import java.util.ArrayList;
 /**
  * Created by Lucas on 7/01/2015.
  */
+
+// Spot: Defines the structure of a spot, which is part of a track.
 public class Spot {
-    private int id;
-    private String name;
-    private String information;
-    private String x;
-    private String y;
-    private int unlocked;
-    private float latitude;
-    private float longitude;
-    private ArrayList<Resource> resources;
+    private int id; // Id for the spot on the database.
+    private String name; // Name or title of the spot on a track.
+    private String information; // Some basic information about the spot.
+    private String x; // X (image coordinate) to draw where on the map the spot is.
+    private String y; // Y (image coordinate) to draw where on the map the spot is.
+    private int unlocked; // Defines if the spot has been unlocked already or not, usually 0 (false) by default, always 1 (true) for the first spot on a track.
+    private float latitude; // Latitude of the spot on real coordinates, to be plotted on Google Maps.
+    private float longitude; // Longitude of the spot on real coordinates, to be plotted on Google Maps.
+    private ArrayList<Resource> resources; // List of the resources that are related and unlocked by this spot.
+
+// Getters and setters for the attributes of the spot.
 
     public ArrayList<Resource> getResources() {
         return resources;
