@@ -16,6 +16,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.HomeActivity"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name=".view.InfoActivity"
+            android:label="@string/title_activity_info" >
+        </activity>
+        <activity
+            android:name=".view.ContentActivity"
+            android:label="@string/title_activity_content" >
+        </activity>
+        <activity
+            android:name=".view.GalleryActivity"
+            android:label="@string/title_activity_gallery" >
+        </activity>
+        <activity
+            android:name=".view.StaticMapActivity"
+            android:label="@string/title_activity_static_map" >
+        </activity>
+        <activity
+            android:name=".view.StoryActivity"
+            android:label="@string/title_activity_story" >
+        </activity>
+        <activity
+            android:name=".view.ProgressActivity"
+            android:label="@string/title_activity_progress" >
+        </activity>
+        <activity
+            android:name=".view.RedirectActivity"
+            android:label="@string/title_activity_redirect" >
+        </activity>
+        <activity
+            android:name=".view.ScanQRActivity"
+            android:label="@string/title_activity_scan_qr" >
+        </activity>
     </application>
 
 </manifest>

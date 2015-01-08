@@ -1,4 +1,4 @@
-package wairoadc.godiscover.DAO;
+package wairoadc.godiscover.dao;
 
 import java.util.ArrayList;
 
