@@ -6,7 +6,7 @@ import android.util.Log;
 /**
  * Created by Lucas on 8/01/2015.
  */
-public class TypeTable {
+public class TEST_TypeTable {
 
     //Database Table
     public static final String TYPE_TABLE ="type";
@@ -25,7 +25,7 @@ public class TypeTable {
         database.execSQL(DATABASE_CREATE);
     }
     public static void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion){
-        Log.w(TypeTable.class.getName(), "Upgrading database from version"
+        Log.w(TEST_TypeTable.class.getName(), "Upgrading database from version"
                 + oldVersion + " to " + newVersion
                 + ", wich will destroy all old data");
         database.execSQL("DROP TABLE IF EXISTS " + TYPE_TABLE);

@@ -55,4 +55,15 @@ public class Track {
     public void setMap(String map) {
         this.mapPath = map;
     }
+
+    @Override
+    public String toString() {
+        return "Track{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", mapPath='" + mapPath + '\'' +
+                ", Spots=" + Spots +
+                '}';
+    }
 }

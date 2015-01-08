@@ -37,4 +37,13 @@ public class Resource {
     public void setType(Type type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "id=" + id +
+                ", path='" + path + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

@@ -91,4 +91,19 @@ public class Spot {
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public String toString() {
+        return "Spot{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", information='" + information + '\'' +
+                ", x='" + x + '\'' +
+                ", y='" + y + '\'' +
+                ", unlocked=" + unlocked +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", resources=" + resources +
+                '}';
+    }
 }

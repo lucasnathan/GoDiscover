@@ -3,5 +3,5 @@ package wairoadc.godiscover.database;
 /**
  * Created by Lucas on 8/01/2015.
  */
-public class SpotTable {
+public class TEST_ResourceTable {
 }

@@ -1,12 +1,19 @@
 package wairoadc.godiscover.database;
 
+
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
  * Created by Lucas on 8/01/2015.
  */
-public class MySQLiteHelper {
+public class MySQLiteHelper extends SQLiteOpenHelper {
+    //Database Name & Version
+    public static final String DATABASE_NAME="goDataBase";
+    public static final int DATABASE_VERSION=1;
+
     //Database Table Type
     public static final String TYPE_TABLE = "type";
     public static final String COLUMN_ID_TYPE = "id";
@@ -85,7 +92,7 @@ public class MySQLiteHelper {
             + COLUMN_TRACK_MAP + "TEXT"
             +");";
 
-    public static void onCreate(SQLiteDatabase database) {
+    public void onCreate(SQLiteDatabase database) {
 
         //Creating the tables
         database.execSQL(CREATE_TRACK);
@@ -93,10 +100,12 @@ public class MySQLiteHelper {
         database.execSQL(CREATE_TYPE);
         database.execSQL(CREATE_RESOURCE);
     }
+    public MySQLiteHelper(Context context){
+        super(context,DATABASE_NAME,null, DATABASE_VERSION);
+    }
+    public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
 
-    public static void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-
-        Log.w(TypeTable.class.getName(), "Upgrading database from version"
+        Log.w(TEST_TypeTable.class.getName(), "Upgrading database from version"
                 + oldVersion + " to " + newVersion
                 + ", wich will destroy all old data");
         //Drop older versions when upgrading it
