@@ -8,17 +8,17 @@ import java.util.ArrayList;
 
 // Resource: Defines the structure for resources, which are the path for resources to be used by the app.
 public class Resource {
-    private int id; // Id for the resource on the database.
+    private long id; // Id for the resource on the database.
     private String path; // Path of the resource on the application.
     private Type type; // Type of the resource.
 
 // Getters and setters for the id, path and type.
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

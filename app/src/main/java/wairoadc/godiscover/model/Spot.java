@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 // Spot: Defines the structure of a spot, which is part of a track.
 public class Spot {
-    private int id; // Id for the spot on the database.
+    private long id; // Id for the spot on the database.
     private String name; // Name or title of the spot on a track.
     private String information; // Some basic information about the spot.
     private String x; // X (image coordinate) to draw where on the map the spot is.
@@ -28,7 +28,7 @@ public class Spot {
         this.resources = resources;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

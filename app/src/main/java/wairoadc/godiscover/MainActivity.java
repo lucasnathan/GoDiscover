@@ -18,6 +18,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import wairoadc.godiscover.dao.TypeDAO;
+import wairoadc.godiscover.model.Type;
+
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -31,6 +39,7 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private TypeDAO typeDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,12 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        typeDAO = new TypeDAO(this);
+        try {
+            typeDAO.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

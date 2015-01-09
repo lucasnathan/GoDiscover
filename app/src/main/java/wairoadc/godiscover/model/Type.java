@@ -6,16 +6,16 @@ package wairoadc.godiscover.model;
 
 // Type: Defines the structure for the type of a resource.
 public class Type {
-    private int id; // Id for the type on the database.
+    private long id; // Id for the type on the database.
     private String name; // Name of the type.
 
 // Getters and setters for the Id and Name.
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

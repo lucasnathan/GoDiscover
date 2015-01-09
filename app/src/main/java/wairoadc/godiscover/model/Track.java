@@ -8,13 +8,29 @@ import java.util.ArrayList;
 
 // Track: Defines the structure for a track which consists of a series of spots, and some other basic information.
 public class Track {
-    private int id; // Id for the track on the database.
+    private long id; // Id for the track on the database.
     private String name; // Name or title of the track.
     private String description; // Some basic information about the track.
     private String mapPath; // Path to the base map of the track.
     private ArrayList<Spot> Spots; // List of the spots that make up the track.
+    private long version;
 
-// Getters and setters for the attributes of the track.
+    public String getMapPath() {
+        return mapPath;
+    }
+
+    public void setMapPath(String mapPath) {
+        this.mapPath = mapPath;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
+    // Getters and setters for the attributes of the track.
 
     public ArrayList<Spot> getSpots() {
         return Spots;
@@ -24,7 +40,7 @@ public class Track {
         Spots = spots;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -64,6 +80,7 @@ public class Track {
                 ", description='" + description + '\'' +
                 ", mapPath='" + mapPath + '\'' +
                 ", Spots=" + Spots +
+                ", version=" + version +
                 '}';
     }
 }
