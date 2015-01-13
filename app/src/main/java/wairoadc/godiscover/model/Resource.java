@@ -60,6 +60,8 @@ public class Resource {
     public String toString() {
         return "Resource{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
+                ", story='" + story + '\'' +
                 ", path='" + path + '\'' +
                 ", type=" + type +
                 '}';

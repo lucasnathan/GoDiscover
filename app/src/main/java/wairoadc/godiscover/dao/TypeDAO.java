@@ -44,7 +44,7 @@ public class TypeDAO {
         type.setName(cursor.getString(1));
         return type;
     }
-
+    //Insert a New Type on the database
     public Type insertType(Type type){
         ContentValues values = new ContentValues();
         values.put(TypeTable.COLUMN_NAME, type.getName());
@@ -56,6 +56,8 @@ public class TypeDAO {
         cursor.close();
         return newType;
     }
+
+    //Get all types stored on the database on the database
     public List<Type> getAllTypes(){
         List<Type> types = new ArrayList<Type>();
         Cursor cursor = database.query(TypeTable.TYPE_TABLE,allColumns,null,null,null,null,null);
@@ -69,6 +71,8 @@ public class TypeDAO {
         cursor.close();
         return types;
     }
+
+    //Delete a type from the database(remember to store the ID on the Type model)
     public void deleteType(Type type){
         long id = type.getId();
         System.out.println("Comment deleted with id: " + id);
