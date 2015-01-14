@@ -24,7 +24,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<NavDrawerItem> navDrawerItems;
 
-    public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems){
+    public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems) {
         this.context = context;
         this.navDrawerItems = navDrawerItems;
     }
@@ -61,9 +61,9 @@ public class NavDrawerListAdapter extends BaseAdapter {
 
         // displaying count
         // check whether it set visible or not
-        if(navDrawerItems.get(position).getCounterVisibility()){
+        if (navDrawerItems.get(position).getCounterVisibility()) {
             txtCount.setText(navDrawerItems.get(position).getCount());
-        }else{
+        } else {
             // hide the counter view
             txtCount.setVisibility(View.GONE);
         }

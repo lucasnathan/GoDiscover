@@ -1,23 +1,25 @@
-package wairoadc.godiscover;
+package wairoadc.godiscover.fragments;
 
-/**
- * Created by Lucas on 13/01/2015.
- */
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class HomeFragment extends Fragment {
+import wairoadc.godiscover.R;
 
-    public HomeFragment(){}
+/**
+ * Created by Lucas on 13/01/2015.
+ */
+public class PhotosFragment extends Fragment {
 
-    @Override
+    public PhotosFragment() {
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_photos, container, false);
 
         return rootView;
     }
