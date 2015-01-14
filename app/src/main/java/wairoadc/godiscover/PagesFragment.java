@@ -1,4 +1,4 @@
-package wairoadc.godiscover.fragments;
+package wairoadc.godiscover;
 
 /**
  * Created by Lucas on 13/01/2015.
@@ -9,17 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import wairoadc.godiscover.R;
+public class PagesFragment extends Fragment {
 
-public class HomeFragment extends Fragment {
-
-    public HomeFragment(){}
+    public PagesFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pages, container, false);
 
         return rootView;
     }

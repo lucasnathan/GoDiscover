@@ -1,25 +1,23 @@
-package wairoadc.godiscover.fragments;
+package wairoadc.godiscover;
 
+/**
+ * Created by Lucas on 13/01/2015.
+ */
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import wairoadc.godiscover.R;
+public class CommunityFragment extends Fragment {
 
-/**
- * Created by Lucas on 13/01/2015.
- */
-public class FindPeopleFragment extends Fragment {
+    public CommunityFragment(){}
 
-    public FindPeopleFragment() {
-    }
-
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_find, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_cmmunity, container, false);
 
         return rootView;
     }
