@@ -28,8 +28,8 @@ public class TypeDAO {
     }
 
     //Open connection with the database
-    public void open() throws SQLException{
-        database = dbHelper.getWritableDatabase();
+    public SQLiteDatabase open() throws SQLException{
+        return database = dbHelper.getWritableDatabase();
     }
 
     //Close connection with the database
