@@ -13,7 +13,9 @@ public class Track {
     private String description; // Some basic information about the track.
     private String mapPath; // Path to the base map of the track.
     private ArrayList<Spot> Spots; // List of the spots that make up the track.
-    private long version;
+    private long version; //Version number of the track itself
+    private String resource; //base resource for the track
+    // Getters and setters for the attributes of the track.
 
     public String getMapPath() {
         return mapPath;
@@ -30,7 +32,6 @@ public class Track {
     public void setVersion(long version) {
         this.version = version;
     }
-    // Getters and setters for the attributes of the track.
 
     public ArrayList<Spot> getSpots() {
         return Spots;
@@ -42,10 +43,6 @@ public class Track {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -64,12 +61,16 @@ public class Track {
         this.description = description;
     }
 
-    public String getMap() {
-        return mapPath;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setMap(String map) {
-        this.mapPath = map;
+    public String getResource() {
+        return resource;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
     }
 
     @Override
@@ -81,6 +82,7 @@ public class Track {
                 ", mapPath='" + mapPath + '\'' +
                 ", Spots=" + Spots +
                 ", version=" + version +
+                ", resource='" + resource + '\'' +
                 '}';
     }
 }

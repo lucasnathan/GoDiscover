@@ -21,9 +21,8 @@ public class TrackTable {
             + COLUMN_TRACK_NAME + " TEXT NOT NULL, "
             + COLUMN_DESCRIPTION + " TEXT, "
             + COLUMN_TRACK_RESOURCE + " TEXT, "
-            + COLUMN_TRACK_MAP + "TEXT"
-            + COLUMN_VERSION + "INTEGER NOT NULL"
-            +");";
+            + COLUMN_TRACK_MAP + " TEXT, "
+            + COLUMN_VERSION + " INTEGER NOT NULL);";
 
 
 }

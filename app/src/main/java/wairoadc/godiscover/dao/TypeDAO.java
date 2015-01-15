@@ -56,7 +56,13 @@ public class TypeDAO {
         cursor.close();
         return newType;
     }
-
+    public Type getById(Type type){
+        Cursor cursor = database.query(TypeTable.TYPE_TABLE,allColumns,TypeTable.COLUMN_ID_TYPE+"="+type.getId(),null,null,null,null,null);
+        cursor.moveToFirst();
+        type = cursorToType(cursor);
+        cursor.close();
+        return type;
+    }
     //Get all types stored on the database on the database
     public List<Type> getAllTypes(){
         List<Type> types = new ArrayList<Type>();
