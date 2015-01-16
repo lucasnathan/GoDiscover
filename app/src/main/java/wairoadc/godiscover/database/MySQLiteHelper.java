@@ -16,11 +16,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase database) {
 
-        //Drop older versions when upgrading it
-        database.execSQL("DROP TABLE IF EXISTS " + TypeTable.TYPE_TABLE);
-        database.execSQL("DROP TABLE IF EXISTS " + TrackTable.TRACK_TABLE);
-        database.execSQL("DROP TABLE IF EXISTS " + SpotTable.SPOT_TABLE);
-        database.execSQL("DROP TABLE IF EXISTS " + ResourceTable.RESOURCE_TABLE);
         //Creating the tables
         database.execSQL(TrackTable.CREATE_TRACK);
         database.execSQL(SpotTable.CREATE_SPOT);

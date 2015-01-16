@@ -4,13 +4,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import wairoadc.godiscover.dao.SpotDAO;
 import wairoadc.godiscover.dao.TrackDAO;
 import wairoadc.godiscover.dao.TypeDAO;
+import wairoadc.godiscover.database.SpotTable;
 import wairoadc.godiscover.database.TrackTable;
 import wairoadc.godiscover.database.TypeTable;
+import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.model.Type;
 
@@ -108,5 +116,59 @@ public class TestDAOs extends AndroidTestCase {
         
         db.close();
         Log.i("TrackDAO","Database closes");
+    }
+    public void testSpotDAO() throws Throwable{
+        SpotDAO spotDAO = new SpotDAO(mContext);
+        TrackDAO trackDAO = new TrackDAO(mContext);
+        
+        //Test if Database is opening
+        SQLiteDatabase db = spotDAO.open();
+        SQLiteDatabase db1 = trackDAO.open();
+        assertEquals(true,db.isOpen());
+        Log.i("SpotDAO","Database opens");
+        //delete all the data
+        db.delete(SpotTable.SPOT_TABLE,null,null);
+        db1.delete(TrackTable.TRACK_TABLE,null,null);
+
+        //Test insertSpot
+        //insertTrack
+        Track track = new Track();
+        //inserting in the model
+        track.setName("wairoaWalks");
+        track.setDescription("Beautiful place");
+        track.setMapPath("www.map.nz");
+        track.setResource("www.images.nz");
+        track.setVersion(1);
+
+        Track nTrack = trackDAO.insertTrack(track);
+        track.setId(nTrack.getId());
+        assertEquals(track.toString(), nTrack.toString());
+        Log.i("TrackDAO","track inserted\n" + "ntrack = " + nTrack + "\ntrack = " + track);
+
+        //inserting Spot
+        Spot spot = new Spot();
+        //inserting in the model
+        spot.setName("spot1");
+        spot.setInformation("many things happened here");
+        spot.setUnlocked(0);
+        spot.setX(123);
+        spot.setY(254);
+        spot.setLatitude(15545.55);
+        spot.setLongitude(5544.55);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        Date date = new Date();
+        try {
+            date = format.parse("2015-01-16 12:50:23");
+            spot.setDate(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        Spot nSpot = spotDAO.insertSpot(spot,nTrack);
+        spot.setId(nSpot.getId());
+        assertEquals(spot.toString(),nSpot.toString());
+
+        db.close();
     }
 }

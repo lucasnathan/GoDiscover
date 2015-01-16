@@ -6,12 +6,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import wairoadc.godiscover.database.MySQLiteHelper;
 import wairoadc.godiscover.database.SpotTable;
 import wairoadc.godiscover.model.Spot;
+import wairoadc.godiscover.model.Track;
 
 /**
  * Created by Lucas on 8/01/2015.
@@ -20,8 +26,8 @@ public class SpotDAO {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
 
-    private String[] allColumns = {SpotTable.COLUMN_ID_SPOT,SpotTable.COLUMN_INFORMATION,SpotTable.COLUMN_UNLOCKED,SpotTable.COLUMN_X,
-            SpotTable.COLUMN_Y,SpotTable.COLUMN_LATITUDE,SpotTable.COLUMN_LONGITUDE,SpotTable.COLUMN_DATE_FOUND,SpotTable.COLUMN_FK_TRACK};
+    private String[] allColumns = {SpotTable.COLUMN_ID_SPOT, SpotTable.COLUMN_NAME, SpotTable.COLUMN_INFORMATION, SpotTable.COLUMN_UNLOCKED, SpotTable.COLUMN_X,
+            SpotTable.COLUMN_Y, SpotTable.COLUMN_LATITUDE, SpotTable.COLUMN_LONGITUDE, SpotTable.COLUMN_DATE_FOUND, SpotTable.COLUMN_FK_TRACK};
 
     //Initialize SpotDAO class
     public SpotDAO(Context context){
@@ -43,20 +49,35 @@ public class SpotDAO {
         Spot spot = new Spot();
         spot.setId(cursor.getInt(0));
         spot.setName(cursor.getString(1));
-        spot.setVersion(cursor.getLong(2));
-        spot.setDescription(cursor.getString(3));
-        spot.setMapPath(cursor.getString(4));
-        spot.setResource(cursor.getString(5));
+        spot.setInformation(cursor.getString(2));
+        spot.setUnlocked(cursor.getInt(3));
+        spot.setX(cursor.getInt(4));
+        spot.setY(cursor.getInt(5));
+        spot.setLatitude(cursor.getFloat(6));
+        spot.setLongitude(cursor.getFloat(7));
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        Date date;
+        try {
+            date = format.parse(cursor.getString(8));
+            spot.setDate(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return spot;
     }
     //Insert a New Spot on the database
-    public Spot insertSpot(Spot spot){
+    public Spot insertSpot(Spot spot, Track trackId){
         ContentValues values = new ContentValues();
-        values.put(SpotTable.COLUMN_SPOT_NAME, spot.getName());
-        values.put(SpotTable.COLUMN_VERSION, spot.getVersion());
-        values.put(SpotTable.COLUMN_DESCRIPTION, spot.getDescription());
-        values.put(SpotTable.COLUMN_SPOT_MAP, spot.getMapPath());
-        values.put(SpotTable.COLUMN_SPOT_RESOURCE, spot.getResource());
+        values.put(SpotTable.COLUMN_NAME, spot.getName());
+        values.put(SpotTable.COLUMN_INFORMATION, spot.getInformation());
+        values.put(SpotTable.COLUMN_UNLOCKED, spot.getUnlocked());
+        values.put(SpotTable.COLUMN_X, spot.getX());
+        values.put(SpotTable.COLUMN_Y, spot.getY());
+        values.put(SpotTable.COLUMN_LATITUDE, spot.getLatitude());
+        values.put(SpotTable.COLUMN_LONGITUDE, spot.getLongitude());
+        values.put(SpotTable.COLUMN_DATE_FOUND, getDateTime(spot.getDate()));
+        values.put(SpotTable.COLUMN_FK_TRACK, trackId.getId());
 
         long insertId = database.insert(SpotTable.SPOT_TABLE,null,values);
 
@@ -94,5 +115,10 @@ public class SpotDAO {
         long id = spot.getId();
         System.out.println("Comment deleted with id: " + id);
         database.delete(SpotTable.SPOT_TABLE,SpotTable.COLUMN_ID_SPOT + "=" + id,null);
+    }
+    private String getDateTime(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        return dateFormat.format(date);
     }
 }

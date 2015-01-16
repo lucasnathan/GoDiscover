@@ -1,6 +1,7 @@
 package wairoadc.godiscover.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Lucas on 7/01/2015.
@@ -11,28 +12,38 @@ public class Spot {
     private long id; // Id for the spot on the database.
     private String name; // Name or title of the spot on a track.
     private String information; // Some basic information about the spot.
-    private String x; // X (image coordinate) to draw where on the map the spot is.
-    private String y; // Y (image coordinate) to draw where on the map the spot is.
+    private int x; // X (image coordinate) to draw where on the map the spot is.
+    private int y; // Y (image coordinate) to draw where on the map the spot is.
     private int unlocked; // Defines if the spot has been unlocked already or not, usually 0 (false) by default, always 1 (true) for the first spot on a track.
-    private float latitude; // Latitude of the spot on real coordinates, to be plotted on Google Maps.
-    private float longitude; // Longitude of the spot on real coordinates, to be plotted on Google Maps.
+    private double latitude; // Latitude of the spot on real coordinates, to be plotted on Google Maps.
+    private double longitude; // Longitude of the spot on real coordinates, to be plotted on Google Maps.
     private ArrayList<Resource> resources; // List of the resources that are related and unlocked by this spot.
+    private Date date;
 
 // Getters and setters for the attributes of the spot.
 
-    public ArrayList<Resource> getResources() {
-        return resources;
-    }
 
-    public void setResources(ArrayList<Resource> resources) {
-        this.resources = resources;
+    @Override
+    public String toString() {
+        return "Spot{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", information='" + information + '\'' +
+                ", x=" + x +
+                ", y=" + y +
+                ", unlocked=" + unlocked +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", resources=" + resources +
+                ", date='" + date + '\'' +
+                '}';
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -52,19 +63,19 @@ public class Spot {
         this.information = information;
     }
 
-    public String getX() {
+    public int getX() {
         return x;
     }
 
-    public void setX(String x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public String getY() {
+    public int getY() {
         return y;
     }
 
-    public void setY(String y) {
+    public void setY(int y) {
         this.y = y;
     }
 
@@ -76,34 +87,35 @@ public class Spot {
         this.unlocked = unlocked;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    @Override
-    public String toString() {
-        return "Spot{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", information='" + information + '\'' +
-                ", x='" + x + '\'' +
-                ", y='" + y + '\'' +
-                ", unlocked=" + unlocked +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", resources=" + resources +
-                '}';
+    public ArrayList<Resource> getResources() {
+        return resources;
+    }
+
+    public void setResources(ArrayList<Resource> resources) {
+        this.resources = resources;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
