@@ -9,6 +9,8 @@ public class ResourceTable {
     public static final String RESOURCE_TABLE = "resource";
     public static final String COLUMN_ID_RESOURCE = "id";
     public static final String COLUMN_RESOURCE_NAME = "resource";
+    public static final String COLUMN_STORY = "story";
+    public static final String COLUMN_PATH = "path";
     public static final String COLUMN_FK_SPOT = "fk_spot";
     public static final String COLUMN_FK_TYPE = "fk_type";
 
@@ -18,6 +20,8 @@ public class ResourceTable {
             + "("
             + COLUMN_ID_RESOURCE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_RESOURCE_NAME + " TEXT NOT NULL, "
+            + COLUMN_STORY + " TEXT NOT NULL, "
+            + COLUMN_PATH + " TEXT NOT NULL, "
             + COLUMN_FK_SPOT + " INTEGER, "
             + COLUMN_FK_TYPE + " INTEGER, "
             + "FOREIGN KEY ("+COLUMN_FK_SPOT+") REFERENCES " + SpotTable.SPOT_TABLE+" ("+SpotTable.COLUMN_ID_SPOT+"), "

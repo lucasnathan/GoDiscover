@@ -35,7 +35,7 @@ public class Spot {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", resources=" + resources +
-                ", date='" + date + '\'' +
+                ", date=" + date +
                 '}';
     }
 

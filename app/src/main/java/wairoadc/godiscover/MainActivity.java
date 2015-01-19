@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -197,6 +198,8 @@ public class MainActivity extends Activity {
 			mDrawerList.setSelection(position);
 			setTitle(navMenuTitles[position]);
 			mDrawerLayout.closeDrawer(mDrawerList);
+            Log.e("Fragment",fragment.toString());
+            //Toast.makeText(this.getApplicationContext(),fragment.get,Toast.LENGTH_LONG).show();
 		} else {
 			// error in creating fragment
 			Log.e("MainActivity", "Error in creating fragment");

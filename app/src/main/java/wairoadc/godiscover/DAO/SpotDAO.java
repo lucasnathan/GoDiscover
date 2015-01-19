@@ -53,8 +53,8 @@ public class SpotDAO {
         spot.setUnlocked(cursor.getInt(3));
         spot.setX(cursor.getInt(4));
         spot.setY(cursor.getInt(5));
-        spot.setLatitude(cursor.getFloat(6));
-        spot.setLongitude(cursor.getFloat(7));
+        spot.setLatitude(cursor.getDouble(6));
+        spot.setLongitude(cursor.getDouble(7));
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         Date date;
         try {

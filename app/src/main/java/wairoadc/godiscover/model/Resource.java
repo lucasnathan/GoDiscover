@@ -16,6 +16,18 @@ public class Resource {
 
 // Getters and setters for the id, path and type.
 
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", story='" + story + '\'' +
+                ", path='" + path + '\'' +
+                ", type=" + type +
+                '}';
+    }
+
     public long getId() {
         return id;
     }
@@ -40,12 +52,12 @@ public class Resource {
         this.story = story;
     }
 
-    public String getResource() {
+    public String getPath() {
         return path;
     }
 
-    public void setResource(String resource) {
-        this.path = resource;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Type getType() {
@@ -54,16 +66,5 @@ public class Resource {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "Resource{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", story='" + story + '\'' +
-                ", path='" + path + '\'' +
-                ", type=" + type +
-                '}';
     }
 }
