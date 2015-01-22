@@ -80,6 +80,11 @@ public class TrackDAO {
         cursor.close();
         return newTrack;
     }
+
+    //This method only gets track information, which is, only the information
+    //in the Track Table. In order to load it's spots and resources you need to call
+    //the other DAO methods in the controller.
+    //The same is true for the method getAllTracks()
     public Track getById(Track track){
         Cursor cursor = database.query(TrackTable.TRACK_TABLE,allColumns,TrackTable.COLUMN_ID_TRACK+"="+track.getId(),null,null,null,null,null);
         cursor.moveToFirst();
@@ -87,6 +92,7 @@ public class TrackDAO {
         cursor.close();
         return track;
     }
+
     //Get all tracks stored on the database on the database
     public List<Track> getAllTracks(){
         List<Track> tracks = new ArrayList<Track>();

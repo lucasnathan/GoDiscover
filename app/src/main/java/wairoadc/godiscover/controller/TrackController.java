@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import wairoadc.godiscover.dao.ResourceDAO;
 import wairoadc.godiscover.dao.SpotDAO;
@@ -32,11 +33,25 @@ public class TrackController {
     }
 
     // Retrieves basic information of all the tracks, for displaying on the home page.
-    public ArrayList<Track> loadHomeTrack() {
-        return null;
+    //Which Include all the information in the Track table. See the design for more information
+    public List<Track> loadHomeTrack() {
+        try {
+            List<Track> tracks = new ArrayList<>();
+            TrackDAO trackDAO = new TrackDAO(context);
+            SQLiteDatabase db = trackDAO.open();
+            db.beginTransaction();
+            tracks = trackDAO.getAllTracks();
+            db.endTransaction();
+            if(tracks.size() > 0) return tracks;
+            else return null;
+        }catch(SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // Retrieves a track by its name or id.
+    //Load the Track full features
     public ArrayList<Track> loadTrack(Track track) {
         return null;
     }

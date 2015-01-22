@@ -2,6 +2,7 @@ package wairoadc.godiscover.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Lucas on 7/01/2015.
@@ -17,7 +18,7 @@ public class Spot {
     private int unlocked; // Defines if the spot has been unlocked already or not, usually 0 (false) by default, always 1 (true) for the first spot on a track.
     private double latitude; // Latitude of the spot on real coordinates, to be plotted on Google Maps.
     private double longitude; // Longitude of the spot on real coordinates, to be plotted on Google Maps.
-    private ArrayList<Resource> resources; // List of the resources that are related and unlocked by this spot.
+    private List<Resource> resources; // List of the resources that are related and unlocked by this spot.
     private Date date;
 
 // Getters and setters for the attributes of the spot.
@@ -103,11 +104,11 @@ public class Spot {
         this.longitude = longitude;
     }
 
-    public ArrayList<Resource> getResources() {
+    public List<Resource> getResources() {
         return resources;
     }
 
-    public void setResources(ArrayList<Resource> resources) {
+    public void setResources(List<Resource> resources) {
         this.resources = resources;
     }
 

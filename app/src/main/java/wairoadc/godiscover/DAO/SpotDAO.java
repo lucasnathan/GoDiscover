@@ -71,8 +71,8 @@ public class SpotDAO {
 
         return spot;
     }
-    //Insert a New Spot on the database
-    public Spot insertSpot(Spot spot, Track trackId){
+
+    private ContentValues spotToContentValues(Spot spot, Track trackId) {
         ContentValues values = new ContentValues();
         values.put(SpotTable.COLUMN_NAME, spot.getName());
         values.put(SpotTable.COLUMN_INFORMATION, spot.getInformation());
@@ -87,6 +87,12 @@ public class SpotDAO {
             values.putNull(SpotTable.COLUMN_DATE_FOUND);
         }
         values.put(SpotTable.COLUMN_FK_TRACK, trackId.getId());
+        return values;
+    }
+
+    //Insert a New Spot on the database
+    public Spot insertSpot(Spot spot, Track trackId){
+        ContentValues values = spotToContentValues(spot,trackId);
 
         long insertId = database.insert(SpotTable.SPOT_TABLE,null,values);
 
@@ -103,6 +109,16 @@ public class SpotDAO {
         cursor.close();
         return spot;
     }
+
+    public Spot getByName(Spot spot){
+        String args[] = {spot.getName()};
+        Cursor cursor = database.query(SpotTable.SPOT_TABLE,allColumns,SpotTable.COLUMN_NAME+"= ?",args,null,null,null,null);
+        cursor.moveToFirst();
+        spot = cursorToSpot(cursor);
+        cursor.close();
+        return spot;
+    }
+
     //Get all spots stored on the database on the database
     public List<Spot> getAllSpots(){
         List<Spot> spots = new ArrayList<Spot>();
@@ -118,6 +134,32 @@ public class SpotDAO {
         cursor.close();
         return spots;
     }
+
+    public int updateUnlocked(Spot spot) {
+        spot.setUnlocked(1);
+        ContentValues values = new ContentValues();
+        values.put(SpotTable.COLUMN_UNLOCKED,spot.getUnlocked());
+        int rowsAffected = database.update(SpotTable.SPOT_TABLE,values,SpotTable.COLUMN_ID_SPOT + "=" + spot.getId(),null);
+        return rowsAffected;
+    }
+
+    //Get all spots of a track
+    public List<Spot> getAllTrackSpots(Track track){
+        List<Spot> spots = new ArrayList<Spot>();
+        if(null != track && 0 != track.getId()) {
+            Cursor cursor = database.query(SpotTable.SPOT_TABLE,allColumns,SpotTable.COLUMN_FK_TRACK + "=" + track.getId(),null,null,null,null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                Spot spot = cursorToSpot(cursor);
+                spots.add(spot);
+                cursor.moveToNext();
+            }
+            //♥♦♣♠
+            cursor.close();
+            return spots;
+        } else return null;
+    }
+
 
     //Delete a spot from the database(remember to store the ID on the Spot model)
     public void deleteSpot(Spot spot){
