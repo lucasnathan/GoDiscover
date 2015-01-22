@@ -23,6 +23,7 @@ public class TrackDAO {
 
     private String[] allColumns = {TrackTable.COLUMN_ID_TRACK,TrackTable.COLUMN_TRACK_NAME,TrackTable.COLUMN_VERSION,TrackTable.COLUMN_DESCRIPTION,TrackTable.COLUMN_TRACK_MAP,TrackTable.COLUMN_TRACK_RESOURCE};
 
+    private String[] nameVersion = {TrackTable.COLUMN_TRACK_NAME,TrackTable.COLUMN_VERSION};
     //Initialize TrackDAO class
     public TrackDAO(Context context){
         dbHelper = new MySQLiteHelper(context);
@@ -48,6 +49,19 @@ public class TrackDAO {
         track.setMapPath(cursor.getString(4));
         track.setResource(cursor.getString(5));
         return track;
+    }
+    public List<Track> getNames(){
+        List<Track> tracks = new ArrayList<Track>();
+        Cursor cursor = database.query(TrackTable.TRACK_TABLE,nameVersion,null,null,null,null,null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            Track track = cursorToTrack(cursor);
+            tracks.add(track);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return tracks;
     }
     //Insert a New Track on the database
     public Track insertTrack(Track track){

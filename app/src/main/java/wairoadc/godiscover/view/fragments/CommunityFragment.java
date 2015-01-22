@@ -1,4 +1,4 @@
-package wairoadc.godiscover;
+package wairoadc.godiscover.view.fragments;
 
 /**
  * Created by Lucas on 13/01/2015.
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import wairoadc.godiscover.R;
 
 public class CommunityFragment extends Fragment {
 

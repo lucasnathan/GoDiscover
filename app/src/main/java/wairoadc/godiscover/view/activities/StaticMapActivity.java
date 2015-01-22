@@ -1,4 +1,4 @@
-package wairoadc.godiscover.view;
+package wairoadc.godiscover.view.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -13,12 +13,12 @@ import android.os.Build;
 
 import wairoadc.godiscover.R;
 
-public class InfoActivity extends ActionBarActivity {
+public class StaticMapActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info);
+        setContentView(R.layout.activity_static_map);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -30,7 +30,7 @@ public class InfoActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_info, menu);
+        getMenuInflater().inflate(R.menu.menu_static_map, menu);
         return true;
     }
 
@@ -60,7 +60,7 @@ public class InfoActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_info, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_static_map, container, false);
             return rootView;
         }
     }

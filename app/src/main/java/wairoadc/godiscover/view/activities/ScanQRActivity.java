@@ -1,4 +1,4 @@
-package wairoadc.godiscover.view;
+package wairoadc.godiscover.view.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -13,12 +13,12 @@ import android.os.Build;
 
 import wairoadc.godiscover.R;
 
-public class RedirectActivity extends ActionBarActivity {
+public class ScanQRActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_redirect);
+        setContentView(R.layout.activity_scan_qr);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -30,7 +30,7 @@ public class RedirectActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_redirect, menu);
+        getMenuInflater().inflate(R.menu.menu_scan_qr, menu);
         return true;
     }
 
@@ -60,7 +60,7 @@ public class RedirectActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_redirect, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_scan_qr, container, false);
             return rootView;
         }
     }

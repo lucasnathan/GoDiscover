@@ -1,4 +1,4 @@
-package wairoadc.godiscover.view;
+package wairoadc.godiscover.view.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;

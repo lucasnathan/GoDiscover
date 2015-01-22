@@ -1,4 +1,4 @@
-package wairoadc.godiscover.view;
+package wairoadc.godiscover.view.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -13,12 +13,12 @@ import android.os.Build;
 
 import wairoadc.godiscover.R;
 
-public class GalleryActivity extends ActionBarActivity {
+public class ContentActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery);
+        setContentView(R.layout.activity_content);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -30,7 +30,7 @@ public class GalleryActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_gallery, menu);
+        getMenuInflater().inflate(R.menu.menu_content, menu);
         return true;
     }
 
@@ -60,7 +60,7 @@ public class GalleryActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_content, container, false);
             return rootView;
         }
     }

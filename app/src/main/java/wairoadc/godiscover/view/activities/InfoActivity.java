@@ -1,4 +1,4 @@
-package wairoadc.godiscover;
+package wairoadc.godiscover.view.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -14,15 +14,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import wairoadc.godiscover.view.fragments.CommunityFragment;
+import wairoadc.godiscover.view.fragments.FindPeopleFragment;
+import wairoadc.godiscover.view.fragments.HomeFragment;
+import wairoadc.godiscover.view.fragments.PagesFragment;
+import wairoadc.godiscover.view.fragments.PhotosFragment;
+import wairoadc.godiscover.R;
+import wairoadc.godiscover.view.fragments.WhatsHotFragment;
 import wairoadc.godiscover.adapter.NavDrawerListAdapter;
 import wairoadc.godiscover.model.NavDrawerItem;
 
 
-public class MainActivity extends Activity {
+public class InfoActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -43,8 +49,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-
+		setContentView(R.layout.activity_info);
+        Log.i("Info","log1");
 		mTitle = mDrawerTitle = getTitle();
 
 		// load slide menu items
@@ -198,7 +204,7 @@ public class MainActivity extends Activity {
 			mDrawerList.setSelection(position);
 			setTitle(navMenuTitles[position]);
 			mDrawerLayout.closeDrawer(mDrawerList);
-            Log.e("Fragment",fragment.toString());
+            //Log.e("Fragment",fragment.toString());
             //Toast.makeText(this.getApplicationContext(),fragment.get,Toast.LENGTH_LONG).show();
 		} else {
 			// error in creating fragment
