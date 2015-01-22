@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<track>
+	<version>1</version>
+	<name>Walking to Mordor</name>
+	<picPath>/res/images/walking_to_mordor_main_picture.png</picPath>
+	<mapPath>/res/maps/walking_to_mordor_map</mapPath>
+	<description>A simple walk.</description>
+	<spots>
+		<spot>
+			<name>Hobbiton</name>
+			<info>The starting point, pretty cool place.</info>
+			<x>279</x>
+			<y>350</y>
+			<lat>755.72436</lat>
+			<long>856.213463</long>
+			<content>
+				<res>
+					<type>Image</type>
+					<name>Selfie with the guys</name>
+					<story>
+						Leaving the shire, to go on an adventure.
+					</story>
+					<path>/res/images/an_adventure.png</path>
+				</res>
+				<res>
+					<type>Sound</type>
+					<name>A song for the road</name>
+					<story>
+						We are walkin` and walkin` and walkin` again...
+					</story>
+					<path>/res/sounds/walking_song.mp3</path>
+				</res>
+				<res>
+					<type>Video</type>
+					<name>Wraiths</name>
+					<story>
+						There were some scary mofos going around on horses looking for the rings, barely escaped, good thing I still have some pipe weed.
+					</story>
+					<path>/res/videos/ring_wraiths.avi</path>
+				</res>
+			</content>
+		</spot>
+		<spot>
+			<name>Halfway There</name>
+			<info>Just another week to go.</info>
+			<x>735</x>
+			<y>598</y>
+			<lat>643.529235</lat>
+			<long>988.1755012</long>
+			<content>
+				<res>
+					<type>Sound</type>
+					<name>Mr Frodo</name>
+					<story>
+						I can`t stand this guy anymore, he keeps going, mr Frodo this, mr Frodo that, so needy man, what the hell.
+					</story>
+					<path>/res/sounds/mr_frodo.mp3</path>
+				</res>
+				<res>
+					<type>Video</type>
+					<name>Gollum</name>
+					<story>
+						I was attacked by a ghoul, that could talk, it was really strange. He was talking about a precios or something, damn beasts.
+					</story>
+					<path>/res/videos/gollum.avi</path>
+				</res>
+			</content>
+		</spot>
+		<spot>
+			<name>Mount Doom</name>
+			<info>Got it.</info>
+			<x>806</x>
+			<y>750</y>
+			<lat>523.2327434</lat>
+			<long>1023.181255</long>
+			<content>
+				<res>
+					<type>Image</type>
+					<name>Getting rid of the ring.</name>
+					<story>
+						Finally threw the damn ring, and got rid of the ghoul looking strage guy with it, almost died though... just want my pipe.
+					</story>
+					<path>/res/images/exploding_flaming_eye.png</path>
+				</res>
+			</content>
+		</spot>
+	</spots>
+</track>

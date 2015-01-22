@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import wairoadc.godiscover.dao.TypeDAO;
+import wairoadc.godiscover.model.Type;
+
 /**
  * Created by Lucas on 8/01/2015.
  */
@@ -14,6 +17,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME="goDataBase";
     public static final int DATABASE_VERSION=1;
 
+
+
     public void onCreate(SQLiteDatabase database) {
 
         //Creating the tables
@@ -21,6 +26,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         database.execSQL(SpotTable.CREATE_SPOT);
         database.execSQL(TypeTable.CREATE_TYPE);
         database.execSQL(ResourceTable.CREATE_RESOURCE);
+        database.execSQL("INSERT INTO "+TypeTable.TYPE_TABLE+
+                         "("+TypeTable.COLUMN_ID_TYPE+","+
+                             TypeTable.COLUMN_NAME+") "+
+                           "VALUES ("+1+",'"+Type.IMAGE_TYPE+"')");
+        database.execSQL("INSERT INTO "+TypeTable.TYPE_TABLE+
+                "("+TypeTable.COLUMN_ID_TYPE+","+
+                TypeTable.COLUMN_NAME+") "+
+                "VALUES ("+2+",'"+Type.SOUND_TYPE+"')");
+        database.execSQL("INSERT INTO "+TypeTable.TYPE_TABLE+
+                "("+TypeTable.COLUMN_ID_TYPE+","+
+                TypeTable.COLUMN_NAME+") "+
+                "VALUES ("+3+",'"+Type.VIDEO_TYPE+"')");
     }
     public MySQLiteHelper(Context context){
         super(context,DATABASE_NAME,null, DATABASE_VERSION);

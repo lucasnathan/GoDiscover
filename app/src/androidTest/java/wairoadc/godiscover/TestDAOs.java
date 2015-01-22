@@ -16,6 +16,7 @@ import wairoadc.godiscover.dao.ResourceDAO;
 import wairoadc.godiscover.dao.SpotDAO;
 import wairoadc.godiscover.dao.TrackDAO;
 import wairoadc.godiscover.dao.TypeDAO;
+
 import wairoadc.godiscover.database.ResourceTable;
 import wairoadc.godiscover.database.SpotTable;
 import wairoadc.godiscover.database.TrackTable;

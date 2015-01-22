@@ -43,6 +43,10 @@ public class ResourceDAO {
         dbHelper.close();
     }
 
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
+    }
+
     //Transform Cursor in Resource Object
     private Resource cursorToResource(Cursor cursor){
         Resource resource = new Resource();

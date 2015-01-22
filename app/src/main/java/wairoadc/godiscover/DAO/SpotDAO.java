@@ -34,6 +34,10 @@ public class SpotDAO {
         dbHelper = new MySQLiteHelper(context);
     }
 
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
+    }
+
     //Open connection with the database
     public SQLiteDatabase open() throws SQLException{
         return database = dbHelper.getWritableDatabase();
@@ -60,8 +64,9 @@ public class SpotDAO {
         try {
             date = format.parse(cursor.getString(8));
             spot.setDate(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (NullPointerException |ParseException e) {
+            if(cursor.getString(8) == null)
+                spot.setDate(null);
         }
 
         return spot;
@@ -76,7 +81,11 @@ public class SpotDAO {
         values.put(SpotTable.COLUMN_Y, spot.getY());
         values.put(SpotTable.COLUMN_LATITUDE, spot.getLatitude());
         values.put(SpotTable.COLUMN_LONGITUDE, spot.getLongitude());
-        values.put(SpotTable.COLUMN_DATE_FOUND, getDateTime(spot.getDate()));
+        if(null != spot.getDate()) {
+            values.put(SpotTable.COLUMN_DATE_FOUND, getDateTime(spot.getDate()));
+        } else {
+            values.putNull(SpotTable.COLUMN_DATE_FOUND);
+        }
         values.put(SpotTable.COLUMN_FK_TRACK, trackId.getId());
 
         long insertId = database.insert(SpotTable.SPOT_TABLE,null,values);

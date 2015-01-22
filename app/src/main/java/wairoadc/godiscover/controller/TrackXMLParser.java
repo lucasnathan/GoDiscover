@@ -50,16 +50,17 @@ public class TrackXMLParser {
 
 
     public static Track parse(InputStream in) throws XmlPullParserException, IOException {
+        Track track;
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES,false);
             parser.setInput(in,null);
             parser.nextTag();
-            return readTrack(parser);
+            track = readTrack(parser);
         } finally {
             in.close();
-            return null;
         }
+        return track;
     }
 
     private static Track readTrack(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -80,7 +81,7 @@ public class TrackXMLParser {
             } else if (tagName.equals(PIC_PATH_TAG)) {
                 track.setResource(readTag(parser,PIC_PATH_TAG));
             } else if(tagName.equals(MAP_PATH_TAG)) {
-                track.setResource(readTag(parser,MAP_PATH_TAG));
+                track.setMapPath(readTag(parser,MAP_PATH_TAG));
             } else if(tagName.equals(DESCRIPTION_TAG)) {
                 track.setDescription(readTag(parser,DESCRIPTION_TAG));
             } else if (tagName.equals(SPOTS_TAG)) {
@@ -171,7 +172,7 @@ public class TrackXMLParser {
 
     private static Resource readResource(XmlPullParser parser) throws XmlPullParserException, IOException {
         Resource resource = new Resource();
-        parser.require(XmlPullParser.START_TAG, ns, SPOT_TAG);
+        parser.require(XmlPullParser.START_TAG, ns, RESOURCE_TAG);
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;

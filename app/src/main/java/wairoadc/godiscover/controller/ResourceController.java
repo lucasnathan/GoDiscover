@@ -1,7 +1,11 @@
 package wairoadc.godiscover.controller;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 
+import wairoadc.godiscover.dao.ResourceDAO;
 import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
@@ -13,6 +17,12 @@ import wairoadc.godiscover.model.Type;
 
 // Controller that manages the interactions with the resources.
 public class ResourceController {
+
+    private Context context;
+
+    public ResourceController(Context context) {
+        this.context = context;
+    }
 
     // Given a track and a type of resource retrieves a list of all resources of that type from that track.
     public ArrayList<Resource> loadAllByType(Type type, Track track) {
@@ -43,4 +53,16 @@ public class ResourceController {
     public int countUnlocked(Track track) {
         return 0;
     }
+
+    //Insert the resources in a given spot
+    public void insertResources(Spot spot, SQLiteDatabase transaction) {
+        if(null != spot.getResources() && 0 != spot.getResources().size()) {
+            ResourceDAO resourceDAO = new ResourceDAO(context);
+            resourceDAO.setDatabase(transaction);
+            for(Resource r : spot.getResources()) {
+                resourceDAO.insertResource(r,spot);
+            }
+        }
+    }
+
 }
