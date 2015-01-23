@@ -93,6 +93,14 @@ public class TrackDAO {
         return track;
     }
 
+    public Track getByName(Track track){
+        Cursor cursor = database.query(TrackTable.TRACK_TABLE,allColumns,TrackTable.COLUMN_TRACK_NAME+"="+track.getName(),null,null,null,null,null);
+        cursor.moveToFirst();
+        track = cursorToTrack(cursor);
+        cursor.close();
+        return track;
+    }
+
     //Get all tracks stored on the database on the database
     public List<Track> getAllTracks(){
         List<Track> tracks = new ArrayList<Track>();

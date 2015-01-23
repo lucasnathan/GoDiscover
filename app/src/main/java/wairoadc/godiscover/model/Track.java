@@ -1,6 +1,6 @@
 package wairoadc.godiscover.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lucas on 7/01/2015.
@@ -12,7 +12,7 @@ public class Track {
     private String name; // Name or title of the track.
     private String description; // Some basic information about the track.
     private String mapPath; // Path to the base map of the track.
-    private ArrayList<Spot> Spots; // List of the spots that make up the track.
+    private List<Spot> Spots; // List of the spots that make up the track.
     private long version; //Version number of the track itself
     private String resource; //base resource for the track
     // Getters and setters for the attributes of the track.
@@ -33,11 +33,11 @@ public class Track {
         this.version = version;
     }
 
-    public ArrayList<Spot> getSpots() {
+    public List<Spot> getSpots() {
         return Spots;
     }
 
-    public void setSpots(ArrayList<Spot> spots) {
+    public void setSpots(List<Spot> spots) {
         Spots = spots;
     }
 

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.List;
 
 import wairoadc.godiscover.dao.ResourceDAO;
 import wairoadc.godiscover.dao.SpotDAO;
@@ -28,13 +29,13 @@ public class TrackController {
     }
 
     // Retrieves all the tracks on the database.
-    public ArrayList<Track> loadAllTracks() {
+    public List<Track> loadAllTracks() {
         return null;
     }
 
     // Retrieves basic information of all the tracks, for displaying on the home page.
-    //Which Include all the information in the Track table. See the design for more information
-    public List<Track> loadHomeTrack() {
+    //Which Include all the information in the Track table. See the design for more information.
+    public List<Track> loadHomeTracks() {
         try {
             List<Track> tracks = new ArrayList<>();
             TrackDAO trackDAO = new TrackDAO(context);
@@ -51,13 +52,33 @@ public class TrackController {
     }
 
     // Retrieves a track by its name or id.
-    //Load the Track full features
-    public ArrayList<Track> loadTrack(Track track) {
-        return null;
+    //Loads the Track's full features
+    public Track loadTrack(Track track) {
+        try {
+            if(null != track) {
+                TrackDAO trackDAO = new TrackDAO(context);
+                SQLiteDatabase transaction = trackDAO.open();
+                SpotController spotController = new SpotController(context);
+                if(0 != track.getId()) {
+                    track = trackDAO.getById(track);
+                }
+                else if(null != track.getName()) {
+                    track = trackDAO.getByName(track);
+                } else return null;
+                if(null != track) {
+                    track.setSpots(spotController.loadAllSpots(track));
+                }
+                return track;
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // Retrieves the map of a track given the track id or name.
-    public ArrayList<String> loadTrackMap(Track track) {
+    public List<String> loadTrackMap(Track track) {
         return null;
     }
 
