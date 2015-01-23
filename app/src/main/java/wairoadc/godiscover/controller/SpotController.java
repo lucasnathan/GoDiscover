@@ -34,16 +34,16 @@ public class SpotController {
             SpotDAO spotDAO = new SpotDAO(context);
             ResourceDAO resourceDAO = new ResourceDAO(context);
             ResourceController controller = new ResourceController(context);
-
-            SQLiteDatabase db = spotDAO.open();
-            db.beginTransaction();
+            SQLiteDatabase transaction = spotDAO.open();
+            transaction.beginTransaction();
+            spotDAO.setDatabase(transaction);
             spots = spotDAO.getAllTrackSpots(track);
             for(Spot spot : spots) {
                 List<Resource> resources = new ArrayList<>();
-                resources = controller.loadRes(spot);
+                resources = controller.loadRes(spot,transaction);
                 spot.setResources(resources);
             }
-            db.endTransaction();
+            transaction.endTransaction();
             if(null != spots && 0 != spots.size()) return spots;
             else return null;
         }catch (SQLException e) {
@@ -56,8 +56,9 @@ public class SpotController {
     public Spot loadSpot(Spot spot) {
         SpotDAO spotDAO = new SpotDAO(context);
         try {
-            SQLiteDatabase db = spotDAO.open();
-            db.beginTransaction();
+            SQLiteDatabase transaction = spotDAO.open();
+            transaction.beginTransaction();
+            spotDAO.setDatabase(transaction);
             if(spot.getId() != 0) {
                 spot = spotDAO.getById(spot);
             } else if (null != spot.getName() && !spot.getName().equals("")) {
@@ -65,9 +66,9 @@ public class SpotController {
             }
             ResourceController controller = new ResourceController(context);
             List<Resource> resources = new ArrayList<>();
-            resources = controller.loadRes(spot);
+            resources = controller.loadRes(spot,transaction);
             spot.setResources(resources);
-            db.endTransaction();
+            transaction.endTransaction();
             return spot;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,10 +80,11 @@ public class SpotController {
     public void setUnlocked(Spot spot) {
         try {
             SpotDAO spotDAO = new SpotDAO(context);
-            SQLiteDatabase db = spotDAO.open();
-            db.beginTransaction();
+            SQLiteDatabase transaction = spotDAO.open();
+            transaction.beginTransaction();
+            spotDAO.setDatabase(transaction);
             spotDAO.updateUnlocked(spot);
-            db.endTransaction();
+            transaction.endTransaction();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -99,6 +101,26 @@ public class SpotController {
                 ResourceController resController = new ResourceController(context);
                 resController.insertResources(s,transaction);
             }
+        }
+    }
+
+    //Returns the number of unlocked spots in a given track
+    public int unlockedSpots(Track track) {
+        SpotDAO spotDAO = new SpotDAO(context);
+        int unlockedSpots = 0;
+        try {
+            SQLiteDatabase transaction = spotDAO.open();
+            spotDAO.setDatabase(transaction);
+            List<Spot> spots = spotDAO.getAllTrackSpots(track);
+            for(Spot spot : spots) {
+                if(spot.getUnlocked() == 1) {
+                    unlockedSpots++;
+                }
+            }
+            return unlockedSpots;
+        } catch (SQLException e) {
+          e.printStackTrace();
+          return -1;
         }
     }
 }

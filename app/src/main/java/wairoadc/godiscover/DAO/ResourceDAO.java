@@ -84,11 +84,28 @@ public class ResourceDAO {
         cursor.close();
         return resource;
     }
+
     //Get all resources stored on the database on the database
     public List<Resource> getAllResources(){
         List<Resource> resources = new ArrayList<Resource>();
         Cursor cursor = database.query(ResourceTable.RESOURCE_TABLE,allColumns,null,null,null,null,null);
 
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            Resource resource = cursorToResource(cursor);
+            resources.add(resource);
+            cursor.moveToNext();
+        }
+        //♥♦♣♠
+        cursor.close();
+        return resources;
+    }
+
+    //Get all resources stored on the database for the given spot
+    public List<Resource> getAllSpotResources(Spot spot){
+        List<Resource> resources = new ArrayList<Resource>();
+        String args[] = {String.valueOf(spot.getId())};
+        Cursor cursor = database.query(ResourceTable.RESOURCE_TABLE,allColumns,ResourceTable.COLUMN_FK_SPOT+"= ?",args,null,null,null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             Resource resource = cursorToResource(cursor);
