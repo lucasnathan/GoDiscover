@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,13 +22,22 @@ import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GridViewAdapter;
 import wairoadc.godiscover.model.ImageItem;
 
-public class MainActivity extends Activity{
+public class MainActivity extends BaseActivity{
+
+ /*   protected void onCreate(Bundle savedInstanceState) {
+
+        setContentView(R.layout.activity_redirect);
+        super.onCreate(savedInstanceState);
+    }*/
+
+
+
+
+
     private GridView gridView;
     private GridViewAdapter customGridAdapter;
     // constant for identifying the dialog
     private static final int DIALOG_ALERT = 10;
-
-    // existing code.....
 
     // adjust this method if you have more than
     // one button pointing to this method
@@ -36,10 +46,12 @@ public class MainActivity extends Activity{
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
 
-        gridView = (GridView) findViewById(R.id.gridView);
+
+
+        this.gridView = (GridView) findViewById(R.id.gridView);
         customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
         gridView.setAdapter(customGridAdapter);
 

@@ -11,15 +11,15 @@ import wairoadc.godiscover.R;
 /**
  * Created by Lucas on 13/01/2015.
  */
-public class FindPeopleFragment extends Fragment {
+public class InformationFragment extends Fragment {
 
-    public FindPeopleFragment() {
+    public InformationFragment() {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.activity_find, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_information, container, false);
 
         return rootView;
     }

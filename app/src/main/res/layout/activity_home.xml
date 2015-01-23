@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#f0f0f0"
-    tools:context=".MainActivity" >
+    android:layout_height="match_parent">
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/txtLabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:columnWidth="100dp"
-        android:gravity="center"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="5dp"
-        android:drawSelectorOnTop="true"
-        android:stretchMode="columnWidth" >
-    </GridView>
+        android:layout_centerInParent="true"
+        android:textSize="16dp"
+        android:text="Communities View"/>
+
+    <ImageView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtLabel"
+        android:src="@drawable/ic_home"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
 
 </RelativeLayout>
-    <!--
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context="wairoadc.godiscover.view.activities.HomeActivity" tools:ignore="MergeRootFrame" />
--->

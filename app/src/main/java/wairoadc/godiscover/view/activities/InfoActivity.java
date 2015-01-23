@@ -3,6 +3,7 @@ package wairoadc.godiscover.view.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -18,7 +19,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import wairoadc.godiscover.view.fragments.CommunityFragment;
-import wairoadc.godiscover.view.fragments.FindPeopleFragment;
+import wairoadc.godiscover.view.fragments.InformationFragment;
 import wairoadc.godiscover.view.fragments.HomeFragment;
 import wairoadc.godiscover.view.fragments.PagesFragment;
 import wairoadc.godiscover.view.fragments.PhotosFragment;
@@ -115,7 +116,7 @@ public class InfoActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
-			displayView(0);
+			displayView(1);
 		}
 	}
 
@@ -172,10 +173,12 @@ public class InfoActivity extends Activity {
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
-			fragment = new HomeFragment();
+            Intent intent = new Intent(InfoActivity.this,MainActivity.class);
+            startActivity(intent);
+            InfoActivity.this.finish();
 			break;
 		case 1:
-			fragment = new FindPeopleFragment();
+			fragment = new InformationFragment();
 			break;
 		case 2:
 			fragment = new PhotosFragment();

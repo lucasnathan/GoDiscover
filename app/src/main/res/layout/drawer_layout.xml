@@ -3,35 +3,13 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <!-- The main content view -->
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        <!-- Add content here -->
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity" >
-
-        <GridView
-            android:id="@+id/gridView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:columnWidth="100dp"
-            android:gravity="center"
-            android:numColumns="auto_fit"
-            android:verticalSpacing="5dp"
-            android:drawSelectorOnTop="true"
-            android:stretchMode="columnWidth" >
-        </GridView>
-
-        </RelativeLayout>
+        <!-- Put what you want as your normal screen in here, you can also choose for a linear layout or any other layout, whatever you prefer -->
     </FrameLayout>
-
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"
         android:layout_width="240dp"
@@ -43,5 +21,3 @@
         android:listSelector="@drawable/list_selector"
         android:background="@color/list_background"/>
 </android.support.v4.widget.DrawerLayout>
-
-
