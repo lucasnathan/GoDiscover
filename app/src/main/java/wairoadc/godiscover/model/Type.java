@@ -6,7 +6,7 @@ package wairoadc.godiscover.model;
 
 // Type: Defines the structure for the type of a resource.
 public class Type {
-    private long id; // Id for the type on the database.
+    private long _id; // Id for the type on the database.
     private String name; // Name of the type.
 
     //Just to make it more uniform, this constants can be used when you're setting a type name for
@@ -17,12 +17,12 @@ public class Type {
 
 // Getters and setters for the Id and Name.
 
-    public long getId() {
-        return id;
+    public long get_id() {
+        return _id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void set_id(long _id) {
+        this._id = _id;
     }
 
     public String getName() {
@@ -36,7 +36,7 @@ public class Type {
     @Override
     public String toString() {
         return "Type{" +
-                "id=" + id +
+                "_id=" + _id +
                 ", name='" + name + '\'' +
                 '}';
     }

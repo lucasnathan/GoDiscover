@@ -1,6 +1,5 @@
 package wairoadc.godiscover.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 // Spot: Defines the structure of a spot, which is part of a track.
 public class Spot {
-    private long id; // Id for the spot on the database.
+    private long _id; // Id for the spot on the database.
     private String name; // Name or title of the spot on a track.
     private String information; // Some basic information about the spot.
     private int x; // X (image coordinate) to draw where on the map the spot is.
@@ -27,7 +26,7 @@ public class Spot {
     @Override
     public String toString() {
         return "Spot{" +
-                "id=" + id +
+                "_id=" + _id +
                 ", name='" + name + '\'' +
                 ", information='" + information + '\'' +
                 ", x=" + x +
@@ -40,12 +39,12 @@ public class Spot {
                 '}';
     }
 
-    public long getId() {
-        return id;
+    public long get_id() {
+        return _id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void set_id(long _id) {
+        this._id = _id;
     }
 
     public String getName() {

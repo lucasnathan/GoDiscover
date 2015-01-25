@@ -10,7 +10,7 @@ public class TypeTable {
 
     //Database Table Type
     public static final String TYPE_TABLE = "type";
-    public static final String COLUMN_ID_TYPE = "id";
+    public static final String COLUMN_ID_TYPE = "_id";
     public static final String COLUMN_NAME = "name";
 
     //Type Table creation SQL statement

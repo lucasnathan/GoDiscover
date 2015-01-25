@@ -9,7 +9,6 @@ import java.util.List;
 
 import wairoadc.godiscover.dao.ResourceDAO;
 import wairoadc.godiscover.dao.SpotDAO;
-import wairoadc.godiscover.database.MySQLiteHelper;
 import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
@@ -29,24 +28,30 @@ public class SpotController {
 
     // Retrieves all the spots and their resources from a track.
     public List<Spot> loadAllSpots(Track track) {
+        SpotDAO spotDAO = new SpotDAO(context);
+        SQLiteDatabase db = null;
         try {
             List<Spot> spots = new ArrayList<>();
-            SpotDAO spotDAO = new SpotDAO(context);
-            ResourceDAO resourceDAO = new ResourceDAO(context);
             ResourceController controller = new ResourceController(context);
-            SQLiteDatabase transaction = spotDAO.open();
-            transaction.beginTransaction();
-            spotDAO.setDatabase(transaction);
+            db = spotDAO.open();
+            db.beginTransaction();
+            spotDAO.setDatabase(db);
             spots = spotDAO.getAllTrackSpots(track);
             for(Spot spot : spots) {
                 List<Resource> resources = new ArrayList<>();
-                resources = controller.loadRes(spot,transaction);
+                resources = controller.loadRes(spot,db);
                 spot.setResources(resources);
             }
-            transaction.endTransaction();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
             if(null != spots && 0 != spots.size()) return spots;
             else return null;
         }catch (SQLException e) {
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             e.printStackTrace();
             return null;
         }
@@ -55,22 +60,29 @@ public class SpotController {
     // Retrieves all information and resources from a spot given its name or id.
     public Spot loadSpot(Spot spot) {
         SpotDAO spotDAO = new SpotDAO(context);
+        SQLiteDatabase db = null;
         try {
-            SQLiteDatabase transaction = spotDAO.open();
-            transaction.beginTransaction();
-            spotDAO.setDatabase(transaction);
-            if(spot.getId() != 0) {
+            db = spotDAO.open();
+            db.beginTransaction();
+            spotDAO.setDatabase(db);
+            if(spot.get_id() != 0) {
                 spot = spotDAO.getById(spot);
             } else if (null != spot.getName() && !spot.getName().equals("")) {
                 spot = spotDAO.getByName(spot);
             }
             ResourceController controller = new ResourceController(context);
             List<Resource> resources = new ArrayList<>();
-            resources = controller.loadRes(spot,transaction);
+            resources = controller.loadRes(spot,db);
             spot.setResources(resources);
-            transaction.endTransaction();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
             return spot;
         } catch (SQLException e) {
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             e.printStackTrace();
             return  null;
         }
@@ -78,26 +90,35 @@ public class SpotController {
 
     // Set the status of a spot to unlocked, given its id.
     public void setUnlocked(Spot spot) {
+        SpotDAO spotDAO = new SpotDAO(context);
+        SQLiteDatabase db = null;
         try {
-            SpotDAO spotDAO = new SpotDAO(context);
-            SQLiteDatabase transaction = spotDAO.open();
-            transaction.beginTransaction();
-            spotDAO.setDatabase(transaction);
+            db = spotDAO.open();
+            db.beginTransaction();
+            spotDAO.setDatabase(db);
             spotDAO.updateUnlocked(spot);
-            transaction.endTransaction();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
         } catch(SQLException e) {
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             e.printStackTrace();
         }
     }
 
     //Insert the spots of a given track
+    //This method receives the transaction from insertTrack, so it shouldn't be called
+    //alone.
     public void insertSpots(Track track, SQLiteDatabase transaction) {
         if(null != track.getSpots() && 0 != track.getSpots().size()) {
             SpotDAO spotDAO = new SpotDAO(context);
             spotDAO.setDatabase(transaction);
             for(Spot s : track.getSpots()) {
                 Spot spot = spotDAO.insertSpot(s,track);
-                s.setId(spot.getId());
+                s.set_id(spot.get_id());
                 ResourceController resController = new ResourceController(context);
                 resController.insertResources(s,transaction);
             }
@@ -107,11 +128,16 @@ public class SpotController {
     //Returns the number of unlocked spots in a given track
     public int unlockedSpots(Track track) {
         SpotDAO spotDAO = new SpotDAO(context);
+        SQLiteDatabase db = null;
         int unlockedSpots = 0;
         try {
-            SQLiteDatabase transaction = spotDAO.open();
-            spotDAO.setDatabase(transaction);
+            db = spotDAO.open();
+            spotDAO.setDatabase(db);
+            db.beginTransaction();
             List<Spot> spots = spotDAO.getAllTrackSpots(track);
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
             for(Spot spot : spots) {
                 if(spot.getUnlocked() == 1) {
                     unlockedSpots++;
@@ -119,8 +145,12 @@ public class SpotController {
             }
             return unlockedSpots;
         } catch (SQLException e) {
-          e.printStackTrace();
-          return -1;
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
+            e.printStackTrace();
+            return -1;
         }
     }
 }

@@ -7,7 +7,7 @@ public class ResourceTable {
 
     //Database Table Resource
     public static final String RESOURCE_TABLE = "resource";
-    public static final String COLUMN_ID_RESOURCE = "id";
+    public static final String COLUMN_ID_RESOURCE = "_id";
     public static final String COLUMN_RESOURCE_NAME = "resource";
     public static final String COLUMN_STORY = "story";
     public static final String COLUMN_PATH = "path";

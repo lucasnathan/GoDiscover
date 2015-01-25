@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class TrackDAO {
     //Transform Cursor in Track Object
     private Track cursorToTrack(Cursor cursor){
         Track track = new Track();
-        track.setId(cursor.getInt(0));
+        track.set_id(cursor.getInt(0));
         track.setName(cursor.getString(1));
         track.setVersion(cursor.getLong(2));
         track.setDescription(cursor.getString(3));
@@ -86,7 +85,7 @@ public class TrackDAO {
     //the other DAO methods in the controller.
     //The same is true for the method getAllTracks()
     public Track getById(Track track){
-        Cursor cursor = database.query(TrackTable.TRACK_TABLE,allColumns,TrackTable.COLUMN_ID_TRACK+"="+track.getId(),null,null,null,null,null);
+        Cursor cursor = database.query(TrackTable.TRACK_TABLE,allColumns,TrackTable.COLUMN_ID_TRACK+"="+track.get_id(),null,null,null,null,null);
         cursor.moveToFirst();
         track = cursorToTrack(cursor);
         cursor.close();
@@ -119,7 +118,7 @@ public class TrackDAO {
 
     //Delete a track from the database(remember to store the ID on the Track model)
     public void deleteTrack(Track track){
-        long id = track.getId();
+        long id = track.get_id();
         System.out.println("Comment deleted with id: " + id);
         database.delete(TrackTable.TRACK_TABLE,TrackTable.COLUMN_ID_TRACK + "=" + id,null);
     }

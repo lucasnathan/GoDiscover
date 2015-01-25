@@ -32,20 +32,22 @@ public class ResourceController {
         List<Resource> typeResources  = new ArrayList<>();
         List<Resource> tempResouces = new ArrayList<>();
         List<Spot> trackSpots = new ArrayList<>();
-        SpotDAO spotDAO = new SpotDAO(context);
+        SpotController spotController = new SpotController(context);
         ResourceDAO resourceDAO = new ResourceDAO(context);
+        SQLiteDatabase db = null;
         try {
-            SQLiteDatabase transaction = spotDAO.open();
-            spotDAO.setDatabase(transaction);
-            transaction.beginTransaction();
-            trackSpots = spotDAO.getAllTrackSpots(track);
+            trackSpots = spotController.loadAllSpots(track);
             if(null != trackSpots && 0 != trackSpots.size()) {
                 for(Spot spot: trackSpots) {
-                    resourceDAO.setDatabase(transaction);
+                    db = resourceDAO.open();
+                    db.beginTransaction();
                     tempResouces = resourceDAO.getAllSpotResources(spot);
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    db.close();
                     if(null != tempResouces && 0 != tempResouces.size()) {
                         for(Resource resource : tempResouces) {
-                            if(resource.getType().getId() == type.getId()) {
+                            if(resource.getType().get_id() == type.get_id()) {
                                 typeResources.add(resource);
                             }
                         }
@@ -55,6 +57,10 @@ public class ResourceController {
             } else return null;
         }catch(SQLException e) {
             e.printStackTrace();
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             return null;
         }
     }
@@ -64,17 +70,20 @@ public class ResourceController {
         List<Resource> typeResources  = new ArrayList<>();
         List<Resource> tempResouces = new ArrayList<>();
         List<Spot> trackSpots = new ArrayList<>();
-        SpotDAO spotDAO = new SpotDAO(context);
+        SpotController spotController = new SpotController(context);
         ResourceDAO resourceDAO = new ResourceDAO(context);
+        SQLiteDatabase db = null;
         try {
-            SQLiteDatabase transaction = spotDAO.open();
-            spotDAO.setDatabase(transaction);
-            transaction.beginTransaction();
-            trackSpots = spotDAO.getAllTrackSpots(track);
+            trackSpots = spotController.loadAllSpots(track);
             if(null != trackSpots && 0 != trackSpots.size()) {
                 for(Spot spot: trackSpots) {
-                    resourceDAO.setDatabase(transaction);
+                    db = resourceDAO.open();
+                    resourceDAO.setDatabase(db);
+                    db.beginTransaction();
                     tempResouces = resourceDAO.getAllSpotResources(spot);
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    db.close();
                     if(null != tempResouces && 0 != tempResouces.size()) {
                         for(Resource resource : tempResouces) {
                             typeResources.add(resource);
@@ -85,6 +94,10 @@ public class ResourceController {
             } else return null;
         }catch(SQLException e) {
             e.printStackTrace();
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             return null;
         }
     }
@@ -97,7 +110,7 @@ public class ResourceController {
         resources = resourceDAO.getAllSpotResources(spot);
         if(null != resources && 0 != resources.size()) {
             for(Resource resource : resources) {
-                if(resource.getType().getId() != type.getId()) {
+                if(resource.getType().get_id() != type.get_id()) {
                     resources.remove(resource);
                 }
             }
@@ -119,23 +132,31 @@ public class ResourceController {
     // Retrieves the number of unlocked resources on a track given a type.
     public int countUnlockedByType(Track track, Type type) {
         int countUnlocked = 0;
-        SpotDAO spotsDao = new SpotDAO(context);
+        SpotController spotController = new SpotController(context);
+        ResourceDAO resourceDAO = new ResourceDAO(context);
+        SQLiteDatabase db = null;
         try {
-            SQLiteDatabase transacion = spotsDao.open();
-            spotsDao.setDatabase(transacion);
-            transacion.beginTransaction();
-            List<Spot> spots = spotsDao.getAllTrackSpots(track);
+            List<Spot> spots = spotController.loadAllSpots(track);
+            db = resourceDAO.open();
+            db.beginTransaction();
             for(Spot spot : spots) {
                 if(spot.getUnlocked() == 1) {
-                    List<Resource>resources = this.loadByType(spot,transacion,type);
+                    List<Resource>resources = this.loadByType(spot,db,type);
                     if(null != resources) {
                         countUnlocked += resources.size();
                     }
                 }
             }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
             return countUnlocked;
         } catch (SQLException e) {
             e.printStackTrace();
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             return -1;
         }
     }
@@ -143,23 +164,31 @@ public class ResourceController {
     // Retrieves the number of unlocked resources on a track.
     public int countUnlocked(Track track) {
         int countUnlocked = 0;
-        SpotDAO spotsDao = new SpotDAO(context);
+        SpotController spotController = new SpotController(context);
+        ResourceDAO resourceDAO = new ResourceDAO(context);
+        SQLiteDatabase db = null;
         try {
-            SQLiteDatabase transacion = spotsDao.open();
-            spotsDao.setDatabase(transacion);
-            transacion.beginTransaction();
-            List<Spot> spots = spotsDao.getAllTrackSpots(track);
+            List<Spot> spots = spotController.loadAllSpots(track);
+            db = resourceDAO.open();
+            db.beginTransaction();
             for(Spot spot : spots) {
                 if(spot.getUnlocked() == 1) {
-                    List<Resource>resources = this.loadRes(spot,transacion);
+                    List<Resource>resources = this.loadRes(spot,db);
                     if(null != resources) {
                         countUnlocked += resources.size();
                     }
                 }
             }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
             return countUnlocked;
         } catch (SQLException e) {
             e.printStackTrace();
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             return -1;
         }
     }

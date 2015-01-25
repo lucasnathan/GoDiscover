@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<track>
+	<version>1</version>
+	<name>Mahia Beach</name>
+	<picPath>/res/images/mahia_beach_main_picture.png</picPath>
+	<mapPath>/res/maps/mahia_map</mapPath>
+	<description>Mahia Beach Tour.</description>
+	<spots>
+		<spot>
+			<name>Mahia's diving</name>
+			<info>If you want to dive you are the right place.</info>
+			<x>345</x>
+			<y>123</y>
+			<lat>755.72436</lat>
+			<long>856.213463</long>
+			<content>
+				<res>
+					<type>Image</type>
+					<name>Snorkel Picure</name>
+					<story>
+						Cheepest diving place in Hawkes Bay Area.
+					</story>
+					<path>/res/images/snorkel.png</path>
+				</res>
+				<res>
+					<type>Image</type>
+					<name>CraigFish</name>
+					<story>
+						You might even take your own craigfish.
+					</story>
+					<path>/res/images/craigfish.png</path>
+				</res>
+			</content>
+		</spot>
+		<spot>
+			<name>Nudist Beach</name>
+			<info>Private enought to go naked.</info>
+			<x>725</x>
+			<y>128</y>
+			<lat>643.529235</lat>
+			<long>988.1755012</long>
+			<content>
+				<res>
+					<type>Sound</type>
+					<name>Feel the waves</name>
+					<story>
+						Pretty cool place to chill out
+					</story>
+					<path>/res/sounds/waves.mp3</path>
+				</res>
+				<res>
+					<type>Image</type>
+					<name>Take a look at all this people</name>
+					<story>
+						Just joking, there is nobody there, that's why you should go naked
+					</story>
+					<path>/res/images/naked_beach.jpg</path>
+				</res>
+			</content>
+		</spot>
+		<spot>
+			<name>Mahia Golf</name>
+			<info>Pretty Cool place for golfing</info>
+			<x>806</x>
+			<y>750</y>
+			<lat>523.2327434</lat>
+			<long>1023.181255</long>
+			<content>
+				<res>
+					<type>Image</type>
+					<name>Mahia Golf</name>
+					<story>
+						Come to enjoy yourself while playing golf with the beach as background.
+					</story>
+					<path>/res/images/mahia_golf.jpg</path>
+				</res>
+			</content>
+		</spot>
+	</spots>
+</track>

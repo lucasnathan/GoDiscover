@@ -69,6 +69,8 @@ public class TestDAOs extends AndroidTestCase {
 
         db.close();
     }
+
+    */
     public void testTrackDAO() throws Throwable{
         TrackDAO trackDAO = new TrackDAO(mContext);
 
@@ -89,7 +91,9 @@ public class TestDAOs extends AndroidTestCase {
         track.setVersion(1);
 
         Track nTrack = trackDAO.insertTrack(track);
-        track.setId(nTrack.getId());
+        Track nTrack2 = trackDAO.insertTrack(track);
+        track.set_id(nTrack.get_id());
+
         assertEquals(track.toString(), nTrack.toString());
         Log.i("TrackDAO","track inserted\n" + "ntrack = " + nTrack + "\ntrack = " + track);
 
@@ -120,7 +124,8 @@ public class TestDAOs extends AndroidTestCase {
         
         db.close();
         Log.i("TrackDAO","Database closes");
-    }
+    }}
+    /*
     public void testSpotDAO() throws Throwable{
         SpotDAO spotDAO = new SpotDAO(mContext);
         TrackDAO trackDAO = new TrackDAO(mContext);
@@ -144,7 +149,7 @@ public class TestDAOs extends AndroidTestCase {
         track.setResource("www.images.nz");
         track.setVersion(1);
         Track nTrack = trackDAO.insertTrack(track);
-        track.setId(nTrack.getId());
+        track.set_id(nTrack.get_id());
         assertEquals(track.toString(), nTrack.toString());
         Log.i("TrackDAO","track inserted\n" + "ntrack = " + nTrack + "\ntrack = " + track);
         //inserting Spot
@@ -166,7 +171,7 @@ public class TestDAOs extends AndroidTestCase {
             e.printStackTrace();
         }
         Spot nSpot = spotDAO.insertSpot(spot,nTrack);
-        spot.setId(nSpot.getId());
+        spot.set_id(nSpot.get_id());
         Log.i(spot.toString(),nSpot.toString());
         assertEquals(spot.toString(),nSpot.toString());
 
@@ -208,7 +213,8 @@ public class TestDAOs extends AndroidTestCase {
         assertEquals(nSpots.toString(),spots.toString());
 
         db.close();
-    }*/
+    }}
+    /*
     public void testResourceDAO() throws Throwable{
         ResourceDAO resourceDAO = new ResourceDAO(mContext);
         SpotDAO spotDAO = new SpotDAO(mContext);
@@ -235,7 +241,7 @@ public class TestDAOs extends AndroidTestCase {
         //inserting in the model
         type.setName("audio");
         Type nType = typeDAO.insertType(type);
-        type.setId(nType.getId());
+        type.set_id(nType.get_id());
         //Test insertSpot
         //insertTrack
         Track track = new Track();
@@ -246,7 +252,7 @@ public class TestDAOs extends AndroidTestCase {
         track.setResource("www.images.nz");
         track.setVersion(1);
         Track nTrack = trackDAO.insertTrack(track);
-        track.setId(nTrack.getId());
+        track.set_id(nTrack.get_id());
         assertEquals(track.toString(), nTrack.toString());
         Log.i("TrackDAO","track inserted\n" + "ntrack = " + nTrack + "\ntrack = " + track);
         //inserting Spot
@@ -268,7 +274,7 @@ public class TestDAOs extends AndroidTestCase {
             e.printStackTrace();
         }
         Spot nSpot = spotDAO.insertSpot(spot,nTrack);
-        spot.setId(nSpot.getId());
+        spot.set_id(nSpot.get_id());
         assertEquals(spot.toString(),nSpot.toString());
 
         //inserting Resource
@@ -281,7 +287,7 @@ public class TestDAOs extends AndroidTestCase {
         resource.setType(nType);
 
         Resource nResource = resourceDAO.insertResource(resource,nSpot);
-        resource.setId(nResource.getId());
+        resource.set_id(nResource.get_id());
         nType = typeDAO.getById(nType);
         nResource.setType(nType);
         Log.i(resource.toString(),nResource.toString());
@@ -319,4 +325,4 @@ public class TestDAOs extends AndroidTestCase {
         db2.close();
         db3.close();
     }
-}
+}*/
