@@ -1,6 +1,5 @@
 package wairoadc.godiscover.view.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -9,8 +8,6 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -22,7 +19,7 @@ import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GridViewAdapter;
 import wairoadc.godiscover.model.ImageItem;
 
-public class MainActivity extends BaseActivity{
+public class MainActivity extends HomeDrawer {
 
  /*   protected void onCreate(Bundle savedInstanceState) {
 
