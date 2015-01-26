@@ -6,7 +6,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.Go_theme" >
         <activity
             android:name=".view.activities.MainActivity"
             android:label="@string/app_name" >
@@ -51,6 +51,10 @@
         <activity
             android:name=".view.activities.ScanQRActivity"
             android:label="@string/title_activity_scan_qr" >
+        </activity>
+        <activity
+            android:name=".view.activities.RefreshActivity"
+            android:label="@string/title_activity_refresh" >
         </activity>
     </application>
 
