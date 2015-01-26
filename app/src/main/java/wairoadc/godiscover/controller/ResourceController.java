@@ -28,7 +28,7 @@ public class ResourceController {
     }
 
     // Given a track and a type of resource retrieves a list of all resources of that type from that track.
-    public List<Resource> loadAllByType(Type type, Track track) {
+    public List<Resource> loadAllByType(Track track,Type type) {
         List<Resource> typeResources  = new ArrayList<>();
         List<Resource> tempResouces = new ArrayList<>();
         List<Spot> trackSpots = new ArrayList<>();
@@ -105,16 +105,17 @@ public class ResourceController {
     // Given a spot and a type retrieves a list of all the resources from that type on the spot.
     public List<Resource> loadByType(Spot spot, SQLiteDatabase transaction, Type type) {
         List<Resource> resources = new ArrayList<>();
+        List<Resource> results = new ArrayList<>();
         ResourceDAO resourceDAO =  new ResourceDAO(context);
         resourceDAO.setDatabase(transaction);
         resources = resourceDAO.getAllSpotResources(spot);
         if(null != resources && 0 != resources.size()) {
             for(Resource resource : resources) {
-                if(resource.getType().get_id() != type.get_id()) {
-                    resources.remove(resource);
+                if(resource.getType().get_id() == type.get_id()) {
+                    results.add(resource);
                 }
             }
-            return resources;
+            return results;
         }
         else return null;
     }
@@ -127,6 +128,32 @@ public class ResourceController {
         resources = resourceDAO.getAllSpotResources(spot);
         if(null != resources && 0 != resources.size()) return resources;
         else return null;
+    }
+
+    // Given a spot, retrieves a list of all the resources from that spot.
+    //This is a self contained transaction
+    public List<Resource> loadRes(Spot spot) {
+        List<Resource> resources = new ArrayList<>();
+        ResourceDAO resourceDAO =  new ResourceDAO(context);
+        SQLiteDatabase db = null;
+        try {
+            db = resourceDAO.open();
+            resourceDAO.setDatabase(db);
+            db.beginTransaction();
+            resources = resourceDAO.getAllSpotResources(spot);
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
+            if(null != resources && 0 != resources.size()) return resources;
+            else return null;
+        } catch(SQLException e) {
+            e.printStackTrace();
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
+            return null;
+        }
     }
 
     // Retrieves the number of unlocked resources on a track given a type.
@@ -194,7 +221,7 @@ public class ResourceController {
     }
 
     //Insert the resources in a given spot
-    public void insertResources(Spot spot, SQLiteDatabase transaction) {
+    protected void insertResources(Spot spot, SQLiteDatabase transaction) {
         if(null != spot.getResources() && 0 != spot.getResources().size()) {
             ResourceDAO resourceDAO = new ResourceDAO(context);
             resourceDAO.setDatabase(transaction);

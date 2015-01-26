@@ -44,7 +44,10 @@ public class TrackController {
             if(tracks.size() > 0) return tracks;
             else return null;
         }catch(SQLException e) {
-            if(null != db) db.endTransaction();
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             e.printStackTrace();
             return null;
         }
@@ -53,22 +56,38 @@ public class TrackController {
     // Retrieves a track by its name or id.
     //Loads the Track's full features
     public Track loadTrack(Track track) {
-
         if(null != track) {
             TrackDAO trackDAO = new TrackDAO(context);
             SpotController spotController = new SpotController(context);
-            if(0 != track.get_id()) {
-                track = trackDAO.getById(track);
+            SQLiteDatabase db = null;
+            try {
+                db = trackDAO.open();
+                db.beginTransaction();
+                if(0 != track.get_id()) {
+                    track = trackDAO.getById(track);
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    db.close();
+                }
+                else if(null != track.getName()) {
+                    track = trackDAO.getByName(track);
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    db.close();
+                } else return null;
+                if(null != track) {
+                    track.setSpots(spotController.loadAllSpots(track));
+                }
+                return track;
+            } catch(SQLException e) {
+                if (null != db) {
+                    db.endTransaction();
+                    db.close();
+                }
+                e.printStackTrace();
+                return null;
             }
-            else if(null != track.getName()) {
-                track = trackDAO.getByName(track);
-            } else return null;
-            if(null != track) {
-                track.setSpots(spotController.loadAllSpots(track));
-            }
-            return track;
-        }
-        return null;
+        } else return null;
     }
 
     // Retrieves the map of a track given the track id or name.

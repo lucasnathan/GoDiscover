@@ -112,7 +112,7 @@ public class SpotController {
     //Insert the spots of a given track
     //This method receives the transaction from insertTrack, so it shouldn't be called
     //alone.
-    public void insertSpots(Track track, SQLiteDatabase transaction) {
+    protected void insertSpots(Track track, SQLiteDatabase transaction) {
         if(null != track.getSpots() && 0 != track.getSpots().size()) {
             SpotDAO spotDAO = new SpotDAO(context);
             spotDAO.setDatabase(transaction);

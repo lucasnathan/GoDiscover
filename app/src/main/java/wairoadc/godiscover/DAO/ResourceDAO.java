@@ -79,6 +79,7 @@ public class ResourceDAO {
     }
     public Resource getById(Resource resource){
         Cursor cursor = database.query(ResourceTable.RESOURCE_TABLE,allColumns,ResourceTable.COLUMN_ID_RESOURCE+"="+resource.get_id(),null,null,null,null,null);
+        if(cursor.getCount() == 0) return null;
         cursor.moveToFirst();
         resource = cursorToResource(cursor);
         cursor.close();

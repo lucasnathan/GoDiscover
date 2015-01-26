@@ -104,6 +104,7 @@ public class SpotDAO {
     }
     public Spot getById(Spot spot){
         Cursor cursor = database.query(SpotTable.SPOT_TABLE,allColumns,SpotTable.COLUMN_ID_SPOT+"="+spot.get_id(),null,null,null,null,null);
+        if(cursor.getCount() == 0) return null;
         cursor.moveToFirst();
         spot = cursorToSpot(cursor);
         cursor.close();
@@ -113,6 +114,7 @@ public class SpotDAO {
     public Spot getByName(Spot spot){
         String args[] = {spot.getName()};
         Cursor cursor = database.query(SpotTable.SPOT_TABLE,allColumns,SpotTable.COLUMN_NAME+"= ?",args,null,null,null,null);
+        if(cursor.getCount() == 0) return null;
         cursor.moveToFirst();
         spot = cursorToSpot(cursor);
         cursor.close();

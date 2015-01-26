@@ -86,6 +86,7 @@ public class TrackDAO {
     //The same is true for the method getAllTracks()
     public Track getById(Track track){
         Cursor cursor = database.query(TrackTable.TRACK_TABLE,allColumns,TrackTable.COLUMN_ID_TRACK+"="+track.get_id(),null,null,null,null,null);
+        if(cursor.getCount() == 0) return null;
         cursor.moveToFirst();
         track = cursorToTrack(cursor);
         cursor.close();
@@ -93,7 +94,10 @@ public class TrackDAO {
     }
 
     public Track getByName(Track track){
-        Cursor cursor = database.query(TrackTable.TRACK_TABLE,allColumns,TrackTable.COLUMN_TRACK_NAME+"="+track.getName(),null,null,null,null,null);
+        track.getName();
+        String name[] = {track.getName()};
+        Cursor cursor = database.query(TrackTable.TRACK_TABLE,allColumns,TrackTable.COLUMN_TRACK_NAME+" = ?",name,null,null,null,null);
+        if(cursor.getCount() == 0) return null;
         cursor.moveToFirst();
         track = cursorToTrack(cursor);
         cursor.close();
