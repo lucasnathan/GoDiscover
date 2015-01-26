@@ -39,6 +39,8 @@ public class MainActivity extends BaseActivity{
     // constant for identifying the dialog
     private static final int DIALOG_ALERT = 10;
 
+    public static boolean IS_RUNNING;
+
     // adjust this method if you have more than
     // one button pointing to this method
     public void onClick(View view) {
