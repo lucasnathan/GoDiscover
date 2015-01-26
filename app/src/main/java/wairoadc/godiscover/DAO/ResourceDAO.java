@@ -50,13 +50,13 @@ public class ResourceDAO {
     //Transform Cursor in Resource Object
     private Resource cursorToResource(Cursor cursor){
         Resource resource = new Resource();
-        resource.setId(cursor.getInt(0));
+        resource.set_id(cursor.getInt(0));
         resource.setName(cursor.getString(1));
         resource.setStory(cursor.getString(2));
         resource.setPath(cursor.getString(3));
 
         Type type = new Type();
-        type.setId(cursor.getLong(5));
+        type.set_id(cursor.getLong(5));
         resource.setType(type);
         return resource;
     }
@@ -66,8 +66,8 @@ public class ResourceDAO {
         values.put(ResourceTable.COLUMN_RESOURCE_NAME, resource.getName());
         values.put(ResourceTable.COLUMN_STORY, resource.getStory());
         values.put(ResourceTable.COLUMN_PATH, resource.getPath());
-        values.put(ResourceTable.COLUMN_FK_SPOT, spot.getId());
-        values.put(ResourceTable.COLUMN_FK_TYPE, resource.getType().getId());
+        values.put(ResourceTable.COLUMN_FK_SPOT, spot.get_id());
+        values.put(ResourceTable.COLUMN_FK_TYPE, resource.getType().get_id());
 
         long insertId = database.insert(ResourceTable.RESOURCE_TABLE,null,values);
 
@@ -78,7 +78,8 @@ public class ResourceDAO {
         return newResource;
     }
     public Resource getById(Resource resource){
-        Cursor cursor = database.query(ResourceTable.RESOURCE_TABLE,allColumns,ResourceTable.COLUMN_ID_RESOURCE+"="+resource.getId(),null,null,null,null,null);
+        Cursor cursor = database.query(ResourceTable.RESOURCE_TABLE,allColumns,ResourceTable.COLUMN_ID_RESOURCE+"="+resource.get_id(),null,null,null,null,null);
+        if(cursor.getCount() == 0) return null;
         cursor.moveToFirst();
         resource = cursorToResource(cursor);
         cursor.close();
@@ -104,7 +105,7 @@ public class ResourceDAO {
     //Get all resources stored on the database for the given spot
     public List<Resource> getAllSpotResources(Spot spot){
         List<Resource> resources = new ArrayList<Resource>();
-        String args[] = {String.valueOf(spot.getId())};
+        String args[] = {String.valueOf(spot.get_id())};
         Cursor cursor = database.query(ResourceTable.RESOURCE_TABLE,allColumns,ResourceTable.COLUMN_FK_SPOT+"= ?",args,null,null,null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
@@ -119,7 +120,7 @@ public class ResourceDAO {
 
     //Delete a resource from the database(remember to store the ID on the Resource model)
     public void deleteResource(Resource resource){
-        long id = resource.getId();
+        long id = resource.get_id();
         System.out.println("Comment deleted with id: " + id);
         database.delete(ResourceTable.RESOURCE_TABLE,ResourceTable.COLUMN_ID_RESOURCE + "=" + id,null);
     }

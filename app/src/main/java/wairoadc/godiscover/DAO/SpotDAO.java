@@ -51,7 +51,7 @@ public class SpotDAO {
     //Transform Cursor in Spot Object
     private Spot cursorToSpot(Cursor cursor){
         Spot spot = new Spot();
-        spot.setId(cursor.getInt(0));
+        spot.set_id(cursor.getInt(0));
         spot.setName(cursor.getString(1));
         spot.setInformation(cursor.getString(2));
         spot.setUnlocked(cursor.getInt(3));
@@ -86,7 +86,7 @@ public class SpotDAO {
         } else {
             values.putNull(SpotTable.COLUMN_DATE_FOUND);
         }
-        values.put(SpotTable.COLUMN_FK_TRACK, trackId.getId());
+        values.put(SpotTable.COLUMN_FK_TRACK, trackId.get_id());
         return values;
     }
 
@@ -103,7 +103,8 @@ public class SpotDAO {
         return newSpot;
     }
     public Spot getById(Spot spot){
-        Cursor cursor = database.query(SpotTable.SPOT_TABLE,allColumns,SpotTable.COLUMN_ID_SPOT+"="+spot.getId(),null,null,null,null,null);
+        Cursor cursor = database.query(SpotTable.SPOT_TABLE,allColumns,SpotTable.COLUMN_ID_SPOT+"="+spot.get_id(),null,null,null,null,null);
+        if(cursor.getCount() == 0) return null;
         cursor.moveToFirst();
         spot = cursorToSpot(cursor);
         cursor.close();
@@ -113,6 +114,7 @@ public class SpotDAO {
     public Spot getByName(Spot spot){
         String args[] = {spot.getName()};
         Cursor cursor = database.query(SpotTable.SPOT_TABLE,allColumns,SpotTable.COLUMN_NAME+"= ?",args,null,null,null,null);
+        if(cursor.getCount() == 0) return null;
         cursor.moveToFirst();
         spot = cursorToSpot(cursor);
         cursor.close();
@@ -139,15 +141,15 @@ public class SpotDAO {
         spot.setUnlocked(1);
         ContentValues values = new ContentValues();
         values.put(SpotTable.COLUMN_UNLOCKED,spot.getUnlocked());
-        int rowsAffected = database.update(SpotTable.SPOT_TABLE,values,SpotTable.COLUMN_ID_SPOT + "=" + spot.getId(),null);
+        int rowsAffected = database.update(SpotTable.SPOT_TABLE,values,SpotTable.COLUMN_ID_SPOT + "=" + spot.get_id(),null);
         return rowsAffected;
     }
 
     //Get all spots of a track
     public List<Spot> getAllTrackSpots(Track track){
         List<Spot> spots = new ArrayList<Spot>();
-        if(null != track && 0 != track.getId()) {
-            Cursor cursor = database.query(SpotTable.SPOT_TABLE,allColumns,SpotTable.COLUMN_FK_TRACK + "=" + track.getId(),null,null,null,null);
+        if(null != track && 0 != track.get_id()) {
+            Cursor cursor = database.query(SpotTable.SPOT_TABLE,allColumns,SpotTable.COLUMN_FK_TRACK + "=" + track.get_id(),null,null,null,null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()){
                 Spot spot = cursorToSpot(cursor);
@@ -163,7 +165,7 @@ public class SpotDAO {
 
     //Delete a spot from the database(remember to store the ID on the Spot model)
     public void deleteSpot(Spot spot){
-        long id = spot.getId();
+        long id = spot.get_id();
         System.out.println("Comment deleted with id: " + id);
         database.delete(SpotTable.SPOT_TABLE,SpotTable.COLUMN_ID_SPOT + "=" + id,null);
     }

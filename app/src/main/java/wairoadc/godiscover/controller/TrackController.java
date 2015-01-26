@@ -6,13 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
 
-import wairoadc.godiscover.dao.ResourceDAO;
-import wairoadc.godiscover.dao.SpotDAO;
 import wairoadc.godiscover.dao.TrackDAO;
-import wairoadc.godiscover.model.Resource;
-import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
 
 /**
@@ -36,16 +31,23 @@ public class TrackController {
     // Retrieves basic information of all the tracks, for displaying on the home page.
     //Which Include all the information in the Track table. See the design for more information.
     public List<Track> loadHomeTracks() {
+        TrackDAO trackDAO = new TrackDAO(context);
+        SQLiteDatabase db = null;
         try {
             List<Track> tracks = new ArrayList<>();
-            TrackDAO trackDAO = new TrackDAO(context);
-            SQLiteDatabase db = trackDAO.open();
+            db = trackDAO.open();
             db.beginTransaction();
             tracks = trackDAO.getAllTracks();
+            db.setTransactionSuccessful();
             db.endTransaction();
+            db.close();
             if(tracks.size() > 0) return tracks;
             else return null;
         }catch(SQLException e) {
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             e.printStackTrace();
             return null;
         }
@@ -54,27 +56,38 @@ public class TrackController {
     // Retrieves a track by its name or id.
     //Loads the Track's full features
     public Track loadTrack(Track track) {
-        try {
-            if(null != track) {
-                TrackDAO trackDAO = new TrackDAO(context);
-                SQLiteDatabase transaction = trackDAO.open();
-                SpotController spotController = new SpotController(context);
-                if(0 != track.getId()) {
+        if(null != track) {
+            TrackDAO trackDAO = new TrackDAO(context);
+            SpotController spotController = new SpotController(context);
+            SQLiteDatabase db = null;
+            try {
+                db = trackDAO.open();
+                db.beginTransaction();
+                if(0 != track.get_id()) {
                     track = trackDAO.getById(track);
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    db.close();
                 }
                 else if(null != track.getName()) {
                     track = trackDAO.getByName(track);
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    db.close();
                 } else return null;
                 if(null != track) {
                     track.setSpots(spotController.loadAllSpots(track));
                 }
                 return track;
+            } catch(SQLException e) {
+                if (null != db) {
+                    db.endTransaction();
+                    db.close();
+                }
+                e.printStackTrace();
+                return null;
             }
-            return null;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        } else return null;
     }
 
     // Retrieves the map of a track given the track id or name.
@@ -84,19 +97,26 @@ public class TrackController {
 
     //Records a Track into the database
     public Track insertTrack(Track track) {
+        TrackDAO trackDAO = new TrackDAO(context);
+        SQLiteDatabase db = null;
         try {
+            db = trackDAO.open();
+            db.beginTransaction();
             if(null != track) {
-                TrackDAO trackDAO = new TrackDAO(context);
-                SQLiteDatabase db = trackDAO.open();
-                db.beginTransaction();
                 Track nTrack = trackDAO.insertTrack(track);
-                track.setId(nTrack.getId());
+                track.set_id(nTrack.get_id());
                 SpotController spotController = new SpotController(context);
                 spotController.insertSpots(track,db);
+                db.setTransactionSuccessful();
                 db.endTransaction();
+                db.close();
                 return track;
             } else return null;
         }catch(SQLException e) {
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
             e.printStackTrace();
             return null;
         }

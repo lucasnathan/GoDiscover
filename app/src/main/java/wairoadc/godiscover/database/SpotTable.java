@@ -6,7 +6,7 @@ package wairoadc.godiscover.database;
 public class SpotTable {
     //Database Table Spot
     public static final String SPOT_TABLE = "spot";
-    public static final String COLUMN_ID_SPOT = "id";
+    public static final String COLUMN_ID_SPOT = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_INFORMATION = "information";
     public static final String COLUMN_UNLOCKED = "unlocked";

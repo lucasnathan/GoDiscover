@@ -184,15 +184,15 @@ public class TrackXMLParser {
                 switch (typeName) {
                     case(Type.IMAGE_TYPE):
                         typeResource.setName(Type.IMAGE_TYPE);
-                        typeResource.setId(1);
+                        typeResource.set_id(1);
                         break;
                     case(Type.SOUND_TYPE):
                         typeResource.setName(Type.SOUND_TYPE);
-                        typeResource.setId(2);
+                        typeResource.set_id(2);
                         break;
                     case(Type.VIDEO_TYPE):
                         typeResource.setName(Type.VIDEO_TYPE);
-                        typeResource.setId(3);
+                        typeResource.set_id(3);
                         break;
                 }
                 resource.setType(typeResource);

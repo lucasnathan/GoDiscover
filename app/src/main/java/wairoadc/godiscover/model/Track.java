@@ -8,7 +8,7 @@ import java.util.List;
 
 // Track: Defines the structure for a track which consists of a series of spots, and some other basic information.
 public class Track {
-    private long id; // Id for the track on the database.
+    private long _id; // Id for the track on the database.
     private String name; // Name or title of the track.
     private String description; // Some basic information about the track.
     private String mapPath; // Path to the base map of the track.
@@ -41,8 +41,8 @@ public class Track {
         Spots = spots;
     }
 
-    public long getId() {
-        return id;
+    public long get_id() {
+        return _id;
     }
 
     public String getName() {
@@ -61,8 +61,8 @@ public class Track {
         this.description = description;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void set_id(long _id) {
+        this._id = _id;
     }
 
     public String getResource() {
@@ -76,7 +76,7 @@ public class Track {
     @Override
     public String toString() {
         return "Track{" +
-                "id=" + id +
+                "_id=" + _id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", mapPath='" + mapPath + '\'' +

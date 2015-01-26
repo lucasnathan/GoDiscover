@@ -40,7 +40,7 @@ public class TypeDAO {
     //Transform Cursor in Type Object
     private Type cursorToType(Cursor cursor){
         Type type = new Type();
-        type.setId(cursor.getInt(0));
+        type.set_id(cursor.getInt(0));
         type.setName(cursor.getString(1));
         return type;
     }
@@ -57,7 +57,7 @@ public class TypeDAO {
         return newType;
     }
     public Type getById(Type type){
-        Cursor cursor = database.query(TypeTable.TYPE_TABLE,allColumns,TypeTable.COLUMN_ID_TYPE+"="+type.getId(),null,null,null,null,null);
+        Cursor cursor = database.query(TypeTable.TYPE_TABLE,allColumns,TypeTable.COLUMN_ID_TYPE+"="+type.get_id(),null,null,null,null,null);
         cursor.moveToFirst();
         type = cursorToType(cursor);
         cursor.close();
@@ -80,7 +80,7 @@ public class TypeDAO {
 
     //Delete a type from the database(remember to store the ID on the Type model)
     public void deleteType(Type type){
-        long id = type.getId();
+        long id = type.get_id();
         System.out.println("Comment deleted with id: " + id);
         database.delete(TypeTable.TYPE_TABLE,TypeTable.COLUMN_ID_TYPE + "=" + id,null);
     }

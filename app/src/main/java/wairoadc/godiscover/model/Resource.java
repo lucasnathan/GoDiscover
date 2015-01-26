@@ -1,26 +1,24 @@
 package wairoadc.godiscover.model;
 
-import java.util.ArrayList;
-
 /**
  * Created by Lucas on 7/01/2015.
  */
 
 // Resource: Defines the structure for resources, which are the path for resources to be used by the app.
 public class Resource {
-    private long id; // Id for the resource on the database.
+    private long _id; // Id for the resource on the database.
     private String name; // Name of the resource to be seen by the user.
     private String story; // Story of that piece of resource.
     private String path; // Path of the resource on the application.
     private Type type; // Type of the resource.
 
-// Getters and setters for the id, path and type.
+// Getters and setters for the _id, path and type.
 
 
     @Override
     public String toString() {
         return "Resource{" +
-                "id=" + id +
+                "_id=" + _id +
                 ", name='" + name + '\'' +
                 ", story='" + story + '\'' +
                 ", path='" + path + '\'' +
@@ -28,12 +26,12 @@ public class Resource {
                 '}';
     }
 
-    public long getId() {
-        return id;
+    public long get_id() {
+        return _id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void set_id(long _id) {
+        this._id = _id;
     }
 
     public String getName() {
