@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textSize="16dp"
-                android:text="Gallery"/>
+                android:text="Information"/>
 
             <ImageView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,3 +45,4 @@
         android:listSelector="@drawable/list_selector"
         android:background="@color/list_background"/>
 </android.support.v4.widget.DrawerLayout>
+

@@ -106,10 +106,9 @@ public class MainActivity extends HomeDrawer {
             DialogInterface.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {
             //MainActivity.this.finish();
-            Intent intent= new Intent(MainActivity.this,InfoActivity.class);
+            Intent intent= new Intent(MainActivity.this,InformationActivity.class);
             startActivity(intent);
 
         }
     }
-
 }

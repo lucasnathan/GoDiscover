@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -62,7 +63,7 @@ public class HomeDrawer extends Activity {
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0],navMenuIcons.getResourceId(0,-1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1],navMenuIcons.getResourceId(6,-1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1],navMenuIcons.getResourceId(5,-1)));
 
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -96,6 +97,12 @@ public class HomeDrawer extends Activity {
         drawerLayout.setDrawerListener(drawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        //drawing the background color on the selected item of the drawer
+        if(this.getClass().getSimpleName().equals("MainActivity"))
+            drawerList.setItemChecked(0, true);
+        if(this.getClass().getSimpleName().equals("ScanQRActivity"))
+            drawerList.setItemChecked(1, true);
     }
 
     @Override
@@ -110,9 +117,11 @@ public class HomeDrawer extends Activity {
             case R.id.action_settings:
                 return true;
             case R.id.action_refresh:
-                Intent intent = new Intent(HomeDrawer.this,RefreshActivity.class);
-                startActivity(intent);
-                HomeDrawer.this.finish();
+                if (!this.getClass().getSimpleName().equals("RefreshActivity")){
+                    Intent intent = new Intent(this.getBaseContext(),RefreshActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -124,6 +133,12 @@ public class HomeDrawer extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
     }
 
     private class SlideMenuClickListener implements
@@ -144,13 +159,14 @@ public class HomeDrawer extends Activity {
     /* *
 	 * Called when invalidateOptionsMenu() is triggered
 	 */
-    @Override
+    /*@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
+        menu.findItem(R.id.action_refresh).setVisible(false);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
-    }
+    }*/
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -162,38 +178,25 @@ public class HomeDrawer extends Activity {
      * */
     private void displayView(int position) {
         Intent intent;
-        // update the main content by replacing fragments
-        Fragment fragment = null;
         switch (position) {
             case 0:
-                intent = new Intent(HomeDrawer.this,MainActivity.class);
-                startActivity(intent);
-                HomeDrawer.this.finish();
+                if (!this.getClass().getSimpleName().equals("MainActivity")){
+                    intent = new Intent(this.getBaseContext(),MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else
+                drawerLayout.closeDrawer(drawerList);
                 break;
             case 1:
-                intent = new Intent(HomeDrawer.this,InfoActivity.class);
-                startActivity(intent);
-                HomeDrawer.this.finish();
+                if (!this.getClass().getSimpleName().equals("ScanQRActivity")){
+                    intent = new Intent(this.getBaseContext(),ScanQRActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else
+                drawerLayout.closeDrawer(drawerList);
                 break;
             default:
                 break;
-        }
-
-        if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
-
-            // update selected item and title, then close the drawer
-            drawerList.setItemChecked(position, true);
-            drawerList.setSelection(position);
-            setTitle(navMenuTitles[position]);
-            drawerLayout.closeDrawer(drawerList);
-            //Log.e("Fragment",fragment.toString());
-            //Toast.makeText(this.getApplicationContext(),fragment.get,Toast.LENGTH_LONG).show();
-        } else {
-            // error in creating fragment
-            Log.e("HomeDrawer", "Error in creating fragment");
         }
     }
 }

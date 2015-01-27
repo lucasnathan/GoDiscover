@@ -28,14 +28,6 @@
             android:label="@string/title_activity_home" >
         </activity>
         <activity
-            android:name=".view.activities.InfoActivity"
-            android:label="@string/title_activity_info" >
-        </activity>
-        <activity
-            android:name=".view.activities.ContentActivity"
-            android:label="@string/title_activity_content" >
-        </activity>
-        <activity
             android:name=".view.activities.GalleryActivity"
             android:label="@string/title_activity_gallery" >
         </activity>
@@ -62,6 +54,10 @@
         <activity
             android:name=".view.activities.RefreshActivity"
             android:label="@string/title_activity_refresh" >
+        </activity>
+        <activity
+            android:name=".view.activities.InformationActivity"
+            android:label="@string/title_activity_information" >
         </activity>
     </application>
 

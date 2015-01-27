@@ -26,21 +26,16 @@ import wairoadc.godiscover.model.NavDrawerItem;
 /**
  * Created by Lucas on 23/01/2015.
  */
-public class TrackDrawer extends Activity {
-    public DrawerLayout drawerLayout;
+public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
-
     // nav drawer title
     private CharSequence mDrawerTitle;
-
     // used to store app title
     private CharSequence mTitle;
-
     // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
@@ -50,19 +45,28 @@ public class TrackDrawer extends Activity {
         super.onCreate(savedInstanceState);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
-        
+
         mTitle = mDrawerTitle = getTitle();
 
         // load slide menu items
-        navMenuTitles = getResources().getStringArray(R.array.nav_home_items);
+        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 
         // nav drawer icons from resources
         navMenuIcons = getResources()
                 .obtainTypedArray(R.array.nav_drawer_icons);
         navDrawerItems = new ArrayList<NavDrawerItem>();
-
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0],navMenuIcons.getResourceId(0,-1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1],navMenuIcons.getResourceId(6,-1)));
+        // Home
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
+        // Information
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+        // You Are Here
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+        // Gallery
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+        // Progress
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+        // Scan
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
 
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -96,6 +100,20 @@ public class TrackDrawer extends Activity {
         drawerLayout.setDrawerListener(drawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        //drawing the background color on the selected item of the drawer
+        if(this.getClass().getSimpleName().equals("MainActivity"))
+            drawerList.setItemChecked(0, true);
+        if(this.getClass().getSimpleName().equals("InformationActivity"))
+            drawerList.setItemChecked(1, true);
+        if(this.getClass().getSimpleName().equals("StoryActivity"))
+            drawerList.setItemChecked(2, true);
+        if(this.getClass().getSimpleName().equals("GalleryActivity"))
+            drawerList.setItemChecked(3, true);
+        if(this.getClass().getSimpleName().equals("ProgressActivity"))
+            drawerList.setItemChecked(4, true);
+        if(this.getClass().getSimpleName().equals("ScanQRActivity"))
+            drawerList.setItemChecked(5, true);
     }
 
     @Override
@@ -110,8 +128,11 @@ public class TrackDrawer extends Activity {
             case R.id.action_settings:
                 return true;
             case R.id.action_refresh:
-                Intent intent = new Intent(TrackDrawer.this,RefreshActivity.class);
-                startActivity(intent);
+                if (!this.getClass().getSimpleName().equals("RefreshActivity")){
+                    Intent intent = new Intent(this,RefreshActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -123,6 +144,12 @@ public class TrackDrawer extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
     }
 
     private class SlideMenuClickListener implements
@@ -143,13 +170,14 @@ public class TrackDrawer extends Activity {
     /* *
 	 * Called when invalidateOptionsMenu() is triggered
 	 */
-    @Override
+    /*@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
+        menu.findItem(R.id.action_refresh).setVisible(false);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
-    }
+    }*/
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -161,38 +189,59 @@ public class TrackDrawer extends Activity {
      * */
     private void displayView(int position) {
         Intent intent;
-        // update the main content by replacing fragments
-        Fragment fragment = null;
         switch (position) {
             case 0:
-                intent = new Intent(TrackDrawer.this,MainActivity.class);
-                startActivity(intent);
-                TrackDrawer.this.finish();
+                    intent = new Intent(this,MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 break;
             case 1:
-                intent = new Intent(TrackDrawer.this,InfoActivity.class);
-                startActivity(intent);
-                TrackDrawer.this.finish();
+                if (!this.getClass().getSimpleName().equals("InformationActivity")){
+                    intent = new Intent(this,InformationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    drawerLayout.closeDrawer(drawerList);
+                    startActivity(intent);
+                }else
+                    drawerLayout.closeDrawer(drawerList);
+                break;
+            case 2:
+                if (!this.getClass().getSimpleName().equals("StoryActivity")){
+                    intent = new Intent(this,StoryActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    drawerLayout.closeDrawer(drawerList);
+                    startActivity(intent);
+                }else
+                    drawerLayout.closeDrawer(drawerList);
+                break;
+            case 3:
+                if (!this.getClass().getSimpleName().equals("GalleryActivity")){
+                    intent = new Intent(this,GalleryActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    drawerLayout.closeDrawer(drawerList);
+                    startActivity(intent);
+                }else
+                    drawerLayout.closeDrawer(drawerList);
+                break;
+            case 4:
+                if (!this.getClass().getSimpleName().equals("ProgressActivity")){
+                    intent = new Intent(this,ProgressActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    drawerLayout.closeDrawer(drawerList);
+                    startActivity(intent);
+                }else
+                    drawerLayout.closeDrawer(drawerList);
+                break;
+            case 5:
+                if (!this.getClass().getSimpleName().equals("ScanQRActivity")){
+                    intent = new Intent(this.getBaseContext(),ScanQRActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    drawerLayout.closeDrawer(drawerList);
+                    startActivity(intent);
+                }else
+                    drawerLayout.closeDrawer(drawerList);
                 break;
             default:
                 break;
-        }
-
-        if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
-
-            // update selected item and title, then close the drawer
-            drawerList.setItemChecked(position, true);
-            drawerList.setSelection(position);
-            setTitle(navMenuTitles[position]);
-            drawerLayout.closeDrawer(drawerList);
-            //Log.e("Fragment",fragment.toString());
-            //Toast.makeText(this.getApplicationContext(),fragment.get,Toast.LENGTH_LONG).show();
-        } else {
-            // error in creating fragment
-            Log.e("HomeDrawer", "Error in creating fragment");
         }
     }
 }
