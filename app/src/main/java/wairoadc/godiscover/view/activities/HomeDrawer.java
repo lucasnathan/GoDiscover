@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,12 @@ public class HomeDrawer extends Activity {
         drawerLayout.setDrawerListener(drawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        //drawing the background color on the selected item of the drawer
+        if(this.getClass().getSimpleName().equals("MainActivity"))
+            drawerList.setItemChecked(0, true);
+        if(this.getClass().getSimpleName().equals("ScanQRActivity"))
+            drawerList.setItemChecked(1, true);
     }
 
     @Override
@@ -124,6 +131,12 @@ public class HomeDrawer extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
     }
 
     private class SlideMenuClickListener implements
@@ -166,14 +179,20 @@ public class HomeDrawer extends Activity {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                intent = new Intent(HomeDrawer.this,MainActivity.class);
-                startActivity(intent);
-                HomeDrawer.this.finish();
+                if (!this.getClass().getSimpleName().equals("MainActivity")){
+                    intent = new Intent(HomeDrawer.this,MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else
+                drawerLayout.closeDrawer(drawerList);
                 break;
             case 1:
-                intent = new Intent(HomeDrawer.this,InfoActivity.class);
-                startActivity(intent);
-                HomeDrawer.this.finish();
+                if (!this.getClass().getSimpleName().equals("ScanQRActivity")){
+                    intent = new Intent(HomeDrawer.this,ScanQRActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else
+                drawerLayout.closeDrawer(drawerList);
                 break;
             default:
                 break;
