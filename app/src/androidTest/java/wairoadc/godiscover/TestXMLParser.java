@@ -6,9 +6,11 @@ import android.util.Log;
 
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.List;
 
 import wairoadc.godiscover.controller.TrackController;
-import wairoadc.godiscover.controller.TrackXMLParser;
+import wairoadc.godiscover.utilities.IndexParser;
+import wairoadc.godiscover.utilities.TrackXMLParser;
 import wairoadc.godiscover.dao.ResourceDAO;
 import wairoadc.godiscover.dao.SpotDAO;
 import wairoadc.godiscover.dao.TrackDAO;
@@ -18,6 +20,7 @@ import wairoadc.godiscover.database.SpotTable;
 import wairoadc.godiscover.database.TrackTable;
 import wairoadc.godiscover.database.TypeTable;
 import wairoadc.godiscover.model.Track;
+import wairoadc.godiscover.utilities.Utility;
 
 /**
  * Created by Xinxula on 22/01/2015.
@@ -48,7 +51,7 @@ public class TestXMLParser extends AndroidTestCase {
         return true;
     }
 
-    public void testXMLParser() throws Throwable {
+    public void atestXMLParser() throws Throwable {
         wipeData();
         InputStream in = getContext().getResources().openRawResource(R.raw.xml_track_example);
         Track track = TrackXMLParser.parse(in);
@@ -58,6 +61,11 @@ public class TestXMLParser extends AndroidTestCase {
         Track trackDb = controller.insertTrack(track);
         Track trackDb2 = controller.insertTrack(track2);
         assertEquals(trackDb.getSpots().get(0).getName(),track.getSpots().get(0).getName());
+    }
+
+    public void testIndexParser() throws Throwable {
+        InputStream in = getContext().getResources().openRawResource(R.raw.xml_index_example);
+        List<Track> tracks = IndexParser.parse(in);
     }
 
 }

@@ -4,3 +4,5 @@
 /.idea/libraries
 .DS_Store
 /build
+app/src/main/assets/api_keys.properties
+app/src/main/java/wairoadc/godiscover/services/DownloadService.java

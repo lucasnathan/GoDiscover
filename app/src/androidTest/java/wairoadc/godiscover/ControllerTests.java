@@ -11,7 +11,7 @@ import java.util.List;
 import wairoadc.godiscover.controller.ResourceController;
 import wairoadc.godiscover.controller.SpotController;
 import wairoadc.godiscover.controller.TrackController;
-import wairoadc.godiscover.controller.TrackXMLParser;
+import wairoadc.godiscover.utilities.TrackXMLParser;
 import wairoadc.godiscover.dao.ResourceDAO;
 import wairoadc.godiscover.dao.SpotDAO;
 import wairoadc.godiscover.dao.TrackDAO;

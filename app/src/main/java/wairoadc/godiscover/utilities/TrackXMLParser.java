@@ -1,4 +1,4 @@
-package wairoadc.godiscover.controller;
+package wairoadc.godiscover.utilities;
 
 
 import android.util.Xml;
@@ -21,7 +21,7 @@ import wairoadc.godiscover.model.Type;
  */
 
 //Reference: http://developer.android.com/training/basics/network-ops/xml.html
-public class TrackXMLParser {
+public class TrackXMLParser extends XMLParser {
 
     //Tags used on the XML model inside each track package
     private static final String ns = null;
@@ -89,24 +89,6 @@ public class TrackXMLParser {
             }
         }
         return track;
-    }
-
-    // Processes a single tags in the file.
-    private static String readTag(XmlPullParser parser, String tag) throws IOException, XmlPullParserException {
-        parser.require(XmlPullParser.START_TAG, ns, tag);
-        String title = readText(parser);
-        parser.require(XmlPullParser.END_TAG, ns, tag);
-        return title;
-    }
-
-    // For the tags, extracts their text values.
-    private static String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
-        String result = "";
-        if (parser.next() == XmlPullParser.TEXT) {
-            result = parser.getText();
-            parser.nextTag();
-        }
-        return result;
     }
 
     private static ArrayList<Spot> readSpots(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -205,22 +187,5 @@ public class TrackXMLParser {
             }
         }
         return resource;
-    }
-
-    private static void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
-        if (parser.getEventType() != XmlPullParser.START_TAG) {
-            throw new IllegalStateException();
-        }
-        int depth = 1;
-        while (depth != 0) {
-            switch (parser.next()) {
-                case XmlPullParser.END_TAG:
-                    depth--;
-                    break;
-                case XmlPullParser.START_TAG:
-                    depth++;
-                    break;
-            }
-        }
     }
 }
