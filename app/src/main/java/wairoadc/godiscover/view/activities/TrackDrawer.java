@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.NavDrawerListAdapter;
 import wairoadc.godiscover.model.NavDrawerItem;
+import wairoadc.godiscover.utilities.IntentIntegrator;
 
 /**
  * Created by Lucas on 23/01/2015.
@@ -29,6 +30,10 @@ import wairoadc.godiscover.model.NavDrawerItem;
 public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
+    private String DEFAULT_MESSAGE;
+    private String DEFAULT_YES;
+    private String DEFAULT_NO;
+
     // nav drawer title
     private CharSequence mDrawerTitle;
     // used to store app title
@@ -47,6 +52,11 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
         mTitle = mDrawerTitle = getTitle();
+
+        //Load QrCode Messages
+        DEFAULT_MESSAGE = getString(R.string.qr_code_message_english);
+        DEFAULT_YES =getString(R.string.yes);
+        DEFAULT_NO = getString(R.string.no);
 
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -233,10 +243,17 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
                 break;
             case 5:
                 if (!this.getClass().getSimpleName().equals("ScanQRActivity")){
-                    intent = new Intent(this.getBaseContext(),ScanQRActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //QrCode Messages
+                    DEFAULT_MESSAGE = getString(R.string.qr_code_message_english);
+                    DEFAULT_YES =getString(R.string.yes);
+                    DEFAULT_NO = getString(R.string.no);
+                    IntentIntegrator scanIntegrator = new IntentIntegrator(this,DEFAULT_MESSAGE, DEFAULT_YES, DEFAULT_NO);
+                    scanIntegrator.initiateScan();
+                    //intent = new Intent(this.getBaseContext(),ScanQRActivity.class);
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //startActivity(intent);
                     drawerLayout.closeDrawer(drawerList);
-                    startActivity(intent);
+                    //startActivity(intent);
                 }else
                     drawerLayout.closeDrawer(drawerList);
                 break;

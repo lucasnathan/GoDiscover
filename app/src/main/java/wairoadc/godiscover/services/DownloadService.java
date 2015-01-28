@@ -17,7 +17,7 @@ import com.amazonaws.regions.Regions;
 
 import java.io.File;
 
-import wairoadc.godiscover.controller.Utility;
+import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.MainActivity;
 
 public class DownloadService extends IntentService {
@@ -142,8 +142,4 @@ public class DownloadService extends IntentService {
             super(message);
         }
     }
-
-
-
-
 }

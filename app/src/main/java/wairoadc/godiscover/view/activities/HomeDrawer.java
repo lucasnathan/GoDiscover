@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.NavDrawerListAdapter;
 import wairoadc.godiscover.model.NavDrawerItem;
+import wairoadc.godiscover.utilities.IntentIntegrator;
 
 /**
  * Created by Lucas on 23/01/2015.
@@ -34,7 +35,10 @@ public class HomeDrawer extends Activity {
 
     // nav drawer title
     private CharSequence mDrawerTitle;
-
+    //QrCode Messages
+    private String DEFAULT_MESSAGE;
+    private String DEFAULT_YES;
+    private String DEFAULT_NO;
     // used to store app title
     private CharSequence mTitle;
 
@@ -189,9 +193,15 @@ public class HomeDrawer extends Activity {
                 break;
             case 1:
                 if (!this.getClass().getSimpleName().equals("ScanQRActivity")){
-                    intent = new Intent(this.getBaseContext(),ScanQRActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    //QrCode Messages
+                    DEFAULT_MESSAGE = getString(R.string.qr_code_message_english);
+                    DEFAULT_YES =getString(R.string.yes);
+                    DEFAULT_NO = getString(R.string.no);
+                    IntentIntegrator scanIntegrator = new IntentIntegrator(this,DEFAULT_MESSAGE, DEFAULT_YES, DEFAULT_NO);
+                    scanIntegrator.initiateScan();
+                    //intent = new Intent(this.getBaseContext(),ScanQRActivity.class);
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //startActivity(intent);
                 }else
                 drawerLayout.closeDrawer(drawerList);
                 break;
