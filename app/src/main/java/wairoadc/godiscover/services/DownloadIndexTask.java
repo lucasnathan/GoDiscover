@@ -3,40 +3,75 @@ package wairoadc.godiscover.services;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.amazonaws.event.ProgressEvent;
+import com.amazonaws.event.ProgressListener;
+import com.amazonaws.mobileconnectors.s3.transfermanager.Download;
+import com.amazonaws.mobileconnectors.s3.transfermanager.TransferManager;
+import com.amazonaws.mobileconnectors.s3.transfermanager.TransferProgress;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import wairoadc.godiscover.model.Track;
+import wairoadc.godiscover.utilities.IndexParser;
+import wairoadc.godiscover.utilities.Utility;
 
 /**
  * Created by Xinxula on 27/01/2015.
  */
-public class DownloadIndexTask extends AsyncTaskLoader<String[]> {
+public class DownloadIndexTask extends AsyncTaskLoader<List<Track>>  {
 
-    private String[] tracks = null;
+    private List<Track> tracks = null;
     private String INDEX_FILE_NAME = "index.xml";
+    private static final String LOG_TAG = "DownloadIndexTask";
+    private static final String BUCKET_NAME = "godiscover";
+    private Context context;
+    private File output;
 
     public DownloadIndexTask(Context context) {
         super(context);
+        this.context = context;
     }
-
-    private void downloadIndex() {
-        File output = new File(getContext().getFilesDir(), INDEX_FILE_NAME);
-        //Deletes file if it already exists
-        if(output.exists())
-            output.delete();
-
-    }
-
 
     @Override
-    public String[] loadInBackground() {
-        String test[] = {"funcionou"};
+    public List<Track> loadInBackground() {
+        output = new File(getContext().getFilesDir(), INDEX_FILE_NAME);
+        //Deletes file if it already exists
+        if(output.exists()) {
+            Log.i(LOG_TAG, "Output exists" + output.getAbsolutePath());
+            output.delete();
+        }
+
         try {
-            Thread.sleep(3000);
+            TransferManager transferManager = Utility.connectToAmazon(context);
+            Download download = transferManager.download(BUCKET_NAME, INDEX_FILE_NAME, output);
+            download.waitForCompletion();
+            transferManager.shutdownNow();
+            InputStream in = new FileInputStream(output);
+            tracks = IndexParser.parse(in);
+            return tracks;
+        } catch (Utility.NotAuthenticatedException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return test;
+        return null;
     }
 
     @Override
@@ -48,4 +83,5 @@ public class DownloadIndexTask extends AsyncTaskLoader<String[]> {
             forceLoad();
         }
     }
+
 }

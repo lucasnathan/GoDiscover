@@ -23,6 +23,8 @@ import wairoadc.godiscover.view.fragments.RefreshFragment;
 
 public class RefreshActivity extends HomeDrawer {
 
+    public static boolean IS_RUNNING;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_refresh);
@@ -81,6 +83,7 @@ public class RefreshActivity extends HomeDrawer {
                     public void onClick(DialogInterface dialog,int id) {
                         //disable wifi
                         dialog.dismiss();
+                        RefreshActivity.this.finish();
                     }
                 });
         return alertDialogBuilder.create();
@@ -93,13 +96,18 @@ public class RefreshActivity extends HomeDrawer {
             createWifiDialog().show();
         } else {
             if(isOnline()) {
-
+                IS_RUNNING = true;
             } else {
                 Toast.makeText(this,"Error, check your internet connection!", Toast.LENGTH_LONG).show();
+                RefreshActivity.this.finish();
             }
         }
 
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        IS_RUNNING = false;
+    }
 }
