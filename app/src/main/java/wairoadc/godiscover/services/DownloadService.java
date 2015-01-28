@@ -15,19 +15,26 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transfermanager.*;
 import com.amazonaws.regions.Regions;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.MainActivity;
+import wairoadc.godiscover.view.activities.RefreshActivity;
 
+//Based on:
+//http://www.vogella.com/tutorials/AndroidServices/article.html
 public class DownloadService extends IntentService {
 
     private int result = Activity.RESULT_CANCELED;
-    public static final String URL = "urlpath";
+
     public static final String FILENAME = "filename";
     public static final String FILEPATH = "filepath";
     public static final String RESULT = "result";
-    public static final String NOTIFICATION = "com.vogella.android.service.receiver";
+    public static final String NOTIFICATION = "wairoadc.godiscover.services";
     private static final String LOG_TAG = "DownloadService";
     private static final String BUCKET_NAME = "godiscover";
 
@@ -39,73 +46,54 @@ public class DownloadService extends IntentService {
     private PendingIntent mContentIntent;
 
     // Notification Text Elements
-    private final CharSequence tickerText = "This is a Really, Really, Super Long Notification Message!";
+    private final CharSequence tickerText = "Track Downloaded!";
     private final CharSequence contentTitle = "Download done";
     private final CharSequence contentText = "The file has been downloaded";
 
 
+    private File output;
 
     public DownloadService() {
         super("DownloadService");
     }
 
-    private CognitoCachingCredentialsProvider initializeCognitoProvider() {
-        CognitoCachingCredentialsProvider credentials;
-        credentials = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),
-                "865405818235", /* AWS Account ID */
-                "us-east-1:12788d27-e277-47f5-bb9b-a15095395055", /* Identity Pool ID */
-                "arn:aws:iam::865405818235:role/Cognito_GoDiscoverUnauth_Role", /* Unauthenticated Role ARN */
-                "arn:aws:iam::865405818235:role/Cognito_GoDiscoverAuth_Role", /* Authenticated Role ARN */
-                Regions.US_EAST_1 /* Region */
-        );
-
-        return credentials;
-
-    }
-
-    private File downloadFile(String fileName) throws NotAuthenticatedException,InterruptedException {
+    private File downloadFile(String fileName) throws Utility.NotAuthenticatedException,InterruptedException {
         Log.i(LOG_TAG,"downloadFile with filename: "+fileName);
-        CognitoCachingCredentialsProvider credentialsProvider = initializeCognitoProvider();
-        if(null == credentialsProvider.getIdentityId() || "" == credentialsProvider.getIdentityId())
-            throw new NotAuthenticatedException("Not Authenticated!");
-        File output = new File(getFilesDir(),fileName);
+        output = new File(getApplicationContext().getFilesDir(), fileName);
         //Deletes file if it already exists
-        if(output.exists())
-            output.delete();
-        //Performs download operation from the bucket
-        TransferManager transferManager = new TransferManager(credentialsProvider);
-        Download download = transferManager.download(BUCKET_NAME, fileName, output);
-        TransferProgress transferred = download.getProgress();
-        if(download.isDone())
-            Log.i(LOG_TAG,"download successful at: "+output.getAbsolutePath());
-
-        Log.i(LOG_TAG,"unpacking zip:");
-        if(Utility.unpackZip(getFilesDir().getPath() + "/", fileName)) {
-            //delete the zip file once it's contents has been placed
+        if(output.exists()) {
+            Log.i(LOG_TAG, "Output exists" + output.getAbsolutePath());
             output.delete();
         }
-        String files[] = fileList();
-        for (String s : files) {
-            Log.i(LOG_TAG,"file: "+s);
+        try {
+            TransferManager transferManager = Utility.connectToAmazon(getApplicationContext());
+            Download download = transferManager.download(BUCKET_NAME, fileName, output);
+            download.waitForCompletion();
+            transferManager.shutdownNow();
+            return output;
+        } catch (Utility.NotAuthenticatedException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return output;
+        return null;
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.i(LOG_TAG,"onHandleIntent");
+        String fileName = intent.getStringExtra(FILENAME);
         try {
-            File outPut = downloadFile("track_dummy2.zip");
+            File outPut = downloadFile(fileName);
             result = Activity.RESULT_OK;
-            if(MainActivity.IS_RUNNING)
+            if(RefreshActivity.IS_RUNNING)
                 publishResults(outPut.getAbsolutePath(),result);
             else
                 notifyUser();
-        } catch (NotAuthenticatedException e) {
-            e.getMessage();
         } catch (InterruptedException e) {
             e.getMessage();
+        } catch (Utility.NotAuthenticatedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -127,19 +115,10 @@ public class DownloadService extends IntentService {
         mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());
     }
 
-
-
     private void publishResults(String outputPath, int result) {
         Intent intent = new Intent(NOTIFICATION);
         intent.putExtra(FILEPATH, outputPath);
         intent.putExtra(RESULT, result);
-
         sendBroadcast(intent);
-    }
-
-    public static class NotAuthenticatedException extends Exception {
-        public NotAuthenticatedException(String message) {
-            super(message);
-        }
     }
 }
