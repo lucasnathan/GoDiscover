@@ -58,6 +58,8 @@
             android:name=".view.activities.InformationActivity"
             android:label="@string/title_activity_information" >
         </activity>
+
+        <service android:name=".services.DownloadService"></service>
     </application>
 
 </manifest>
