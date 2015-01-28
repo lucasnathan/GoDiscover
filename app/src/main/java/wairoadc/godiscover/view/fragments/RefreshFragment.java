@@ -8,6 +8,9 @@ import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 
@@ -23,6 +26,8 @@ import java.util.List;
 
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.services.DownloadIndexTask;
+import wairoadc.godiscover.services.DownloadService;
+import wairoadc.godiscover.view.activities.RefreshActivity;
 
 /**
  * Created by Xinxula on 27/01/2015.
@@ -33,10 +38,8 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
 
     private ArrayAdapter<String> adapter;
 
-    private String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-            "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-            "Linux", "OS/2" };
-    private List<String> valuesArray = new ArrayList<>(Arrays.asList(values));
+
+    private List<String> valuesArray = new ArrayList<>();
 
     private ProgressDialogFragment progressDialogFragment;
 
@@ -52,6 +55,7 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
         getLoaderManager().initLoader(0, null, this);
     }
 
+
     private void startAnimation() {
         FragmentManager fm = getFragmentManager();
         progressDialogFragment = ProgressDialogFragment.newInstance();
@@ -61,7 +65,10 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // do something with the data
-        Toast.makeText(getActivity(),values[position],Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),valuesArray.get(position),Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(),DownloadService.class);
+        intent.putExtra(DownloadService.FILENAME,valuesArray.get(position));
+        getActivity().startService(intent);
     }
 
     private void dismissDialog(){
