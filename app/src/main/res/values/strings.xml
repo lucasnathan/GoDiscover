@@ -17,7 +17,7 @@
     <string name="title_activity_info">Information</string>
     <string name="title_activity_content">Content</string>
     <string name="title_activity_gallery">Gallery </string>
-    <string name="title_activity_static_map">Static Map </string>
+    <string name="title_activity_static_map">Map</string>
     <string name="title_activity_story">Story </string>
     <string name="title_activity_track">Track </string>
     <string name="title_activity_progress">Progress </string>
@@ -26,6 +26,7 @@
     <string name="title_activity_refresh">Download Module</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="no_map">Please Install a Maps Aplication</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">

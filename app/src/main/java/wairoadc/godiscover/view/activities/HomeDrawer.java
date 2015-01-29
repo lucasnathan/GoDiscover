@@ -197,6 +197,7 @@ public class HomeDrawer extends Activity {
                     DEFAULT_MESSAGE = getString(R.string.qr_code_message_english);
                     DEFAULT_YES =getString(R.string.yes);
                     DEFAULT_NO = getString(R.string.no);
+                    drawerLayout.closeDrawer(drawerList);
                     IntentIntegrator scanIntegrator = new IntentIntegrator(this,DEFAULT_MESSAGE, DEFAULT_YES, DEFAULT_NO);
                     scanIntegrator.initiateScan();
                     //intent = new Intent(this.getBaseContext(),ScanQRActivity.class);

@@ -4,10 +4,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -21,15 +25,7 @@ import wairoadc.godiscover.model.ImageItem;
 
 public class MainActivity extends HomeDrawer {
 
- /*   protected void onCreate(Bundle savedInstanceState) {
-
-        setContentView(R.layout.activity_redirect);
-        super.onCreate(savedInstanceState);
-    }*/
-
-
-
-
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private GridView gridView;
     private GridViewAdapter customGridAdapter;
@@ -97,8 +93,7 @@ public class MainActivity extends HomeDrawer {
     private final class RedirectToMaps implements
             DialogInterface.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {
-            Toast.makeText(getApplicationContext(), "Going to google maps...",
-                    Toast.LENGTH_LONG).show();
+            openPreferredLocationInMap();
         }
     }
 //Positive answer
@@ -109,6 +104,30 @@ public class MainActivity extends HomeDrawer {
             Intent intent= new Intent(MainActivity.this,InformationActivity.class);
             startActivity(intent);
 
+        }
+    }
+    private void openPreferredLocationInMap() {
+        SharedPreferences sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        String location = sharedPrefs.getString(
+                "location",
+                "-39.033064, 177.419115");
+
+        // Using the URI scheme for showing a location found on a map.  This super-handy
+        // intent can is detailed in the "Common Intents" page of Android's developer site:
+        // http://developer.android.com/guide/components/intents-common.html#Maps
+        Uri geoLocation = Uri.parse("google.navigation:q=").buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.no_map),
+                    Toast.LENGTH_LONG).show();
         }
     }
 }
