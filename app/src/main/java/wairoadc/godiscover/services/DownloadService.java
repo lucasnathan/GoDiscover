@@ -24,6 +24,7 @@ import java.io.IOException;
 import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.MainActivity;
 import wairoadc.godiscover.view.activities.RefreshActivity;
+import wairoadc.godiscover.view.fragments.RefreshFragment;
 
 //Based on:
 //http://www.vogella.com/tutorials/AndroidServices/article.html
@@ -57,7 +58,7 @@ public class DownloadService extends IntentService {
         super("DownloadService");
     }
 
-    private File downloadFile(String fileName) throws Utility.NotAuthenticatedException,InterruptedException {
+    private boolean downloadFile(String fileName) throws Utility.NotAuthenticatedException,InterruptedException {
         Log.i(LOG_TAG,"downloadFile with filename: "+fileName);
         output = new File(getApplicationContext().getFilesDir(), fileName);
         //Deletes file if it already exists
@@ -70,13 +71,19 @@ public class DownloadService extends IntentService {
             Download download = transferManager.download(BUCKET_NAME, fileName, output);
             download.waitForCompletion();
             transferManager.shutdownNow();
-            return output;
+            if(Utility.unpackZip(getFilesDir().getPath()+"/",fileName)) {
+                //delete the zip file once it's contents has been placed
+                output.delete();
+                Log.i(LOG_TAG,"File Unzipped: "+fileName);
+
+            }
+            return true;
         } catch (Utility.NotAuthenticatedException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     @Override
@@ -84,10 +91,10 @@ public class DownloadService extends IntentService {
         Log.i(LOG_TAG,"onHandleIntent");
         String fileName = intent.getStringExtra(FILENAME);
         try {
-            File outPut = downloadFile(fileName);
+            boolean outPut = downloadFile(fileName);
             result = Activity.RESULT_OK;
             if(RefreshActivity.IS_RUNNING)
-                publishResults(outPut.getAbsolutePath(),result);
+                publishResults(result);
             else
                 notifyUser();
         } catch (InterruptedException e) {
@@ -115,9 +122,9 @@ public class DownloadService extends IntentService {
         mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());
     }
 
-    private void publishResults(String outputPath, int result) {
+    private void publishResults( int result) {
         Intent intent = new Intent(NOTIFICATION);
-        intent.putExtra(FILEPATH, outputPath);
+
         intent.putExtra(RESULT, result);
         sendBroadcast(intent);
     }

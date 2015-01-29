@@ -19,11 +19,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.amazonaws.event.ProgressEvent;
+import com.amazonaws.event.ProgressListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
+import wairoadc.godiscover.R;
+import wairoadc.godiscover.adapter.RefreshAdapter;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.services.DownloadIndexTask;
 import wairoadc.godiscover.services.DownloadService;
@@ -36,7 +41,7 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
 
     public RefreshFragment() {}
 
-    private ArrayAdapter<String> adapter;
+    private RefreshAdapter adapter;
 
 
     private List<String> valuesArray = new ArrayList<>();
@@ -48,9 +53,7 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, valuesArray);
+        adapter = new RefreshAdapter(getActivity(), R.layout.track_download_list_item,valuesArray);
         setListAdapter(adapter);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -87,6 +90,10 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
         return tracksString;
     }
 
+    private String stripZipExtensionName(String name) {
+        return name.replace(".zip","");
+    }
+
     @Override
     public Loader<List<Track>> onCreateLoader(int id, Bundle args) {
         startAnimation();
@@ -96,13 +103,17 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader<List<Track>> loader, List<Track> data) {
         dismissDialog();
-        valuesArray.clear();
-        valuesArray.addAll(toList(data));
-        adapter.notifyDataSetChanged();
+        if(null != data) {
+            valuesArray.clear();
+            valuesArray.addAll(toList(data));
+            adapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(getActivity(),"There was an error while download, please try again",Toast.LENGTH_SHORT);
+        }
+
     }
 
     @Override
     public void onLoaderReset(Loader<List<Track>> loader) {
     }
-
 }

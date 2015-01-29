@@ -5,7 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import wairoadc.godiscover.dao.TrackDAO;
 import wairoadc.godiscover.model.Track;
@@ -88,6 +90,20 @@ public class TrackController {
                 return null;
             }
         } else return null;
+    }
+
+
+    public List<Track> getNewTracksToDownload(List<Track> tracks) {
+        List<Track> tracksOnDevice = loadHomeTracks();
+        if (0 == tracksOnDevice.size()) return tracks;
+        for(Track singleIndexTrack : tracks) {
+            for(Track singleTrackOnDevice : tracksOnDevice) {
+                if(singleTrackOnDevice.getName().equals(singleIndexTrack.getName().replace(".zip",""))){
+                    tracks.remove(singleIndexTrack);
+                }
+            }
+        }
+        return tracks;
     }
 
     // Retrieves the map of a track given the track id or name.

@@ -11,6 +11,7 @@ import com.amazonaws.event.ProgressListener;
 import com.amazonaws.mobileconnectors.s3.transfermanager.Download;
 import com.amazonaws.mobileconnectors.s3.transfermanager.TransferManager;
 import com.amazonaws.mobileconnectors.s3.transfermanager.TransferProgress;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -70,6 +71,9 @@ public class DownloadIndexTask extends AsyncTaskLoader<List<Track>>  {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (AmazonS3Exception e) {
+            Log.e(LOG_TAG,e.getMessage());
+            return null;
         }
         return null;
     }
