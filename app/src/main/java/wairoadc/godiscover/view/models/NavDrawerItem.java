@@ -1,4 +1,4 @@
-package wairoadc.godiscover.model;
+package wairoadc.godiscover.view.models;
 
 /**
  * Created by Lucas on 13/01/2015.

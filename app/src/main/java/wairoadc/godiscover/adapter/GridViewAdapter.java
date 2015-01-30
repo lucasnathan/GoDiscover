@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import wairoadc.godiscover.R;
-import wairoadc.godiscover.model.ImageItem;
+import wairoadc.godiscover.view.models.ImageItem;
 
 /**
  * Created by Lucas on 19/01/2015.

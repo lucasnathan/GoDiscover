@@ -10,27 +10,88 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
         <!-- Add content here -->
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/linear_layout_progress"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+            <!-- Checkpoint -->
             <TextView
-                android:id="@+id/txtLabel"
+                android:id="@+id/checkpoint_name_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="16dp"
-                android:text="Progress"/>
-
-            <ImageView android:layout_width="wrap_content"
+                android:textSize="20dp"
+                android:text="@string/checkpoints"/>
+            <ProgressBar
+                android:id="@+id/checkpoint_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtLabel"
-                android:src="@drawable/ic_action_info"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"/>
+                android:indeterminate="false"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:minHeight="50dp"
+                android:minWidth="200dp"
+                android:progressTint="@color/green"
+                android:progress="1" />
 
+            <TextView
+                android:id="@+id/checkpoint_ratio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+            <!-- Pictures -->
+            <TextView
+                android:id="@+id/pictures_name_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="@string/pictures"/>
+            <ProgressBar
+                android:id="@+id/pictures_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:minHeight="50dp"
+                android:minWidth="200dp"
+                android:progressTint="@color/green"
+                android:progress="1" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/pictures_ratio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+            <!-- Audio -->
+            <TextView
+                android:id="@+id/audio_name_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="@string/audio"/>
+            <ProgressBar
+                android:id="@+id/audio_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:minHeight="50dp"
+                android:minWidth="200dp"
+                android:progressTint="@color/green"
+                android:progress="1" />
+
+            <TextView
+                android:id="@+id/audio_ratio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
         <!-- Add content here -->
     </FrameLayout>
 

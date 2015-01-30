@@ -28,6 +28,11 @@
     <string name="drawer_close">Close</string>
     <string name="no_map">Please Install a Maps Aplication</string>
 
+    <!-- Progress Screen -->
+    <string name="checkpoints">Checkpoints</string>
+    <string name="audio">Audio</string>
+    <string name="pictures">pictures</string>
+
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item>Home</item>
@@ -36,6 +41,7 @@
         <item>Gallery</item>
         <item>Progress</item>
         <item>Scan</item>
+        <item>Map</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -47,6 +53,7 @@
         <item>@drawable/ic_action_tiles_large</item>
         <item>@drawable/ic_action_pie_chart</item>
         <item>@drawable/ic_action_barcode_2</item>
+        <item>@drawable/ic_action_map</item>
     </array>
 
     <!-- Content Description -->

@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GridViewAdapter;
-import wairoadc.godiscover.model.ImageItem;
+import wairoadc.godiscover.view.models.ImageItem;
 
 public class MainActivity extends HomeDrawer {
 

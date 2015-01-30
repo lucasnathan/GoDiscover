@@ -2,15 +2,12 @@ package wairoadc.godiscover.view.activities;
 
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +18,7 @@ import java.util.ArrayList;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.NavDrawerListAdapter;
-import wairoadc.godiscover.model.NavDrawerItem;
+import wairoadc.godiscover.view.models.NavDrawerItem;
 import wairoadc.godiscover.utilities.IntentIntegrator;
 
 /**
@@ -69,7 +66,9 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
         // Information
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // You Are Here
+        // Static Map
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
+        // StoryLine
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Gallery
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
@@ -115,6 +114,8 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
         if(this.getClass().getSimpleName().equals("MainActivity"))
             drawerList.setItemChecked(0, true);
         if(this.getClass().getSimpleName().equals("InformationActivity"))
+            drawerList.setItemChecked(1, true);
+        if(this.getClass().getSimpleName().equals("StaticMapActivity"))
             drawerList.setItemChecked(1, true);
         if(this.getClass().getSimpleName().equals("StoryActivity"))
             drawerList.setItemChecked(2, true);
@@ -215,6 +216,15 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
                     drawerLayout.closeDrawer(drawerList);
                 break;
             case 2:
+                if (!this.getClass().getSimpleName().equals("StaticMapActivity")){
+                    intent = new Intent(this,StaticMapActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    drawerLayout.closeDrawer(drawerList);
+                    startActivity(intent);
+                }else
+                    drawerLayout.closeDrawer(drawerList);
+                break;
+            case 3:
                 if (!this.getClass().getSimpleName().equals("StoryActivity")){
                     intent = new Intent(this,StoryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -223,7 +233,7 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
                 }else
                     drawerLayout.closeDrawer(drawerList);
                 break;
-            case 3:
+            case 4:
                 if (!this.getClass().getSimpleName().equals("GalleryActivity")){
                     intent = new Intent(this,GalleryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -232,7 +242,7 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
                 }else
                     drawerLayout.closeDrawer(drawerList);
                 break;
-            case 4:
+            case 5:
                 if (!this.getClass().getSimpleName().equals("ProgressActivity")){
                     intent = new Intent(this,ProgressActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -241,7 +251,7 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
                 }else
                     drawerLayout.closeDrawer(drawerList);
                 break;
-            case 5:
+            case 6:
                 if (!this.getClass().getSimpleName().equals("ScanQRActivity")){
                     //QrCode Messages
                     DEFAULT_MESSAGE = getString(R.string.qr_code_message_english);
@@ -250,11 +260,6 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
                     drawerLayout.closeDrawer(drawerList);
                     IntentIntegrator scanIntegrator = new IntentIntegrator(this,DEFAULT_MESSAGE, DEFAULT_YES, DEFAULT_NO);
                     scanIntegrator.initiateScan();
-                    //intent = new Intent(this.getBaseContext(),ScanQRActivity.class);
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    //startActivity(intent);
-
-                    //startActivity(intent);
                 }else
                     drawerLayout.closeDrawer(drawerList);
                 break;

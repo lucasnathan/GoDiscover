@@ -1,4 +1,4 @@
-package wairoadc.godiscover.model;
+package wairoadc.godiscover.view.models;
 
 import android.graphics.Bitmap;
 

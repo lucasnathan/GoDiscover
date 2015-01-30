@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import wairoadc.godiscover.R;
-import wairoadc.godiscover.model.NavDrawerItem;
+import wairoadc.godiscover.view.models.NavDrawerItem;
 
 public class NavDrawerListAdapter extends BaseAdapter {
 
