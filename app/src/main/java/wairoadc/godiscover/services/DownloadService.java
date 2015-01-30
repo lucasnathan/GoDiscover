@@ -18,9 +18,14 @@ import com.amazonaws.regions.Regions;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
+import wairoadc.godiscover.controller.TrackController;
+import wairoadc.godiscover.model.Track;
+import wairoadc.godiscover.utilities.TrackXMLParser;
 import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.MainActivity;
 import wairoadc.godiscover.view.activities.RefreshActivity;
@@ -75,12 +80,27 @@ public class DownloadService extends IntentService {
                 //delete the zip file once it's contents has been placed
                 output.delete();
                 Log.i(LOG_TAG,"File Unzipped: "+fileName);
-
-            }
-            return true;
+                String folderName = Utility.stripZipExtensionName(fileName);
+                InputStream in = new FileInputStream(getFilesDir().getPath()+"/"+folderName+"/"+folderName+".xml");
+                if(in != null) {
+                    Log.i(LOG_TAG,"XML Found!");
+                    Track newTrack = TrackXMLParser.parse(in);
+                    TrackController controller = new TrackController(getApplicationContext());
+                    controller.insertTrack(newTrack);
+                    Log.i(LOG_TAG,"Saved on the database!");
+                    return true;
+                }
+                return false;
+            } else return false;
         } catch (Utility.NotAuthenticatedException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return false;

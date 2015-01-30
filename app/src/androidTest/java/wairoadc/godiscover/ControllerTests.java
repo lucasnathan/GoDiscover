@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import wairoadc.godiscover.controller.ResourceController;
@@ -56,7 +57,7 @@ public class ControllerTests  extends AndroidTestCase {
         return true;
     }
 
-    public void testResourceController() throws Throwable {
+    public void atestResourceController() throws Throwable {
         assertEquals(true,wipeData());
 
         InputStream in = getContext().getResources().openRawResource(R.raw.xml_track_example);
@@ -78,7 +79,7 @@ public class ControllerTests  extends AndroidTestCase {
         //int unlocked2 = resourceController.countUnlockedByType(trackDb,type);
     }
 
-    public void testControllers() throws Throwable {
+    public void atestControllers() throws Throwable {
 
         //Testing track Controllers
         TrackController trackController = new TrackController(getContext());
@@ -115,5 +116,28 @@ public class ControllerTests  extends AndroidTestCase {
 
     }
 
+    public void testGetNewTracksToDownload() throws Throwable {
+        Track t1 = new Track();
+        t1.setName("Track 1");
+        t1.setVersion(1);
+
+        Track t2 = new Track();
+        t2.setName("Track 2");
+        t2.setVersion(1);
+
+        Track t3 = new Track();
+        t3.setName("Track 3");
+        t3.setVersion(2);
+
+        List<Track> tracksOnServerSample = new ArrayList<>();
+        tracksOnServerSample.add(t1);
+        tracksOnServerSample.add(t2);
+        tracksOnServerSample.add(t3);
+
+
+        TrackController trackController = new TrackController(mContext);
+        List<Track> results = trackController.getNewTracksToDownload(tracksOnServerSample);
+
+    }
 
 }

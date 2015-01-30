@@ -93,6 +93,10 @@ public class Utility {
 
     }
 
+    public static String stripZipExtensionName(String name) {
+        return name.replace(".zip","");
+    }
+
     public static TransferManager connectToAmazon(Context context) throws NotAuthenticatedException {
         Log.i(LOG_TAG, "Connecting to Amazon S3 server....");
         CognitoCachingCredentialsProvider credentialsProvider = initializeCognitoProvider(context);

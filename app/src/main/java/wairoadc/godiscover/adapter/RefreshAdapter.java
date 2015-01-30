@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import wairoadc.godiscover.R;
+import wairoadc.godiscover.utilities.Utility;
 
 /**
  * Created by Xinxula on 29/01/2015.
@@ -46,7 +47,7 @@ public class RefreshAdapter extends ArrayAdapter<String> {
             rowView.setTag(viewHolder);
         }
         ViewHolder holder = (ViewHolder)rowView.getTag();
-        holder.text.setText(values.get(position));
+        holder.text.setText(Utility.stripZipExtensionName(values.get(position)));
         return rowView;
     }
 }

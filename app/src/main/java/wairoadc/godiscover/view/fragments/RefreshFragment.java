@@ -23,16 +23,17 @@ import com.amazonaws.event.ProgressEvent;
 import com.amazonaws.event.ProgressListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.RefreshAdapter;
+import wairoadc.godiscover.controller.TrackController;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.services.DownloadIndexTask;
 import wairoadc.godiscover.services.DownloadService;
-import wairoadc.godiscover.view.activities.RefreshActivity;
+
 
 /**
  * Created by Xinxula on 27/01/2015.
@@ -90,10 +91,6 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
         return tracksString;
     }
 
-    private String stripZipExtensionName(String name) {
-        return name.replace(".zip","");
-    }
-
     @Override
     public Loader<List<Track>> onCreateLoader(int id, Bundle args) {
         startAnimation();
@@ -104,8 +101,9 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
     public void onLoadFinished(Loader<List<Track>> loader, List<Track> data) {
         dismissDialog();
         if(null != data) {
+            TrackController trackController = new TrackController(getActivity());
             valuesArray.clear();
-            valuesArray.addAll(toList(data));
+            valuesArray.addAll(toList(trackController.getNewTracksToDownload(data)));
             adapter.notifyDataSetChanged();
         } else {
             Toast.makeText(getActivity(),"There was an error while download, please try again",Toast.LENGTH_SHORT);

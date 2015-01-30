@@ -5,12 +5,15 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import wairoadc.godiscover.dao.TrackDAO;
 import wairoadc.godiscover.model.Track;
+import wairoadc.godiscover.utilities.Utility;
 
 /**
  * Created by Lucas on 7/01/2015.
@@ -92,18 +95,24 @@ public class TrackController {
         } else return null;
     }
 
-
     public List<Track> getNewTracksToDownload(List<Track> tracks) {
+
+
         List<Track> tracksOnDevice = loadHomeTracks();
-        if (0 == tracksOnDevice.size()) return tracks;
-        for(Track singleIndexTrack : tracks) {
-            for(Track singleTrackOnDevice : tracksOnDevice) {
-                if(singleTrackOnDevice.getName().equals(singleIndexTrack.getName().replace(".zip",""))){
-                    tracks.remove(singleIndexTrack);
-                }
+        List<Track> returnList = new ArrayList<>();
+
+        if (null == tracksOnDevice || 0 == tracksOnDevice.size()) return tracks;
+        Map<String,Long> tracksOnDeviceMap = new HashMap<>();
+        for(Track t : tracksOnDevice) {
+            tracksOnDeviceMap.put(t.getName(),t.getVersion());
+        }
+        for(Track t : tracks) {
+            Long ping = tracksOnDeviceMap.get(Utility.stripZipExtensionName(t.getName()));
+            if(ping == null) {
+                returnList.add(t);
             }
         }
-        return tracks;
+        return returnList;
     }
 
     // Retrieves the map of a track given the track id or name.
