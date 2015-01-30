@@ -45,6 +45,7 @@ public class RefreshAdapter extends ArrayAdapter<String> {
             viewHolder.text = (TextView) rowView.findViewById(R.id.track_item_download_id);
             viewHolder.progress = (ProgressBar)rowView.findViewById(R.id.track_item_download_progress);
             rowView.setTag(viewHolder);
+
         }
         ViewHolder holder = (ViewHolder)rowView.getTag();
         holder.text.setText(Utility.stripZipExtensionName(values.get(position)));

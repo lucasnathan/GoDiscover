@@ -6,14 +6,22 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -27,6 +35,7 @@ import wairoadc.godiscover.view.fragments.RefreshFragment;
 public class RefreshActivity extends HomeDrawer {
 
     public static boolean IS_RUNNING;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,7 @@ public class RefreshActivity extends HomeDrawer {
                     Toast.makeText(RefreshActivity.this,
                             "Download complete. Download URI: " + string,
                             Toast.LENGTH_LONG).show();
+
 
                 } else {
                     Toast.makeText(RefreshActivity.this, "Download failed",

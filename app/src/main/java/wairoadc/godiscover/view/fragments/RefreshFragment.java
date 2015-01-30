@@ -14,9 +14,13 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.amazonaws.event.ProgressEvent;
@@ -33,6 +37,7 @@ import wairoadc.godiscover.controller.TrackController;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.services.DownloadIndexTask;
 import wairoadc.godiscover.services.DownloadService;
+import wairoadc.godiscover.view.activities.RefreshActivity;
 
 
 /**
@@ -50,6 +55,21 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
     private ProgressDialogFragment progressDialogFragment;
 
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle b = msg.getData();
+            int serverId = b.getInt("SERVICE");
+            long progress = b.getLong(DownloadService.PROGRESS);
+            //Toast.makeText(getActivity(),"got message",Toast.LENGTH_LONG).show();
+
+            ProgressBar pb = (ProgressBar)(getListView().getChildAt(serverId)).findViewById(R.id.track_item_download_progress);
+            if(null != pb) {
+                //Toast.makeText(getActivity(),"yay!",Toast.LENGTH_SHORT).show();
+                pb.setProgress((int)progress);
+            }
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -72,7 +92,12 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
         Toast.makeText(getActivity(),valuesArray.get(position),Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(),DownloadService.class);
         intent.putExtra(DownloadService.FILENAME,valuesArray.get(position));
+        intent.putExtra(DownloadService.SERVICE,position);
+        intent.putExtra("MESSENGER",new Messenger(handler));
+        ProgressBar pb = (ProgressBar)(getListView().getChildAt(position)).findViewById(R.id.track_item_download_progress);
+        pb.setVisibility(ProgressBar.VISIBLE);
         getActivity().startService(intent);
+
     }
 
     private void dismissDialog(){

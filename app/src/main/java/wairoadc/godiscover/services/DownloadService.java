@@ -8,12 +8,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.event.ProgressEvent;
+import com.amazonaws.event.ProgressListener;
 import com.amazonaws.mobileconnectors.s3.transfermanager.*;
-import com.amazonaws.regions.Regions;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -29,11 +33,10 @@ import wairoadc.godiscover.utilities.TrackXMLParser;
 import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.MainActivity;
 import wairoadc.godiscover.view.activities.RefreshActivity;
-import wairoadc.godiscover.view.fragments.RefreshFragment;
 
 //Based on:
 //http://www.vogella.com/tutorials/AndroidServices/article.html
-public class DownloadService extends IntentService {
+public class DownloadService extends IntentService implements ProgressListener {
 
     private int result = Activity.RESULT_CANCELED;
 
@@ -43,6 +46,10 @@ public class DownloadService extends IntentService {
     public static final String NOTIFICATION = "wairoadc.godiscover.services";
     private static final String LOG_TAG = "DownloadService";
     private static final String BUCKET_NAME = "godiscover";
+    public static String SERVICE = "ID";
+    public static  String PROGRESS = "Progress";
+    private int serviceIdValue;
+
 
 
     // Notification ID to allow for future updates
@@ -59,8 +66,28 @@ public class DownloadService extends IntentService {
 
     private File output;
 
+    public static final int MSG_REGISTER_CLIENT = 1;
+    private TransferManager transferManager;
+    private Download download;
+    private Messenger messenger;
+
+
     public DownloadService() {
         super("DownloadService");
+    }
+
+    private void sendMessageToUI(int id, long progress) {
+
+        try {
+            Bundle b = new Bundle();
+            b.putInt(SERVICE, id);
+            b.putLong(PROGRESS, progress);
+            Message msg = Message.obtain();
+            msg.setData(b);
+            messenger.send(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean downloadFile(String fileName) throws Utility.NotAuthenticatedException,InterruptedException {
@@ -72,8 +99,9 @@ public class DownloadService extends IntentService {
             output.delete();
         }
         try {
-            TransferManager transferManager = Utility.connectToAmazon(getApplicationContext());
-            Download download = transferManager.download(BUCKET_NAME, fileName, output);
+            transferManager = Utility.connectToAmazon(getApplicationContext());
+            download = transferManager.download(BUCKET_NAME, fileName, output);
+            download.addProgressListener(this);
             download.waitForCompletion();
             transferManager.shutdownNow();
             if(Utility.unpackZip(getFilesDir().getPath()+"/",fileName)) {
@@ -94,7 +122,8 @@ public class DownloadService extends IntentService {
             } else return false;
         } catch (Utility.NotAuthenticatedException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -110,9 +139,15 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.i(LOG_TAG,"onHandleIntent");
         String fileName = intent.getStringExtra(FILENAME);
+        serviceIdValue = intent.getIntExtra(SERVICE,-1);
+        messenger = (Messenger)intent.getExtras().get("MESSENGER");
         try {
             boolean outPut = downloadFile(fileName);
-            result = Activity.RESULT_OK;
+            if(outPut) {
+                result = Activity.RESULT_OK;
+            } else {
+                result = Activity.RESULT_CANCELED;
+            }
             if(RefreshActivity.IS_RUNNING)
                 publishResults(result);
             else
@@ -147,5 +182,12 @@ public class DownloadService extends IntentService {
 
         intent.putExtra(RESULT, result);
         sendBroadcast(intent);
+    }
+
+    @Override
+    public void progressChanged(ProgressEvent progressEvent) {
+        if(Math.round(download.getProgress().getPercentTransferred()) % 5 == 0) {
+            sendMessageToUI(serviceIdValue, Math.round(download.getProgress().getPercentTransferred()));
+        }
     }
 }
