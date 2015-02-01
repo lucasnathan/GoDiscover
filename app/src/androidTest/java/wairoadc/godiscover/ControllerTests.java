@@ -33,7 +33,7 @@ public class ControllerTests  extends AndroidTestCase {
 
 
 
-    public boolean wipeData() throws SQLException{
+    public void testWipeData() throws Throwable{
 
         ResourceDAO resourceDAO = new ResourceDAO(mContext);
         SpotDAO spotDAO = new SpotDAO(mContext);
@@ -54,11 +54,11 @@ public class ControllerTests  extends AndroidTestCase {
         db2.delete(SpotTable.SPOT_TABLE,null,null);
         db3.delete(TrackTable.TRACK_TABLE,null,null);
 
-        return true;
+        //return true;
     }
 
     public void atestResourceController() throws Throwable {
-        assertEquals(true,wipeData());
+        //assertEquals(true,wipeData());
 
         InputStream in = getContext().getResources().openRawResource(R.raw.xml_track_example);
         Track track = TrackXMLParser.parse(in);
@@ -116,7 +116,7 @@ public class ControllerTests  extends AndroidTestCase {
 
     }
 
-    public void testGetNewTracksToDownload() throws Throwable {
+    public void atestGetNewTracksToDownload() throws Throwable {
         Track t1 = new Track();
         t1.setName("Track 1");
         t1.setVersion(1);

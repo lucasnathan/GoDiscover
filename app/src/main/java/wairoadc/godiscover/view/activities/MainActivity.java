@@ -11,15 +11,22 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GridViewAdapter;
+import wairoadc.godiscover.controller.TrackController;
+import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.view.models.ImageItem;
 
 public class MainActivity extends HomeDrawer {
@@ -28,6 +35,7 @@ public class MainActivity extends HomeDrawer {
 
     private GridView gridView;
     private GridViewAdapter customGridAdapter;
+    private TextView emptyGrid;
     // constant for identifying the dialog
     private static final int DIALOG_ALERT = 10;
 
@@ -42,36 +50,49 @@ public class MainActivity extends HomeDrawer {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
-
-
-
         this.gridView = (GridView) findViewById(R.id.gridView);
+        this.emptyGrid = (TextView) LayoutInflater.from(this).inflate(R.layout.empty,null);
+        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.grid_container);
+        relativeLayout.addView(emptyGrid,0);
+        this.gridView.setEmptyView(emptyGrid);
         customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
         gridView.setAdapter(customGridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(MainActivity.this, position + "#Selected",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, position + "#Selected",Toast.LENGTH_LONG).show();
                 showDialog(DIALOG_ALERT);
             }
 
         });
     }
 
+    //Will get Track information from the database
     private ArrayList getData() {
+        TrackController trackController = new TrackController(this);
+        List<Track> listHomeTracks = trackController.loadHomeTracks();
         final ArrayList imageItems = new ArrayList();
-        // retrieve String drawable array
-        TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);
-        for (int i = 0; i < imgs.length(); i++) {
-            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
-                    imgs.getResourceId(i, -1));
-            imageItems.add(new ImageItem(bitmap, "Image#" + i));
+        if(null != listHomeTracks && listHomeTracks.size() > 0) {
+            // retrieve String drawable array
+            for(Track track : listHomeTracks) {
+                String imageFullPath = getFilesDir().getPath()+track.getResource();
+                Log.i(LOG_TAG,imageFullPath);
+                Bitmap bitmap = BitmapFactory.decodeFile(imageFullPath);
+                if(null != bitmap) {
+                    imageItems.add(new ImageItem(bitmap, track.getName()));
+                }
+            }
         }
-
         return imageItems;
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
+        gridView.setAdapter(customGridAdapter);
+        Log.i(LOG_TAG,"onResume");
     }
 
     @Override
