@@ -31,7 +31,7 @@
     <!-- Progress Screen -->
     <string name="checkpoints">Checkpoints</string>
     <string name="audio">Audio</string>
-    <string name="pictures">pictures</string>
+    <string name="pictures">Pictures</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">

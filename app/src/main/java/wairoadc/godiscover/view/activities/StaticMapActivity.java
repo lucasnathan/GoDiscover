@@ -1,40 +1,87 @@
 package wairoadc.godiscover.view.activities;
 
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
+import android.graphics.Matrix;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
+import uk.co.senab.photoview.PhotoViewAttacher.OnMatrixChangedListener;
+import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 import wairoadc.godiscover.R;
 
-public class StaticMapActivity extends ActionBarActivity {
+public class StaticMapActivity extends TrackDrawer {
+
+    static final String PHOTO_TAP_TOAST_STRING = "Photo Tap! X: %.2f %% Y:%.2f %% ID: %d";
+    static final String SCALE_TOAST_STRING = "Scaled to: %.2ff";
+
+    private TextView mCurrMatrixTv;
+
+    private PhotoViewAttacher mAttacher;
+
+    private Toast mCurrentToast;
+
+    private Matrix mCurrentDisplayMatrix = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_static_map);
+        super.onCreate(savedInstanceState);
+
+
+        ImageView mImageView = (ImageView) findViewById(R.id.iv_photo);
+        mCurrMatrixTv = (TextView) findViewById(R.id.tv_current_matrix);
+
+        Drawable bitmap = getResources().getDrawable(R.drawable.big_map);
+        mImageView.setImageDrawable(bitmap);
+
+        // The MAGIC happens here!
+        mAttacher = new PhotoViewAttacher(mImageView);
+
+        // Lets attach some listeners, not required though!
+        mAttacher.setOnMatrixChangeListener(new MatrixChangeListener());
+        mAttacher.setOnPhotoTapListener(new PhotoTapListener());
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_static_map, menu);
-        return true;
+    public void onDestroy() {
+        super.onDestroy();
+
+        // Need to call clean-up
+        mAttacher.cleanup();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    private class PhotoTapListener implements OnPhotoTapListener {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        @Override
+        public void onPhotoTap(View view, float x, float y) {
+            float xPercentage = x * 100f;
+            float yPercentage = y * 100f;
+
+            showToast(String.format(PHOTO_TAP_TOAST_STRING, xPercentage, yPercentage, view == null ? 0 : view.getId()));
+        }
+    }
+
+    private void showToast(CharSequence text) {
+        if (null != mCurrentToast) {
+            mCurrentToast.cancel();
         }
 
-        return super.onOptionsItemSelected(item);
+        mCurrentToast = Toast.makeText(StaticMapActivity.this, text, Toast.LENGTH_SHORT);
+        mCurrentToast.show();
+    }
+
+    private class MatrixChangeListener implements OnMatrixChangedListener {
+
+        @Override
+        public void onMatrixChanged(RectF rect) {
+            mCurrMatrixTv.setText(rect.toString());
+        }
     }
 }
+
