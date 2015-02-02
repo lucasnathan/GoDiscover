@@ -72,6 +72,7 @@ public class DownloadIndexTask extends AsyncTaskLoader<List<Track>>  {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (AmazonS3Exception e) {
+            e.printStackTrace();
             Log.e(LOG_TAG,e.getMessage());
             return null;
         }

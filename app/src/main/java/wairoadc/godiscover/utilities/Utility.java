@@ -93,6 +93,7 @@ public class Utility {
 
     }
 
+
     public static String stripZipExtensionName(String name) {
         return name.replace(".zip","");
     }
