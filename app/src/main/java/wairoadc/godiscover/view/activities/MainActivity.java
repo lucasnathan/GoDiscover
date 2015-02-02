@@ -36,16 +36,8 @@ public class MainActivity extends HomeDrawer {
     private GridView gridView;
     private GridViewAdapter customGridAdapter;
     private TextView emptyGrid;
-    // constant for identifying the dialog
-    private static final int DIALOG_ALERT = 10;
+    private List<Track> listHomeTracks;
 
-
-
-    // adjust this method if you have more than
-    // one button pointing to this method
-    public void onClick(View view) {
-        showDialog(DIALOG_ALERT);
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -59,19 +51,40 @@ public class MainActivity extends HomeDrawer {
         gridView.setAdapter(customGridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View v,int position, long id) {
                 Toast.makeText(MainActivity.this, position + "#Selected",Toast.LENGTH_LONG).show();
-                showDialog(DIALOG_ALERT);
+                //showDialog(DIALOG_ALERT);
+                makeDialog(listHomeTracks.get(position).get_id());
             }
 
         });
     }
 
+    public void makeDialog(long track_id) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle("Do you want directions?");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("If so, show me on google maps")
+                .setCancelable(false)
+                .setPositiveButton("Yes, to maps",new RedirectToMaps())
+                .setNegativeButton("No, open the track",new GoToInfo(track_id));
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+
     //Will get Track information from the database
     private ArrayList getData() {
         TrackController trackController = new TrackController(this);
-        List<Track> listHomeTracks = trackController.loadHomeTracks();
+        listHomeTracks = trackController.loadHomeTracks();
         final ArrayList imageItems = new ArrayList();
         if(null != listHomeTracks && listHomeTracks.size() > 0) {
             // retrieve String drawable array
@@ -92,36 +105,26 @@ public class MainActivity extends HomeDrawer {
         super.onResume();
         customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
         gridView.setAdapter(customGridAdapter);
-        Log.i(LOG_TAG,"onResume");
+        Log.i(LOG_TAG, "onResume");
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DIALOG_ALERT:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Do you want directions?");
-                builder.setCancelable(true);
-                builder.setPositiveButton("Yes, I do", new RedirectToMaps());
-                builder.setNegativeButton("No, thanks", new GoToInfo());
-                AlertDialog dialog = builder.create();
-                dialog.show();
-        }
-        return super.onCreateDialog(id);
-    }
-//Negative Answer
-    private final class RedirectToMaps implements
-            DialogInterface.OnClickListener {
+    //Positive Answer
+    private final class RedirectToMaps implements DialogInterface.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {
             openPreferredLocationInMap();
         }
     }
-//Positive answer
-    private final class GoToInfo implements
-            DialogInterface.OnClickListener {
+
+    //Negative answer
+    private final class GoToInfo implements DialogInterface.OnClickListener {
+        private long track_id;
+        public GoToInfo(long track_id) {
+            this.track_id = track_id;
+        }
         public void onClick(DialogInterface dialog, int which) {
             //MainActivity.this.finish();
             Intent intent= new Intent(MainActivity.this,InformationActivity.class);
+            intent.putExtra("TRACK_ID",track_id);
             startActivity(intent);
 
         }

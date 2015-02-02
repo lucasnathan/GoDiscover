@@ -28,7 +28,9 @@ import com.amazonaws.event.ProgressListener;
 
 import java.util.ArrayList;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import wairoadc.godiscover.R;
@@ -49,36 +51,63 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
 
     private RefreshAdapter adapter;
 
+    private static boolean IS_RUNNING;
+
 
     private List<String> valuesArray = new ArrayList<>();
 
     private ProgressDialogFragment progressDialogFragment;
 
+    private Map<Integer,Long> progressValues = new HashMap<>();
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            Bundle b = msg.getData();
-            int serverId = b.getInt("SERVICE");
-            long progress = b.getLong(DownloadService.PROGRESS);
-            //Toast.makeText(getActivity(),"got message",Toast.LENGTH_LONG).show();
+    private Handler loadHandler() {
+        return new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if(IS_RUNNING) {
+                    Bundle b = msg.getData();
+                    int serverId = b.getInt("SERVICE");
+                    long progress = b.getLong(DownloadService.PROGRESS);
+                    //Toast.makeText(getActivity(),"got message",Toast.LENGTH_LONG).show();
 
-            ProgressBar pb = (ProgressBar)(getListView().getChildAt(serverId)).findViewById(R.id.track_item_download_progress);
-            if(null != pb) {
-                //Toast.makeText(getActivity(),"yay!",Toast.LENGTH_SHORT).show();
-                pb.setProgress((int)progress);
+                    ProgressBar pb = (ProgressBar)(getListView().getChildAt(serverId)).findViewById(R.id.track_item_download_progress);
+                    if(null != pb) {
+                        //Toast.makeText(getActivity(),"yay!",Toast.LENGTH_SHORT).show();
+                        if(pb.getVisibility() == ProgressBar.GONE)
+                            pb.setVisibility(ProgressBar.VISIBLE);
+                        pb.setProgress((int)progress);
+                        progressValues.put(serverId,progress);
+                    }
+                }
             }
-        }
-    };
+        };
+    }
+
+    private Handler handler = null;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IS_RUNNING = true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        IS_RUNNING = false;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         adapter = new RefreshAdapter(getActivity(), R.layout.track_download_list_item,valuesArray);
         setListAdapter(adapter);
-        getLoaderManager().initLoader(0, null, this);
-    }
+        if(savedInstanceState == null) {
+            getLoaderManager().initLoader(0, null, this);
+        }
+        handler = loadHandler();
 
+    }
 
     private void startAnimation() {
         FragmentManager fm = getFragmentManager();
