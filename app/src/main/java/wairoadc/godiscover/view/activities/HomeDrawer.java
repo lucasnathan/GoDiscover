@@ -112,13 +112,21 @@ public class HomeDrawer extends Activity {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        Intent intent;
         // Handle action bar actions click
         switch (item.getItemId()) {
+
             case R.id.action_settings:
+                if (!this.getClass().getSimpleName().equals("InformationActivity")){
+                    intent = new Intent(this.getBaseContext(),InformationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
                 return true;
             case R.id.action_refresh:
                 if (!this.getClass().getSimpleName().equals("RefreshActivity")){
-                    Intent intent = new Intent(this.getBaseContext(),RefreshActivity.class);
+                    intent = new Intent(this.getBaseContext(),RefreshActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
