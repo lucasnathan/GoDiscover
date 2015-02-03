@@ -26,12 +26,14 @@ import java.util.List;
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GridViewAdapter;
 import wairoadc.godiscover.controller.TrackController;
+import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.view.models.ImageItem;
 
 public class MainActivity extends HomeDrawer {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    public final static String TRACK_EXTRA = "track_extra";
 
     private GridView gridView;
     private GridViewAdapter customGridAdapter;
@@ -54,13 +56,13 @@ public class MainActivity extends HomeDrawer {
             public void onItemClick(AdapterView<?> parent, View v,int position, long id) {
                 Toast.makeText(MainActivity.this, position + "#Selected",Toast.LENGTH_LONG).show();
                 //showDialog(DIALOG_ALERT);
-                makeDialog(listHomeTracks.get(position).get_id());
+                makeDialog(listHomeTracks.get(position));
             }
 
         });
     }
 
-    public void makeDialog(long track_id) {
+    public void makeDialog(Track track) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         // set title
@@ -71,7 +73,7 @@ public class MainActivity extends HomeDrawer {
                 .setMessage("If so, show me on google maps")
                 .setCancelable(false)
                 .setPositiveButton("Yes, to maps",new RedirectToMaps())
-                .setNegativeButton("No, open the track",new GoToInfo(track_id));
+                .setNegativeButton("No, open the track",new GoToInfo(track));
 
         // create alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -117,17 +119,17 @@ public class MainActivity extends HomeDrawer {
 
     //Negative answer
     private final class GoToInfo implements DialogInterface.OnClickListener {
-        private long track_id;
-        public GoToInfo(long track_id) {
-            this.track_id = track_id;
+        private Track track;
+        public GoToInfo(Track track) {
+            this.track = track;
         }
         public void onClick(DialogInterface dialog, int which) {
-            //MainActivity.this.finish();
             Intent intent= new Intent(MainActivity.this,InformationActivity.class);
-            intent.putExtra("TRACK_ID",track_id);
-            Log.i(LOG_TAG,"id: "+track_id);
+            TrackController trackController = new TrackController(getApplicationContext());
+            track = trackController.loadTrack(track);
+            //Creates an empty list for spots and resources in order to not break the parcel
+            intent.putExtra(TRACK_EXTRA,track);
             startActivity(intent);
-
         }
     }
     private void openPreferredLocationInMap() {

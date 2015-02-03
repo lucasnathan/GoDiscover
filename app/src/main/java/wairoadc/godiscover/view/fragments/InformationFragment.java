@@ -15,6 +15,7 @@ import android.widget.Toast;
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.controller.TrackController;
 import wairoadc.godiscover.model.Track;
+import wairoadc.godiscover.view.activities.MainActivity;
 
 /**
  * Created by Lucas on 13/01/2015.
@@ -33,15 +34,8 @@ public class InformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        track = new Track();
-
         Bundle b = getArguments();
-        long trackId = b.getLong("TRACK_ID");
-        if(trackId != -1) {
-            TrackController trackController = new TrackController(getActivity());
-            track.set_id(trackId);
-            track = trackController.loadTrack(track);
-        }
+        track = b.getParcelable(MainActivity.TRACK_EXTRA);
 
         View rootView = inflater.inflate(R.layout.fragment_information, container, false);
         descriptionField = (TextView)rootView.findViewById(R.id.txt_description);

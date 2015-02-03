@@ -1,5 +1,9 @@
 package wairoadc.godiscover.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +12,7 @@ import java.util.List;
  */
 
 // Spot: Defines the structure of a spot, which is part of a track.
-public class Spot {
+public class Spot implements Parcelable {
     private long _id; // Id for the spot on the database.
     private String name; // Name or title of the spot on a track.
     private String information; // Some basic information about the spot.
@@ -21,23 +25,6 @@ public class Spot {
     private Date date;
 
 // Getters and setters for the attributes of the spot.
-
-
-    @Override
-    public String toString() {
-        return "Spot{" +
-                "_id=" + _id +
-                ", name='" + name + '\'' +
-                ", information='" + information + '\'' +
-                ", x=" + x +
-                ", y=" + y +
-                ", unlocked=" + unlocked +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", resources=" + resources +
-                ", date=" + date +
-                '}';
-    }
 
     public long get_id() {
         return _id;
@@ -118,4 +105,70 @@ public class Spot {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "Spot{" +
+                "_id=" + _id +
+                ", name='" + name + '\'' +
+                ", information='" + information + '\'' +
+                ", x=" + x +
+                ", y=" + y +
+                ", unlocked=" + unlocked +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", resources=" + resources +
+                ", date=" + date +
+                '}';
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this._id);
+        dest.writeString(this.name);
+        dest.writeString(this.information);
+        dest.writeInt(this.x);
+        dest.writeInt(this.y);
+        dest.writeInt(this.unlocked);
+        dest.writeDouble(this.latitude);
+        dest.writeDouble(this.longitude);
+        dest.writeLong(date != null ? date.getTime() : -1);
+        if(null != this.resources) {
+            dest.writeTypedList(resources);
+        }
+    }
+
+    public Spot() {
+    }
+
+    private Spot(Parcel in) {
+        this._id = in.readLong();
+        this.name = in.readString();
+        this.information = in.readString();
+        this.x = in.readInt();
+        this.y = in.readInt();
+        this.unlocked = in.readInt();
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
+        long tmpDate = in.readLong();
+        this.date = tmpDate == -1 ? null : new Date(tmpDate);
+        resources = new ArrayList<>();
+        in.readTypedList(resources, Resource.CREATOR);
+    }
+
+    public static final Parcelable.Creator<Spot> CREATOR = new Parcelable.Creator<Spot>() {
+        public Spot createFromParcel(Parcel source) {
+            return new Spot(source);
+        }
+
+        public Spot[] newArray(int size) {
+            return new Spot[size];
+        }
+    };
 }

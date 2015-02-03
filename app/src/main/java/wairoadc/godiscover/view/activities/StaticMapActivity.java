@@ -41,13 +41,7 @@ public class StaticMapActivity extends TrackDrawer {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        long track_id = intent.getLongExtra("TRACK_ID",-1);
-        TrackController trackController = new TrackController(this);
-        if(track_id != -1) {
-            track = new Track();
-            track.set_id(track_id);
-            track = trackController.loadTrack(track);
-        }
+        track = intent.getParcelableExtra(MainActivity.TRACK_EXTRA);
 
         ImageView mImageView = (ImageView) findViewById(R.id.iv_photo);
         mCurrMatrixTv = (TextView) findViewById(R.id.tv_current_matrix);
@@ -57,9 +51,6 @@ public class StaticMapActivity extends TrackDrawer {
         if(null != bitmap) {
             mImageView.setImageBitmap(bitmap);
         }
-
-
-
 
         // The MAGIC happens here!
         mAttacher = new PhotoViewAttacher(mImageView);
