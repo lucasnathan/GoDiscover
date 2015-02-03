@@ -125,6 +125,7 @@ public class MainActivity extends HomeDrawer {
             //MainActivity.this.finish();
             Intent intent= new Intent(MainActivity.this,InformationActivity.class);
             intent.putExtra("TRACK_ID",track_id);
+            Log.i(LOG_TAG,"id: "+track_id);
             startActivity(intent);
 
         }

@@ -2,6 +2,7 @@ package wairoadc.godiscover.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.view.fragments.InformationFragment;
@@ -24,7 +25,6 @@ public class InformationActivity extends TrackDrawer {
             b.putLong("TRACK_ID",track_id);
             informationFragment.setArguments(b);
             getFragmentManager().beginTransaction().add(R.id.content_frame,informationFragment).commit();
-
         }
     }
 }
