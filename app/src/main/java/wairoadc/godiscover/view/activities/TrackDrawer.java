@@ -16,11 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.NavDrawerListAdapter;
+import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.view.models.NavDrawerItem;
 import wairoadc.godiscover.utilities.IntentIntegrator;
 
@@ -33,6 +35,7 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
     private String DEFAULT_MESSAGE;
     private String DEFAULT_YES;
     private String DEFAULT_NO;
+    long currentTrackId;
 
     // nav drawer title
     private CharSequence mDrawerTitle;
@@ -48,6 +51,7 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
     {
         // R.id.drawer_layout should be in every activity with exactly the same id.
         super.onCreate(savedInstanceState);
+        setCurrentTrack();
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -128,6 +132,12 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
             drawerList.setItemChecked(4, true);
         if(this.getClass().getSimpleName().equals("ScanQRActivity"))
             drawerList.setItemChecked(5, true);
+        Toast.makeText(this, "Toast: " +currentTrackId, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setCurrentTrack() {
+        Intent intent = getIntent();
+        currentTrackId = intent.getLongExtra("TRACK_ID",-1);
     }
 
     @Override
@@ -212,6 +222,8 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
             case 1:
                 if (!this.getClass().getSimpleName().equals("InformationActivity")){
                     intent = new Intent(this,InformationActivity.class);
+                    if(-1 != currentTrackId)
+                        intent.putExtra("TRACK_ID",currentTrackId);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     drawerLayout.closeDrawer(drawerList);
                     startActivity(intent);
@@ -221,6 +233,8 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
             case 2:
                 if (!this.getClass().getSimpleName().equals("StaticMapActivity")){
                     intent = new Intent(this,StaticMapActivity.class);
+                    if(-1 != currentTrackId)
+                        intent.putExtra("TRACK_ID",currentTrackId);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     drawerLayout.closeDrawer(drawerList);
                     startActivity(intent);
@@ -230,6 +244,8 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
             case 3:
                 if (!this.getClass().getSimpleName().equals("StoryActivity")){
                     intent = new Intent(this,StoryActivity.class);
+                    if(-1 != currentTrackId)
+                        intent.putExtra("TRACK_ID",currentTrackId);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     drawerLayout.closeDrawer(drawerList);
                     startActivity(intent);
@@ -239,6 +255,8 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
             case 4:
                 if (!this.getClass().getSimpleName().equals("GalleryActivity")){
                     intent = new Intent(this,GalleryActivity.class);
+                    if(-1 != currentTrackId)
+                        intent.putExtra("TRACK_ID",currentTrackId);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     drawerLayout.closeDrawer(drawerList);
                     startActivity(intent);
@@ -248,6 +266,8 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
             case 5:
                 if (!this.getClass().getSimpleName().equals("ProgressActivity")){
                     intent = new Intent(this,ProgressActivity.class);
+                    if(-1 != currentTrackId)
+                        intent.putExtra("TRACK_ID",currentTrackId);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     drawerLayout.closeDrawer(drawerList);
                     startActivity(intent);

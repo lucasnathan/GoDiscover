@@ -1,26 +1,48 @@
 package wairoadc.godiscover.view.activities;
 
-import android.graphics.drawable.Drawable;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import wairoadc.godiscover.R;
+import wairoadc.godiscover.controller.TrackController;
+import wairoadc.godiscover.model.Track;
 
 public class StaticMapActivity extends TrackDrawer {
 
     private PhotoViewAttacher mAttacher;
+
+    private Track track;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_static_map);
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+        long track_id = intent.getLongExtra("TRACK_ID",-1);
+        TrackController trackController = new TrackController(this);
+        if(track_id != -1) {
+            track = new Track();
+            track.set_id(track_id);
+            track = trackController.loadTrack(track);
+        }
 
         ImageView mImageView = (ImageView) findViewById(R.id.iv_photo);
 
-        Drawable bitmap = getResources().getDrawable(R.drawable.big_map);
-        mImageView.setImageDrawable(bitmap);
+        String imageFullPath = getFilesDir().getPath()+track.getMapPath();
+        Bitmap bitmap = BitmapFactory.decodeFile(imageFullPath);
+        if(null != bitmap) {
+            mImageView.setImageBitmap(bitmap);
+        }
+
+
+
 
         // The MAGIC happens here!
         mAttacher = new PhotoViewAttacher(mImageView);
