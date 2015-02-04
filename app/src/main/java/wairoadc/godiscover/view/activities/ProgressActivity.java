@@ -1,6 +1,8 @@
 package wairoadc.godiscover.view.activities;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -19,53 +21,78 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import wairoadc.godiscover.R;
+import wairoadc.godiscover.controller.ResourceController;
+import wairoadc.godiscover.controller.SpotController;
+import wairoadc.godiscover.model.Resource;
+import wairoadc.godiscover.model.Type;
 import wairoadc.godiscover.view.models.ProgressModel;
 
 public class ProgressActivity extends TrackDrawer {
 
     private ProgressBar audioBar,pictureBar,checkpointBar;
     private int statusAudio,statusCheckpoints,statusPictures = 0;
-    private TextView picturesRatio,audioRatio,checkpointRatio;
+    private TextView picturesLabel,picturesRatio,audioLabel,audioRatio,checkpointRatio;
     private int audioMax, pictureMax, checkpointMax;
 
     //private ArrayList<ProgressModel> progressModels = new ArrayList<ProgressModel>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         setContentView(R.layout.activity_progress);
         super.onCreate(savedInstanceState);
-        //Max
-        audioMax = 100;
-        pictureMax = 100;
-        checkpointMax = 100;
-        //status
-        statusAudio = 58;
-        statusCheckpoints= 80;
-        statusPictures = 20;
+        ResourceController resourceController = new ResourceController(this);
+        SpotController spotController = new SpotController(this);
+        Type type = new Type();
 
-        //Linking the Progress Bars
-        audioBar = (ProgressBar) findViewById(R.id.audio_progress_bar);
-        pictureBar = (ProgressBar) findViewById(R.id.pictures_progress_bar);
+        type.set_id(1);
+        List<Resource> imageResources = resourceController.loadAllByType(super.currentTrack,type);
+        pictureMax = imageResources.size();
+        statusPictures = resourceController.countUnlockedByType(super.currentTrack,type);
+
+        type.set_id(2);
+        List<Resource> soundResources = resourceController.loadAllByType(super.currentTrack,type);
+        audioMax = soundResources.size();
+        statusAudio = resourceController.countUnlockedByType(super.currentTrack,type);
+
+        checkpointMax = currentTrack.getSpots().size();
+        statusCheckpoints= spotController.unlockedSpots(super.currentTrack);
+
+        int progressBarColor = Color.parseColor("#669900");
+
         checkpointBar = (ProgressBar) findViewById(R.id.checkpoint_progress_bar);
-
-        //Linking the Text views
-        picturesRatio = (TextView) findViewById(R.id.pictures_ratio);
-        audioRatio = (TextView) findViewById(R.id.audio_ratio);
-        checkpointRatio =(TextView) findViewById(R.id.checkpoint_ratio);
-
-        audioBar.setMax(audioMax);
-        audioBar.setProgress(statusAudio);
-
-        pictureBar.setMax(pictureMax);
-        pictureBar.setProgress(statusPictures);
-
+        checkpointBar.getProgressDrawable().setColorFilter(progressBarColor, PorterDuff.Mode.SRC_IN);
         checkpointBar.setMax(checkpointMax);
         checkpointBar.setProgress(statusCheckpoints);
-
-        audioRatio.setText(statusAudio+"/"+audioMax);
-        picturesRatio.setText(statusPictures+"/"+pictureMax);
+        checkpointRatio =(TextView) findViewById(R.id.checkpoint_ratio);
         checkpointRatio.setText(statusCheckpoints+"/"+checkpointMax);
+
+        //Linking the audio information
+        if(audioMax > 0) {
+            audioBar = (ProgressBar) findViewById(R.id.audio_progress_bar);
+            audioBar.setVisibility(ProgressBar.VISIBLE);
+            audioBar.getProgressDrawable().setColorFilter(progressBarColor, PorterDuff.Mode.SRC_IN);
+            audioBar.setMax(audioMax);
+            audioBar.setProgress(statusAudio);
+            audioLabel = (TextView) findViewById(R.id.audio_name_progress);
+            audioLabel.setVisibility(TextView.VISIBLE);
+            audioRatio = (TextView) findViewById(R.id.audio_ratio);
+            audioRatio.setVisibility(TextView.VISIBLE);
+            audioRatio.setText(statusAudio+"/"+audioMax);
+        }
+
+        if(pictureMax > 0) {
+            pictureBar = (ProgressBar) findViewById(R.id.pictures_progress_bar);
+            pictureBar.setVisibility(ProgressBar.VISIBLE);
+            pictureBar.getProgressDrawable().setColorFilter(progressBarColor, PorterDuff.Mode.SRC_IN);
+            pictureBar.setMax(pictureMax);
+            pictureBar.setProgress(statusPictures);
+            picturesLabel = (TextView) findViewById(R.id.pictures_name_progress);
+            picturesLabel.setVisibility(TextView.VISIBLE);
+            picturesRatio = (TextView) findViewById(R.id.pictures_ratio);
+            picturesRatio.setVisibility(TextView.VISIBLE);
+            picturesRatio.setText(statusPictures+"/"+pictureMax);
+        }
     }
 }

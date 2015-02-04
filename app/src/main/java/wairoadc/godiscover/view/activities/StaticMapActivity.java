@@ -42,7 +42,7 @@ public class StaticMapActivity extends TrackDrawer {
         float centerY =(float) mImageView.getMeasuredHeight()/2;
         //Write Center of image
         //Toast.makeText(this, centerX+"/"+centerY,Toast.LENGTH_LONG).show();
-        mAttacher.setScale(1.8f,centerX ,centerY,true);
+        mAttacher.setScale(2.5f,centerX ,centerY,true);
 
     }
 

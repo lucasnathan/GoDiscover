@@ -17,7 +17,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -52,6 +55,7 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
     private RefreshAdapter adapter;
 
     private static boolean IS_RUNNING;
+    static final String STATE_SCORE = "playerScore";
 
 
     private List<String> valuesArray = new ArrayList<>();
@@ -69,7 +73,8 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
                     int serverId = b.getInt("SERVICE");
                     long progress = b.getLong(DownloadService.PROGRESS);
                     //Toast.makeText(getActivity(),"got message",Toast.LENGTH_LONG).show();
-
+                    ListView listView = getListView();
+                    View view = listView.getChildAt(serverId);
                     ProgressBar pb = (ProgressBar)(getListView().getChildAt(serverId)).findViewById(R.id.track_item_download_progress);
                     if(null != pb) {
                         //Toast.makeText(getActivity(),"yay!",Toast.LENGTH_SHORT).show();
@@ -81,6 +86,12 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
                 }
             }
         };
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(STATE_SCORE,56);
+        super.onSaveInstanceState(outState);
     }
 
     private Handler handler = null;
@@ -104,9 +115,11 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
         setListAdapter(adapter);
         if(savedInstanceState == null) {
             getLoaderManager().initLoader(0, null, this);
+        } else {
+            int i = savedInstanceState.getInt(STATE_SCORE);
+            handler = loadHandler();
+            Log.i("REfresh fragment","test: "+i);
         }
-        handler = loadHandler();
-
     }
 
     private void startAnimation() {
@@ -122,7 +135,8 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
         Intent intent = new Intent(getActivity(),DownloadService.class);
         intent.putExtra(DownloadService.FILENAME,valuesArray.get(position));
         intent.putExtra(DownloadService.SERVICE,position);
-        intent.putExtra("MESSENGER",new Messenger(handler));
+
+        //intent.putExtra("MESSENGER",new Messenger(handler));
         ProgressBar pb = (ProgressBar)(getListView().getChildAt(position)).findViewById(R.id.track_item_download_progress);
         pb.setVisibility(ProgressBar.VISIBLE);
         getActivity().startService(intent);

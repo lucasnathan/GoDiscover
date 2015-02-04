@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import wairoadc.godiscover.controller.SpotController;
 import wairoadc.godiscover.controller.TrackController;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.utilities.TrackXMLParser;
@@ -115,6 +116,10 @@ public class DownloadService extends IntentService implements ProgressListener {
                     Track newTrack = TrackXMLParser.parse(in);
                     TrackController controller = new TrackController(getApplicationContext());
                     controller.insertTrack(newTrack);
+                    //Unlock the track's first spot so the person has
+                    //a point to begin the journey
+                    SpotController spotController = new SpotController(this);
+                    spotController.setUnlocked(newTrack.getSpots().get(0));
                     Log.i(LOG_TAG,"Saved on the database!");
                     return true;
                 }
@@ -140,7 +145,8 @@ public class DownloadService extends IntentService implements ProgressListener {
         Log.i(LOG_TAG,"onHandleIntent");
         String fileName = intent.getStringExtra(FILENAME);
         serviceIdValue = intent.getIntExtra(SERVICE,-1);
-        messenger = (Messenger)intent.getExtras().get("MESSENGER");
+        //messenger = (Messenger)intent.getExtras().get("MESSENGER");
+
         try {
             boolean outPut = downloadFile(fileName);
             if(outPut) {
@@ -186,7 +192,7 @@ public class DownloadService extends IntentService implements ProgressListener {
 
     @Override
     public void progressChanged(ProgressEvent progressEvent) {
-        if(Math.round(download.getProgress().getPercentTransferred()) % 5 == 0) {
+        if(Math.round(download.getProgress().getPercentTransferred()) % 5 == 0 && messenger != null) {
             sendMessageToUI(serviceIdValue, Math.round(download.getProgress().getPercentTransferred()));
         }
     }
