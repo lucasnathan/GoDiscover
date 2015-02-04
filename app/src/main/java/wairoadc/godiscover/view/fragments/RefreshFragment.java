@@ -55,6 +55,7 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
     private RefreshAdapter adapter;
 
     private static boolean IS_RUNNING;
+
     static final String STATE_SCORE = "playerScore";
 
 
@@ -62,39 +63,11 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
 
     private ProgressDialogFragment progressDialogFragment;
 
-    private Map<Integer,Long> progressValues = new HashMap<>();
-
-    private Handler loadHandler() {
-        return new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if(IS_RUNNING) {
-                    Bundle b = msg.getData();
-                    int serverId = b.getInt("SERVICE");
-                    long progress = b.getLong(DownloadService.PROGRESS);
-                    //Toast.makeText(getActivity(),"got message",Toast.LENGTH_LONG).show();
-                    ListView listView = getListView();
-                    View view = listView.getChildAt(serverId);
-                    ProgressBar pb = (ProgressBar)(getListView().getChildAt(serverId)).findViewById(R.id.track_item_download_progress);
-                    if(null != pb) {
-                        //Toast.makeText(getActivity(),"yay!",Toast.LENGTH_SHORT).show();
-                        if(pb.getVisibility() == ProgressBar.GONE)
-                            pb.setVisibility(ProgressBar.VISIBLE);
-                        pb.setProgress((int)progress);
-                        progressValues.put(serverId,progress);
-                    }
-                }
-            }
-        };
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(STATE_SCORE,56);
         super.onSaveInstanceState(outState);
     }
-
-    private Handler handler = null;
 
     @Override
     public void onResume() {
@@ -117,7 +90,6 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
             getLoaderManager().initLoader(0, null, this);
         } else {
             int i = savedInstanceState.getInt(STATE_SCORE);
-            handler = loadHandler();
             Log.i("REfresh fragment","test: "+i);
         }
     }
@@ -135,10 +107,6 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
         Intent intent = new Intent(getActivity(),DownloadService.class);
         intent.putExtra(DownloadService.FILENAME,valuesArray.get(position));
         intent.putExtra(DownloadService.SERVICE,position);
-
-        //intent.putExtra("MESSENGER",new Messenger(handler));
-        ProgressBar pb = (ProgressBar)(getListView().getChildAt(position)).findViewById(R.id.track_item_download_progress);
-        pb.setVisibility(ProgressBar.VISIBLE);
         getActivity().startService(intent);
 
     }

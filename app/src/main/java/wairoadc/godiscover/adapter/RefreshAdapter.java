@@ -32,7 +32,6 @@ public class RefreshAdapter extends ArrayAdapter<String> {
 
     static class ViewHolder {
         TextView text;
-        ProgressBar progress;
     }
 
     @Override
@@ -43,9 +42,7 @@ public class RefreshAdapter extends ArrayAdapter<String> {
             rowView = inflater.inflate(R.layout.track_download_list_item, null);
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.text = (TextView) rowView.findViewById(R.id.track_item_download_id);
-            viewHolder.progress = (ProgressBar)rowView.findViewById(R.id.track_item_download_progress);
             rowView.setTag(viewHolder);
-
         }
         ViewHolder holder = (ViewHolder)rowView.getTag();
         holder.text.setText(Utility.stripZipExtensionName(values.get(position)));

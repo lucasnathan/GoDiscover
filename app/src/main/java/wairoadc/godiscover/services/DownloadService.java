@@ -48,8 +48,6 @@ public class DownloadService extends IntentService implements ProgressListener {
     private static final String LOG_TAG = "DownloadService";
     private static final String BUCKET_NAME = "godiscover";
     public static String SERVICE = "ID";
-    public static  String PROGRESS = "Progress";
-    private int serviceIdValue;
 
 
 
@@ -60,9 +58,7 @@ public class DownloadService extends IntentService implements ProgressListener {
     private PendingIntent mContentIntent;
 
     // Notification Text Elements
-    private final CharSequence tickerText = "Track Downloaded!";
-    private final CharSequence contentTitle = "Download done";
-    private final CharSequence contentText = "The file has been downloaded";
+    private final CharSequence tickerText = "Downloading";
 
 
     private File output;
@@ -71,24 +67,11 @@ public class DownloadService extends IntentService implements ProgressListener {
     private TransferManager transferManager;
     private Download download;
     private Messenger messenger;
+    private NotificationCompat.Builder notificationBuilder;
 
 
     public DownloadService() {
         super("DownloadService");
-    }
-
-    private void sendMessageToUI(int id, long progress) {
-
-        try {
-            Bundle b = new Bundle();
-            b.putInt(SERVICE, id);
-            b.putLong(PROGRESS, progress);
-            Message msg = Message.obtain();
-            msg.setData(b);
-            messenger.send(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
     }
 
     private boolean downloadFile(String fileName) throws Utility.NotAuthenticatedException,InterruptedException {
@@ -102,6 +85,7 @@ public class DownloadService extends IntentService implements ProgressListener {
         try {
             transferManager = Utility.connectToAmazon(getApplicationContext());
             download = transferManager.download(BUCKET_NAME, fileName, output);
+            setUpNotificationUser(fileName);
             download.addProgressListener(this);
             download.waitForCompletion();
             transferManager.shutdownNow();
@@ -144,9 +128,6 @@ public class DownloadService extends IntentService implements ProgressListener {
     protected void onHandleIntent(Intent intent) {
         Log.i(LOG_TAG,"onHandleIntent");
         String fileName = intent.getStringExtra(FILENAME);
-        serviceIdValue = intent.getIntExtra(SERVICE,-1);
-        //messenger = (Messenger)intent.getExtras().get("MESSENGER");
-
         try {
             boolean outPut = downloadFile(fileName);
             if(outPut) {
@@ -154,10 +135,6 @@ public class DownloadService extends IntentService implements ProgressListener {
             } else {
                 result = Activity.RESULT_CANCELED;
             }
-            if(RefreshActivity.IS_RUNNING)
-                publishResults(result);
-            else
-                notifyUser();
         } catch (InterruptedException e) {
             e.getMessage();
         } catch (Utility.NotAuthenticatedException e) {
@@ -165,35 +142,35 @@ public class DownloadService extends IntentService implements ProgressListener {
         }
     }
 
-    private void notifyUser() {
-        Uri soundURI= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        long[] mVibratePattern = { 0, 200, 200, 300 };
+    private void setUpNotificationUser(String fileName) {
+
         mNotificationIntent = new Intent(getApplicationContext(),MainActivity.class);
         mContentIntent = PendingIntent.getActivity(getApplicationContext(), 0, mNotificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
+        notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
                 .setTicker(tickerText)
-                .setSmallIcon(android.R.drawable.stat_sys_warning)
+                .setSmallIcon(android.R.drawable.stat_sys_download)
                 .setAutoCancel(true)
-                .setContentTitle(contentTitle)
-                .setContentText(contentText)
-                .setContentIntent(mContentIntent)
-                .setSound(soundURI)
-                .setVibrate(mVibratePattern);
-        NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());
+                .setContentTitle(Utility.stripZipExtensionName(fileName))
+                .setContentIntent(mContentIntent);
     }
 
-    private void publishResults( int result) {
-        Intent intent = new Intent(NOTIFICATION);
-
-        intent.putExtra(RESULT, result);
-        sendBroadcast(intent);
-    }
 
     @Override
     public void progressChanged(ProgressEvent progressEvent) {
-        if(Math.round(download.getProgress().getPercentTransferred()) % 5 == 0 && messenger != null) {
-            sendMessageToUI(serviceIdValue, Math.round(download.getProgress().getPercentTransferred()));
+        if(progressEvent.getEventCode() == ProgressEvent.COMPLETED_EVENT_CODE) {
+            Uri soundURI= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            long[] mVibratePattern = { 0, 200, 200, 300 };
+            notificationBuilder.setContentText("Track download complete")
+            .setSmallIcon(android.R.drawable.stat_sys_download_done)
+            .setProgress(0,0,false)
+            .setSound(soundURI)
+            .setVibrate(mVibratePattern);
+        } else {
+            int progress = (int)Math.round(download.getProgress().getPercentTransferred());
+            notificationBuilder.setProgress(100, progress, false)
+            .setContentText(progress+"%");
         }
+        NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());
     }
 }

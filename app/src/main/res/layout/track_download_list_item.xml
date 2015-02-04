@@ -14,14 +14,5 @@
         android:layout_gravity="center"
         android:id="@+id/track_item_download_id"
         android:text="Lucas"/>
-    
-    <ProgressBar
-        android:id="@+id/track_item_download_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:indeterminate="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:visibility="gone"/>
 
 </LinearLayout>
