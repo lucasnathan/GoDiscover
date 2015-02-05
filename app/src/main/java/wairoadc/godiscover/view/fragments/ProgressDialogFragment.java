@@ -23,8 +23,6 @@ public class ProgressDialogFragment extends DialogFragment {
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        this.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
 
         return dialog;
     }
