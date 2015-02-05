@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="wairoadc.godiscover" >
+    package="wairoadc.godiscover">
 
     <!-- Internet Permission -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -53,6 +53,10 @@
         <activity
             android:name=".view.activities.StaticMapActivity"
             android:label="@string/title_activity_static_map" >
+        </activity>
+        <activity
+            android:name=".view.fragments.TabFragment"
+            android:label="@string/title_activity_gallery" >
         </activity>
     </application>
 

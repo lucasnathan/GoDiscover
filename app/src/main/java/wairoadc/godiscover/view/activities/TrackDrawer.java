@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.print.PrintHelper;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -23,13 +24,14 @@ import java.util.ArrayList;
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.NavDrawerListAdapter;
 import wairoadc.godiscover.model.Track;
+import wairoadc.godiscover.view.fragments.TabFragment;
 import wairoadc.godiscover.view.models.NavDrawerItem;
 import wairoadc.godiscover.utilities.IntentIntegrator;
 
 /**
  * Created by Lucas on 23/01/2015.
  */
-public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
+public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
     private String DEFAULT_MESSAGE;
@@ -132,7 +134,7 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
             drawerList.setItemChecked(4, true);
         if(this.getClass().getSimpleName().equals("ScanQRActivity"))
             drawerList.setItemChecked(5, true);
-        Toast.makeText(this, "Toast: " +currentTrack.get_id(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Toast: " +currentTrack.get_id(), Toast.LENGTH_SHORT).show();
     }
 
     private void setCurrentTrack() {
@@ -253,8 +255,8 @@ public class TrackDrawer extends Activity { public DrawerLayout drawerLayout;
                     drawerLayout.closeDrawer(drawerList);
                 break;
             case 4:
-                if (!this.getClass().getSimpleName().equals("GalleryActivity")){
-                    intent = new Intent(this,GalleryActivity.class);
+                if (!this.getClass().getSimpleName().equals("TabFragment")){
+                    intent = new Intent(this,TabFragment.class);
                     if(null != currentTrack)
                         intent.putExtra(MainActivity.TRACK_EXTRA,currentTrack);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
