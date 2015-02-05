@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- QRCode message -->
     <string name="qr_code_message_english">This application requires Barcode Scanner. Would you like to install it?</string>
     <string name="yes">Yes</string>
@@ -69,9 +70,13 @@
         <item>Scan</item>
     </string-array>
 
+
     <!-- Gallery Tab Names-->
     <string-array name="gallery_tab_names">
         <item>Pictures</item>
         <item>Audio</item>
     </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

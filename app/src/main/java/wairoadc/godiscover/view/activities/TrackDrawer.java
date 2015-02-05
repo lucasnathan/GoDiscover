@@ -134,7 +134,8 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
             drawerList.setItemChecked(4, true);
         if(this.getClass().getSimpleName().equals("ScanQRActivity"))
             drawerList.setItemChecked(5, true);
-        //Toast.makeText(this, "Toast: " +currentTrack.get_id(), Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this, "Toast: " +currentTrack.get_id(), Toast.LENGTH_SHORT).show();
     }
 
     private void setCurrentTrack() {
