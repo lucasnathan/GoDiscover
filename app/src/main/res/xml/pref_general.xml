@@ -1,0 +1,12 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Connection" >
+        <CheckBoxPreference
+            android:key="mobile_net_check_box"
+            android:summary="To reduce carrier data charges, don't download over mobile networks"
+            android:defaultValue="true"
+            android:title="Download via Wi-Fi only" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

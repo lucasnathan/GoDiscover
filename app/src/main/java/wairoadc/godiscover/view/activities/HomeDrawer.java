@@ -117,8 +117,8 @@ public class HomeDrawer extends Activity {
         switch (item.getItemId()) {
 
             case R.id.action_settings:
-                if (!this.getClass().getSimpleName().equals("InformationActivity")){
-                    intent = new Intent(this.getBaseContext(),InformationActivity.class);
+                if (!this.getClass().getSimpleName().equals("SettingsActivity")){
+                    intent = new Intent(this.getBaseContext(),SettingsActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
@@ -167,14 +167,17 @@ public class HomeDrawer extends Activity {
     /* *
 	 * Called when invalidateOptionsMenu() is triggered
 	 */
-    /*@Override
+    /*
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
         menu.findItem(R.id.action_refresh).setVisible(false);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
-    }*/
+    }
+    */
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

@@ -54,6 +54,10 @@
             android:name=".view.activities.StaticMapActivity"
             android:label="@string/title_activity_static_map" >
         </activity>
+        <activity
+            android:name=".view.activities.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

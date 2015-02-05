@@ -10,7 +10,6 @@ import wairoadc.godiscover.view.fragments.InformationFragment;
 
 public class InformationActivity extends TrackDrawer {
 
-    private Track currentTrack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

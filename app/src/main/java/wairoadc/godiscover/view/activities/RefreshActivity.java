@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -21,6 +22,8 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,9 +47,6 @@ public class RefreshActivity extends HomeDrawer {
         if(findViewById(R.id.content_frame) != null) {
             if(savedInstanceState != null)
                 return;
-            RefreshFragment refreshFragment = new RefreshFragment();
-            getFragmentManager().beginTransaction().add(R.id.content_frame,refreshFragment).commit();
-
         }
     }
 
@@ -110,7 +110,11 @@ public class RefreshActivity extends HomeDrawer {
                 .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         //enable wifi
-                        startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+                        Intent intent = new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK);
+                        intent.putExtra("only_access_points", true);
+                        intent.putExtra("extra_prefs_show_button_bar", true);
+                        intent.putExtra("wifi_enable_next_on_connect", true);
+                        startActivityForResult(intent, 1);
                     }
                 })
                 .setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -127,17 +131,35 @@ public class RefreshActivity extends HomeDrawer {
     protected void onResume() {
         super.onResume();
         registerReceiver(receiver, new IntentFilter(DownloadService.NOTIFICATION));
-        if(!isWifiOn()) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RefreshActivity.this);
+        boolean wifi_only = prefs.getBoolean("mobile_net_check_box",true);
+
+        if(wifi_only && !isWifiOn()) {
             createWifiDialog().show();
         } else {
             if(isOnline()) {
                 IS_RUNNING = true;
+                RefreshFragment refreshFragment = new RefreshFragment();
+                getFragmentManager().beginTransaction().add(R.id.content_frame,refreshFragment).commit();
             } else {
                 Toast.makeText(this,"Error, check your internet connection!", Toast.LENGTH_LONG).show();
                 RefreshActivity.this.finish();
             }
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                Log.i("RefreshActivity","Result ok: "+resultCode);
+                RefreshFragment refreshFragment = new RefreshFragment();
+                getFragmentManager().beginTransaction().add(R.id.content_frame,refreshFragment).commit();
+            }
+            if(resultCode == RESULT_CANCELED) {
+                Log.i("RefreshActivity","Result canceled: "+resultCode);
+            }
+        }
     }
 
     @Override

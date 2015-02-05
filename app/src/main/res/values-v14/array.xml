@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- This is for the future, for multi language support -->
+    <string-array name="listLanguageOptions">
+        <item>English</item>
+        <item>Brazilian Portuguese</item>
+    </string-array>
+
+    <string-array name="listLanguagesValues">
+        <item>en_US</item>
+        <item>pt_BR</item>
+    </string-array>
+
+</resources>
