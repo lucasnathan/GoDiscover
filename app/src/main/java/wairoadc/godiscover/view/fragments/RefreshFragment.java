@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.event.ProgressEvent;
@@ -140,6 +141,7 @@ public class RefreshFragment extends ListFragment implements LoaderManager.Loade
             TrackController trackController = new TrackController(getActivity());
             valuesArray.clear();
             valuesArray.addAll(toList(trackController.getNewTracksToDownload(data)));
+            setEmptyText("Congratulations, you have all tracks on you device!");
             adapter.notifyDataSetChanged();
         } else {
             Toast.makeText(getActivity(),"There was an error while download, please try again",Toast.LENGTH_SHORT);

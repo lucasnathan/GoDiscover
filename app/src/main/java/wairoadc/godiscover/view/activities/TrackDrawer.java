@@ -12,6 +12,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.print.PrintHelper;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +24,9 @@ import java.util.ArrayList;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.NavDrawerListAdapter;
+import wairoadc.godiscover.controller.ScanController;
 import wairoadc.godiscover.model.Track;
+import wairoadc.godiscover.utilities.IntentResult;
 import wairoadc.godiscover.view.fragments.TabFragment;
 import wairoadc.godiscover.view.models.NavDrawerItem;
 import wairoadc.godiscover.utilities.IntentIntegrator;
@@ -152,8 +155,16 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
         }
         // Handle action bar actions click
         switch (item.getItemId()) {
+
             case R.id.action_settings:
+                if (!this.getClass().getSimpleName().equals("SettingsActivity")){
+                    Intent intent = new Intent(this.getBaseContext(),SettingsActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
                 return true;
+
             case R.id.action_refresh:
                 if (!this.getClass().getSimpleName().equals("RefreshActivity")){
                     Intent intent = new Intent(this,RefreshActivity.class);
@@ -293,4 +304,41 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
                 break;
         }
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanningResult != null) {
+            processScanResult(scanningResult.getContents());
+        }
+        else{
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No scan data received!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+    private void processScanResult(String scanResultString) {
+        String trackArray[] = scanResultString.split(",");
+        ScanController scanController = new ScanController(this);
+        int spotIndex = 0;
+        try{
+            spotIndex = Integer.parseInt(trackArray[1]);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this,"Scan error",Toast.LENGTH_SHORT);
+        }
+        Track scanTrack = scanController.scanCode(trackArray[0],spotIndex);
+        if(scanTrack == null) {
+            Toast.makeText(this,"Scan Error: You don't have this track downloaded!",Toast.LENGTH_LONG).show();
+        } else {
+            currentTrack = scanTrack;
+            Intent intent = new Intent(this,StoryActivity.class);
+            if(null != currentTrack)
+                intent.putExtra(MainActivity.TRACK_EXTRA,currentTrack);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            drawerLayout.closeDrawer(drawerList);
+            startActivity(intent);
+        }
+
+    }
+
 }

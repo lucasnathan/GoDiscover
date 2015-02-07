@@ -129,13 +129,13 @@ public class TrackXMLParser extends XMLParser {
                 if(result.equals(""))
                     spot.setLatitude(0.0);
                 else
-                    spot.setLatitude(Double.parseDouble(readTag(parser,SPOT_LAT_TAG)));
+                    spot.setLatitude(Double.parseDouble(result));
             } else if (name.equals(SPOT_LONG_TAG)) {
                 String result = readTag(parser,SPOT_LONG_TAG);
                 if(result.equals(""))
                     spot.setLongitude(0.0);
                 else
-                    spot.setLongitude(Double.parseDouble(readTag(parser,SPOT_LONG_TAG)));
+                    spot.setLongitude(Double.parseDouble(result));
             } else if (name.equals(CONTENT_TAG)) {
                 spot.setResources(readResources(parser));
             }
