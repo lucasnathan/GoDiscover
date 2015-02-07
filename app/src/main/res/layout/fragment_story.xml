@@ -2,87 +2,94 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="false">
 
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <ImageView
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spotMapIV"
-                android:background="@android:color/background_light"
-                android:adjustViewBounds="false"
-                android:layout_alignParentTop="true"
-                android:layout_alignRight="@+id/spotGalleryImgBtn"
-                android:paddingBottom="5dp"
-                android:scaleType="fitCenter" />
+                android:layout_height="fill_parent"
+                android:nestedScrollingEnabled="false">
 
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:id="@+id/divider1"
-                android:layout_gravity="center_horizontal"
-                android:background="@android:color/darker_gray" />
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spotMapIV"
+                    android:background="@android:color/background_light"
+                    android:adjustViewBounds="false"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignRight="@+id/spotGalleryImgBtn"
+                    android:paddingBottom="5dp"
+                    android:scaleType="fitCenter" />
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Spot Name"
-                android:id="@+id/spotNameTV"
-                android:textSize="22dp"
-                android:textAlignment="gravity"
-                android:gravity="center"
-                android:layout_below="@+id/spotMapIV"
-                android:layout_alignRight="@+id/spotGalleryImgBtn"
-                android:layout_alignEnd="@+id/spotGalleryImgBtn"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"/>
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/divider1"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:color/darker_gray" />
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Spot Info"
-                android:id="@+id/spotInfoTV"
-                android:textSize="22dp"
-                android:textAlignment="gravity"
-                android:gravity="left"
-                android:layout_below="@+id/spotNameTV"
-                android:layout_alignRight="@+id/spotNameTV"
-                android:layout_alignEnd="@+id/spotNameTV"
-                android:paddingTop="5dp"
-                android:paddingBottom="15dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Spot Name"
+                    android:id="@+id/spotNameTV"
+                    android:textSize="22dp"
+                    android:textAlignment="gravity"
+                    android:gravity="center"
+                    android:layout_below="@+id/spotMapIV"
+                    android:layout_alignRight="@+id/spotGalleryImgBtn"
+                    android:layout_alignEnd="@+id/spotGalleryImgBtn"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"/>
 
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:id="@+id/divider2"
-                android:layout_gravity="center_horizontal"
-                android:background="@android:color/darker_gray" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Spot Info"
+                    android:id="@+id/spotInfoTV"
+                    android:textSize="22dp"
+                    android:textAlignment="gravity"
+                    android:gravity="left"
+                    android:layout_below="@+id/spotNameTV"
+                    android:layout_alignRight="@+id/spotNameTV"
+                    android:layout_alignEnd="@+id/spotNameTV"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
 
-            <ImageButton
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spotGalleryImgBtn"
-                android:layout_below="@+id/spotInfoTV"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_action_movie"
-                android:background="@android:color/background_light"
-                android:tint="@android:color/holo_green_dark"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp" />
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/divider2"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:color/darker_gray" />
+
+                <ImageButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spotGalleryImgBtn"
+                    android:layout_below="@+id/spotInfoTV"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_action_movie"
+                    android:background="@android:color/background_light"
+                    android:tint="@android:color/holo_green_dark"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp" />
+            </LinearLayout>
+        </ScrollView>
 
     </FrameLayout>
 

@@ -25,6 +25,8 @@ public class StoryPageAdapter extends FragmentPagerAdapter {
         bundle.putString(StoryFragment.NameKey, StoryFragment.getNames()[position]);
         bundle.putString(StoryFragment.InfoKey, StoryFragment.getInfos()[position]);
         bundle.putString(StoryFragment.MapKey, StoryFragment.getMap()[position]);
+        bundle.putInt(StoryFragment.XKey, StoryFragment.getX()[position]);
+        bundle.putInt(StoryFragment.YKey, StoryFragment.getY()[position]);
         StoryFragment storyFragment = new StoryFragment();
         storyFragment.setArguments(bundle);
         return storyFragment;
