@@ -24,7 +24,7 @@ import wairoadc.godiscover.controller.ScanController;
 import wairoadc.godiscover.model.Track;
 
 import wairoadc.godiscover.utilities.IntentResult;
-import wairoadc.godiscover.view.fragments.TabFragment;
+
 
 import wairoadc.godiscover.view.fragments.GalleryFragment;
 
