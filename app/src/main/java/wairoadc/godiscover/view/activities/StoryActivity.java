@@ -2,9 +2,6 @@ package wairoadc.godiscover.view.activities;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-
-import java.util.ArrayList;
-
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.StoryPageAdapter;
 import wairoadc.godiscover.view.fragments.StoryFragment;
@@ -18,30 +15,34 @@ public class StoryActivity extends TrackDrawer {
     int[] spotX;
     int[] spotY;
     int spotsSize;
+    int startingItem;
 
     protected void setTrackInfo() {
         spotsSize = 0;
+        startingItem = 0;
         for (int i = 0; i < super.currentTrack.getSpots().size(); i++) {
             if (super.currentTrack.getSpots().get(i).getUnlocked() == 1) {
                 spotsSize++;
             }
         }
-        // To show all spots
-        //spotsSize = super.currentTrack.getSpots().size();
+        spotsSize = super.currentTrack.getSpots().size();
         spotNames = new String[spotsSize];
         spotInfos = new String[spotsSize];
         spotMaps = new String[spotsSize];
         spotX = new int[spotsSize];
         spotY = new int[spotsSize];
-        int it = 0;
         for (int i = 0; i < super.currentTrack.getSpots().size(); i++) {
             if (super.currentTrack.getSpots().get(i).getUnlocked() == 1) {
-                spotNames[it] = super.currentTrack.getSpots().get(i).getName();
-                spotInfos[it] = super.currentTrack.getSpots().get(i).getInformation();
-                spotMaps[it] = super.currentTrack.getMapPath();
-                spotX[it] = super.currentTrack.getSpots().get(i).getX();
-                spotY[it] = super.currentTrack.getSpots().get(i).getY();
-                it++;
+                spotNames[i] = super.currentTrack.getSpots().get(i).getName();
+                spotInfos[i] = super.currentTrack.getSpots().get(i).getInformation();
+                spotMaps[i] = super.currentTrack.getMapPath();
+                spotX[i] = super.currentTrack.getSpots().get(i).getX();
+                spotY[i] = super.currentTrack.getSpots().get(i).getY();
+            } else {
+                spotNames[i] = "Undiscovered Spot";
+                spotInfos[i] = "Keep exploring to find this spot.";
+                spotX[i] = -1;
+                spotY[i] = -1;
             }
         }
     }
@@ -55,6 +56,7 @@ public class StoryActivity extends TrackDrawer {
         storyPageAdapter = new StoryPageAdapter(getSupportFragmentManager(), getApplicationContext());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(storyPageAdapter);
+        mViewPager.setCurrentItem(startingItem);
     }
 
 }

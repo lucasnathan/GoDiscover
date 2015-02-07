@@ -29,6 +29,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignRight="@+id/spotGalleryImgBtn"
                     android:paddingBottom="5dp"
+                    android:src="@drawable/ic_action_barcode_2_darkgreen_big"
                     android:scaleType="fitCenter" />
 
                 <ImageView

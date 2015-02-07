@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -87,17 +85,19 @@ public class StoryFragment extends Fragment {
         nameTV.setText(name);
         TextView infoTV = (TextView) view.findViewById(R.id.spotInfoTV);
         infoTV.setText(info);
-        ImageView mapIV = (ImageView) view.findViewById(R.id.spotMapIV);
-        String imageFullPath = getActivity().getFilesDir().getPath()+map;
-        Bitmap bitmap = BitmapFactory.decodeFile(imageFullPath);
-        Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.RGB_565);
-        Canvas canvas = new Canvas(tempBitmap);
-        canvas.drawBitmap(bitmap, 0, 0, null);
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        canvas.drawCircle(x, y, 5, paint);
-        if(null != bitmap) {
-            mapIV.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
+        if (x != -1 && y != -1) {
+            ImageView mapIV = (ImageView) view.findViewById(R.id.spotMapIV);
+            String imageFullPath = getActivity().getFilesDir().getPath()+map;
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFullPath);
+            Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.RGB_565);
+            Canvas canvas = new Canvas(tempBitmap);
+            canvas.drawBitmap(bitmap, 0, 0, null);
+            Paint paint = new Paint();
+            paint.setColor(Color.RED);
+            canvas.drawCircle(x, y, 5, paint);
+            if(null != bitmap) {
+                mapIV.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
+            }
         }
     }
 }
