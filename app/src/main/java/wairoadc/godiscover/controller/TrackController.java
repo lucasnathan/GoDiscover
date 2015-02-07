@@ -12,7 +12,10 @@ import java.util.Map;
 import java.util.Set;
 
 import wairoadc.godiscover.dao.TrackDAO;
+import wairoadc.godiscover.model.Resource;
+import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
+import wairoadc.godiscover.model.Type;
 import wairoadc.godiscover.utilities.Utility;
 
 /**
@@ -93,6 +96,21 @@ public class TrackController {
                 return null;
             }
         } else return null;
+    }
+
+    public List<String> getAllTrackPathsByType(Track track, Type type) {
+        if(null != track) {
+            List<String> resourcesPath = new ArrayList<>();
+            for(Spot spot : track.getSpots()) {
+                for(Resource resource : spot.getResources()) {
+                    if(resource.getType().equals(type)) {
+                        resourcesPath.add(resource.getPath());
+                    }
+                }
+            }
+            return resourcesPath;
+        }
+        else return null;
     }
 
     public List<Track> getNewTracksToDownload(List<Track> tracks) {

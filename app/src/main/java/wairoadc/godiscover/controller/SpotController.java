@@ -12,6 +12,7 @@ import wairoadc.godiscover.dao.SpotDAO;
 import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
+import wairoadc.godiscover.model.Type;
 
 /**
  * Created by Lucas on 7/01/2015.
@@ -55,6 +56,18 @@ public class SpotController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<String> getAllSpotPathsByType(Spot spot, Type type) {
+        if(null != spot) {
+            List<String> resourcesPath = new ArrayList<>();
+            for(Resource resource : spot.getResources()) {
+                if(resource.getType().equals(type)) {
+                    resourcesPath.add(resource.getPath());
+                }
+            }
+            return resourcesPath;
+        } else return null;
     }
 
     // Retrieves all information and resources from a spot given its name or id.

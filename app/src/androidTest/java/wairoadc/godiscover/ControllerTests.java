@@ -33,7 +33,18 @@ public class ControllerTests  extends AndroidTestCase {
 
 
 
-    public void testWipeData() throws Throwable{
+    public void testGetAllTracksPath() throws Throwable{
+        TrackController trackController = new TrackController(getContext());
+        List<Track> homeTracks = trackController.loadHomeTracks();
+        Track secondTrack = new Track();
+        secondTrack.setName(homeTracks.get(0).getName());
+        secondTrack = trackController.loadTrack(secondTrack);
+        List<String> allPaths = trackController.getAllTrackPathsByType(secondTrack,new Type(1));
+        SpotController spotController = new SpotController(mContext);
+        List<String> allPathsSpot =  spotController.getAllSpotPathsByType(secondTrack.getSpots().get(0),new Type(1));
+    }
+
+    public void atestWipeData() throws Throwable{
 
         ResourceDAO resourceDAO = new ResourceDAO(mContext);
         SpotDAO spotDAO = new SpotDAO(mContext);

@@ -59,6 +59,10 @@ public class Type implements Parcelable {
     public Type() {
     }
 
+    public Type(int _id) {
+        this._id = _id;
+    }
+
     private Type(Parcel in) {
         this._id = in.readLong();
         this.name = in.readString();
@@ -73,4 +77,9 @@ public class Type implements Parcelable {
             return new Type[size];
         }
     };
+
+    @Override
+    public boolean equals(Object type) {
+        return _id == ((Type)type).get_id();
+    }
 }
