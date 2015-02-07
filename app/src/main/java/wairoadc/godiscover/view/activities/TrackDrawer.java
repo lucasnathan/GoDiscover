@@ -1,6 +1,8 @@
 package wairoadc.godiscover.view.activities;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -26,6 +28,7 @@ import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.utilities.IntentResult;
 
 
+import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.fragments.GalleryFragment;
 
 import wairoadc.godiscover.view.models.NavDrawerItem;
@@ -138,7 +141,7 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
         if(this.getClass().getSimpleName().equals("ScanQRActivity"))
             drawerList.setItemChecked(6, true);
 
-       // Toast.makeText(this, "Toast: " +currentTrack.get_id(), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "Toast: " +currentTrack.get_id(), Toast.LENGTH_SHORT).show();
     }
 
     private void setCurrentTrack() {
@@ -249,9 +252,9 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
         Intent intent;
         switch (position) {
             case 0:
-                    intent = new Intent(this,MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                intent = new Intent(this,MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             case 1:
                 if (!this.getClass().getSimpleName().equals("InformationActivity")){
@@ -328,7 +331,8 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
-            processScanResult(scanningResult.getContents());
+            if(null != scanningResult.getContents())
+                processScanResult(scanningResult.getContents());
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -341,24 +345,63 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
         String trackArray[] = scanResultString.split(",");
         ScanController scanController = new ScanController(this);
         int spotIndex = 0;
-        try{
-            spotIndex = Integer.parseInt(trackArray[1]);
-        } catch (NumberFormatException e) {
-            Toast.makeText(this,"Scan error",Toast.LENGTH_SHORT);
-        }
-        Track scanTrack = scanController.scanCode(trackArray[0],spotIndex);
-        if(scanTrack == null) {
-            Toast.makeText(this,"Scan Error: You don't have this track downloaded!",Toast.LENGTH_LONG).show();
-        } else {
-            currentTrack = scanTrack;
-            Intent intent = new Intent(this,StoryActivity.class);
-            if(null != currentTrack)
-                intent.putExtra(MainActivity.TRACK_EXTRA,currentTrack);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            drawerLayout.closeDrawer(drawerList);
-            startActivity(intent);
-        }
+        try {
+            if (trackArray.length != 3 || !trackArray[0].equals("GoDiscover"))
+                throw new Utility.InvalidQRCodeException("Invalid QRCode");
 
+            spotIndex = Integer.parseInt(trackArray[2]);
+
+            Track scanTrack = scanController.scanCode(trackArray[1], spotIndex);
+            if (scanTrack == null) {
+                makeDialogDownloadTrack();
+            } else {
+                currentTrack = scanTrack;
+                Intent intent = new Intent(this, StoryActivity.class);
+                intent.putExtra(MainActivity.TRACK_EXTRA, currentTrack);
+                intent.putExtra(StoryActivity.CURRENT_SPOT,spotIndex);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                drawerLayout.closeDrawer(drawerList);
+                startActivity(intent);
+            }
+        } catch (Utility.InvalidQRCodeException e) {
+            Toast.makeText(this,"Scan error: Invalid QRCode",Toast.LENGTH_SHORT).show();
+        } catch (NumberFormatException e) {
+            Toast.makeText(this,"An error occurred",Toast.LENGTH_SHORT).show();
+            Log.e("TrackDrawer","QRCode spot index was not a number");
+        }
+    }
+
+    public void makeDialogDownloadTrack() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle("Track Not Found");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("This track has not been downloaded yet. Would you like to go to the download screen ?")
+                .setCancelable(false)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(TrackDrawer.this,RefreshActivity.class);
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
 }

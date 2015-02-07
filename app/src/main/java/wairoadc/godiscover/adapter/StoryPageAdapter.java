@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.List;
+
+import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.view.fragments.StoryFragment;
 
 /**
@@ -14,19 +17,20 @@ import wairoadc.godiscover.view.fragments.StoryFragment;
  */
 public class StoryPageAdapter extends FragmentPagerAdapter {
 
-    public StoryPageAdapter(FragmentManager fm, Context context) {
+    private List<Spot> spots;
+    private String mapPah;
+
+    public StoryPageAdapter(FragmentManager fm,List<Spot> spots,String mapPath) {
         super(fm);
-        Resources resources = context.getResources();
+        this.spots = spots;
+        this.mapPah = mapPath;
     }
 
     @Override
     public Fragment getItem(int position) {
         Bundle bundle = new Bundle();
-        bundle.putString(StoryFragment.NameKey, StoryFragment.getNames()[position]);
-        bundle.putString(StoryFragment.InfoKey, StoryFragment.getInfos()[position]);
-        bundle.putString(StoryFragment.MapKey, StoryFragment.getMap()[position]);
-        bundle.putInt(StoryFragment.XKey, StoryFragment.getX()[position]);
-        bundle.putInt(StoryFragment.YKey, StoryFragment.getY()[position]);
+        bundle.putParcelable(StoryFragment.CURRENT,spots.get(position));
+        bundle.putString(StoryFragment.MAP_PATH,mapPah);
         StoryFragment storyFragment = new StoryFragment();
         storyFragment.setArguments(bundle);
         return storyFragment;
@@ -34,6 +38,6 @@ public class StoryPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return StoryFragment.getNames().length;
+        return spots.size();
     }
 }

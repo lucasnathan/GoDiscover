@@ -117,6 +117,12 @@ public class Utility {
         }
     }
 
+    public static class InvalidQRCodeException extends Exception {
+        public InvalidQRCodeException(String message) {
+            super(message);
+        }
+    }
+
     //Source:
     //http://khurramitdeveloper.blogspot.co.nz/2013/07/properties-file-in-android.html
     public static Properties getProperties(Context context, String FileName) {

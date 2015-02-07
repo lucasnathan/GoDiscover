@@ -16,8 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import wairoadc.godiscover.R;
+import wairoadc.godiscover.model.Spot;
+import wairoadc.godiscover.view.activities.StoryActivity;
 
 
 /**
@@ -25,69 +28,38 @@ import wairoadc.godiscover.R;
  */
 public class StoryFragment extends Fragment {
 
-    public static final String NameKey = "nameKey";
-    public static final String InfoKey = "infoKey";
-    public static final String MapKey = "mapKey";
-    public static final String XKey = "xKey";
-    public static final String YKey = "yKey";
+    public static final String CURRENT = "current";
+    public static final String MAP_PATH = "map_path";
 
-    static String[] spotNames;
-    static String[] spotInfos;
-    static String[] spotMaps;
-    static int[] spotX;
-    static int[] spotY;
+    private Spot spot;
+    private String mapPath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_story, container, false);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            String name = bundle.getString(NameKey);
-            String info = bundle.getString(InfoKey);
-            String map = bundle.getString(MapKey);
-            Integer x = bundle.getInt(XKey);
-            Integer y = bundle.getInt(YKey);
-            setValues(view, name, info, map, x, y);
+            spot  = bundle.getParcelable(CURRENT);
+            mapPath = bundle.getString(MAP_PATH);
+            setValues(view);
         }
         return view;
     }
 
-    public static void setData(String[] names, String[] infos, String[] maps, int[] x, int[] y) {
-        spotNames = names;
-        spotInfos = infos;
-        spotMaps = maps;
-        spotX = x;
-        spotY = y;
-    }
-
-    public static String[] getNames() {
-        return spotNames;
-    }
-
-    public static String[] getInfos() {
-        return spotInfos;
-    }
-
-    public static String[] getMap() {
-        return spotMaps;
-    }
-
-    public static int[] getX() {
-        return spotX;
-    }
-
-    public static int[] getY() {
-        return spotY;
-    }
-
-    private void setValues(View view, String name, String info, String map, int x, int y) {
+    private void setValues(View view) {
         TextView nameTV = (TextView) view.findViewById(R.id.spotNameTV);
-        nameTV.setText(name);
         TextView infoTV = (TextView) view.findViewById(R.id.spotInfoTV);
-        infoTV.setText(info);
-        if (x != -1 && y != -1) {
+        if(spot.getUnlocked() == Spot.LOCKED) {
+            nameTV.setText("Undiscovered Spot");
+            infoTV.setText("Keep exploring to find this spot.");
+        } else {
+            nameTV.setText(spot.getName());
+            infoTV.setText(spot.getInformation());
+            int x = spot.getX();
+            int y = spot.getY();
+
             ImageView mapIV = (ImageView) view.findViewById(R.id.spotMapIV);
-            String imageFullPath = getActivity().getFilesDir().getPath()+map;
+            String imageFullPath = getActivity().getFilesDir().getPath() + mapPath;
             Bitmap bitmap = BitmapFactory.decodeFile(imageFullPath);
             Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.RGB_565);
             Canvas canvas = new Canvas(tempBitmap);
@@ -95,7 +67,7 @@ public class StoryFragment extends Fragment {
             Paint paint = new Paint();
             paint.setColor(Color.RED);
             canvas.drawCircle(x, y, 5, paint);
-            if(null != bitmap) {
+            if (null != bitmap) {
                 mapIV.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
             }
         }

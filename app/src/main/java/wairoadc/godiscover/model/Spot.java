@@ -23,6 +23,8 @@ public class Spot implements Parcelable {
     private double longitude; // Longitude of the spot on real coordinates, to be plotted on Google Maps.
     private List<Resource> resources; // List of the resources that are related and unlocked by this spot.
     private Date date;
+    public static int UNLOCKED = 1;
+    public static int LOCKED = 0;
 
 // Getters and setters for the attributes of the spot.
 
