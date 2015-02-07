@@ -25,8 +25,8 @@ public abstract class XMLParser {
         String result = "";
         if (parser.next() == XmlPullParser.TEXT) {
             result = parser.getText();
-            parser.nextTag();
         }
+        parser.nextTag();
         return result;
     }
 
