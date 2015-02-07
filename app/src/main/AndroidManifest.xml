@@ -24,10 +24,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activities.GalleryActivity"
-            android:label="@string/title_activity_gallery" >
-        </activity>
-        <activity
             android:name=".view.activities.StoryActivity"
             android:label="@string/title_activity_story" >
         </activity>
@@ -55,7 +51,7 @@
             android:label="@string/title_activity_static_map" >
         </activity>
         <activity
-            android:name=".view.fragments.TabFragment"
+            android:name=".view.fragments.GalleryFragment"
             android:label="@string/title_activity_gallery" >
         </activity>
         <activity

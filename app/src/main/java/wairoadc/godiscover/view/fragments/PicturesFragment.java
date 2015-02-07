@@ -39,7 +39,7 @@ public class PicturesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_pictures, container, false);
         TextView textView = (TextView) view;
-        textView.setText("Fragment #" + mPage);
+        textView.setText("pictures" + mPage);
         return view;
     }
 }

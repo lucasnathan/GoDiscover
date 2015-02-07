@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.NavDrawerListAdapter;
+import wairoadc.godiscover.view.fragments.GalleryFragment;
 import wairoadc.godiscover.view.models.NavDrawerItem;
 import wairoadc.godiscover.utilities.IntentIntegrator;
 
@@ -191,8 +192,8 @@ public class HomeDrawer extends Activity {
         Intent intent;
         switch (position) {
             case 0:
-                if (!this.getClass().getSimpleName().equals("MainActivity")){
-                    intent = new Intent(this.getBaseContext(),MainActivity.class);
+                if (!this.getClass().getSimpleName().equals("MainActivitjhy")){
+                    intent = new Intent(this.getBaseContext(),GalleryFragment.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }else

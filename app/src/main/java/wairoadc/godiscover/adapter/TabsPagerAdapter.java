@@ -31,7 +31,18 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return PicturesFragment.newInstance(position + 1);
+
+        switch (position){
+            case 0:
+                return PicturesFragment.newInstance(0);
+
+            case 1:
+                return AudioFragment.newInstance(1);
+
+            default:
+                return AudioFragment.newInstance(1);
+        }
+
     }
 
     @Override
