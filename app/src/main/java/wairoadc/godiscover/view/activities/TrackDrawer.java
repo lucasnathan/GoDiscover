@@ -1,16 +1,12 @@
 package wairoadc.godiscover.view.activities;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.print.PrintHelper;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +20,7 @@ import java.util.ArrayList;
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.NavDrawerListAdapter;
 import wairoadc.godiscover.model.Track;
-import wairoadc.godiscover.view.fragments.TabFragment;
+import wairoadc.godiscover.view.fragments.GalleryFragment;
 import wairoadc.godiscover.view.models.NavDrawerItem;
 import wairoadc.godiscover.utilities.IntentIntegrator;
 
@@ -125,17 +121,17 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
         if(this.getClass().getSimpleName().equals("InformationActivity"))
             drawerList.setItemChecked(1, true);
         if(this.getClass().getSimpleName().equals("StaticMapActivity"))
-            drawerList.setItemChecked(1, true);
-        if(this.getClass().getSimpleName().equals("StoryActivity"))
             drawerList.setItemChecked(2, true);
-        if(this.getClass().getSimpleName().equals("GalleryActivity"))
+        if(this.getClass().getSimpleName().equals("StoryActivity"))
             drawerList.setItemChecked(3, true);
-        if(this.getClass().getSimpleName().equals("ProgressActivity"))
+        if(this.getClass().getSimpleName().equals("GalleryFragment"))
             drawerList.setItemChecked(4, true);
-        if(this.getClass().getSimpleName().equals("ScanQRActivity"))
+        if(this.getClass().getSimpleName().equals("ProgressActivity"))
             drawerList.setItemChecked(5, true);
+        if(this.getClass().getSimpleName().equals("ScanQRActivity"))
+            drawerList.setItemChecked(6, true);
 
-        Toast.makeText(this, "Toast: " +currentTrack.get_id(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Toast: " +currentTrack.get_id(), Toast.LENGTH_SHORT).show();
     }
 
     private void setCurrentTrack() {
@@ -187,6 +183,26 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
             // display view for selected nav drawer item
             displayView(position);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //drawing the background color on the selected item of the drawer
+        if(this.getClass().getSimpleName().equals("MainActivity"))
+            drawerList.setItemChecked(0, true);
+        if(this.getClass().getSimpleName().equals("InformationActivity"))
+            drawerList.setItemChecked(1, true);
+        if(this.getClass().getSimpleName().equals("StaticMapActivity"))
+            drawerList.setItemChecked(2, true);
+        if(this.getClass().getSimpleName().equals("StoryActivity"))
+            drawerList.setItemChecked(3, true);
+        if(this.getClass().getSimpleName().equals("GalleryFragment"))
+            drawerList.setItemChecked(4, true);
+        if(this.getClass().getSimpleName().equals("ProgressActivity"))
+            drawerList.setItemChecked(5, true);
+        if(this.getClass().getSimpleName().equals("ScanQRActivity"))
+            drawerList.setItemChecked(6, true);
     }
 
     @Override
@@ -256,8 +272,8 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
                     drawerLayout.closeDrawer(drawerList);
                 break;
             case 4:
-                if (!this.getClass().getSimpleName().equals("TabFragment")){
-                    intent = new Intent(this,TabFragment.class);
+                if (!this.getClass().getSimpleName().equals("GalleryFragment")){
+                    intent = new Intent(this,GalleryFragment.class);
                     if(null != currentTrack)
                         intent.putExtra(MainActivity.TRACK_EXTRA,currentTrack);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -39,7 +39,7 @@ public class AudioFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_audio, container, false);
         TextView textView = (TextView) view;
-        textView.setText("Fragment #" + mPage+"AUdio");
+        textView.setText("Audio" + mPage+"AUdio");
         return view;
     }
 }
