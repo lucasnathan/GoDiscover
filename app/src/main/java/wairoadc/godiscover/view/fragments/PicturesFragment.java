@@ -1,18 +1,14 @@
 package wairoadc.godiscover.view.fragments;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,6 +17,7 @@ import java.util.List;
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GalleryGridAdapter;
 import wairoadc.godiscover.utilities.UtilsGrid;
+import wairoadc.godiscover.view.activities.GalleryActivity;
 import wairoadc.godiscover.view.models.AppConstantGrid;
 
 /**
@@ -28,7 +25,7 @@ import wairoadc.godiscover.view.models.AppConstantGrid;
  */
 public class PicturesFragment extends Fragment {
     public static final String ARG_PAGE = "Picture";
-    public static final String ARG_TYPE = "type";
+    public static final String ARG_TYPE = "galleryMode";
     public static final String IMAGE_LIST = "imageList";
 
     private int mPage;
@@ -36,7 +33,7 @@ public class PicturesFragment extends Fragment {
     private List<String> imagePaths = new ArrayList<String>();
     private GalleryGridAdapter adapter;
     private GridView gridView;
-    private int columnWidth,type;
+    private int columnWidth, galleryMode;
     private Context context;
 
     public static PicturesFragment newInstance(int page,int type,List<String> imagePaths) {
@@ -53,7 +50,7 @@ public class PicturesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
-        type = getArguments().getInt(ARG_TYPE);
+        galleryMode = getArguments().getInt(ARG_TYPE);
         imagePaths = getArguments().getStringArrayList(IMAGE_LIST);
     }
 
@@ -67,18 +64,18 @@ public class PicturesFragment extends Fragment {
 
         InitilizeGridLayout();
 
-        switch (type){
-            case 0:
+        switch (galleryMode){
+            case GalleryActivity.TRACK_MODE:
                 Toast.makeText(getActivity(),"track",Toast.LENGTH_LONG).show();
                 break;
-            case 1:
+            case GalleryActivity.SPOT_MODE:
                 Toast.makeText(getActivity(),"spot",Toast.LENGTH_LONG).show();
                 break;
         }
 
         //imagePaths = utils.getFilePaths();
 
-        adapter = new GalleryGridAdapter(getActivity(),imagePaths,columnWidth,type);
+        adapter = new GalleryGridAdapter(getActivity(),imagePaths,columnWidth, galleryMode);
         gridView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         return view;

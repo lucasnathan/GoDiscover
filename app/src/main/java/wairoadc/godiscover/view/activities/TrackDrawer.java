@@ -40,7 +40,7 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
     private String DEFAULT_MESSAGE,DEFAULT_YES,DEFAULT_NO;
-    public static final int TYPE_GALLERY = 0;
+
     Track currentTrack;
 
     // nav drawer title
@@ -132,7 +132,7 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
             drawerList.setItemChecked(2, true);
         if(this.getClass().getSimpleName().equals("StoryActivity"))
             drawerList.setItemChecked(3, true);
-        if(this.getClass().getSimpleName().equals("GalleryFragment"))
+        if(this.getClass().getSimpleName().equals("GalleryActivity"))
             drawerList.setItemChecked(4, true);
         if(this.getClass().getSimpleName().equals("ProgressActivity"))
             drawerList.setItemChecked(5, true);
@@ -140,6 +140,10 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
             drawerList.setItemChecked(6, true);
 
         // Toast.makeText(this, "Toast: " +currentTrack.get_id(), Toast.LENGTH_SHORT).show();
+    }
+
+    public Track getCurrentTrack() {
+        return currentTrack;
     }
 
     private void setCurrentTrack() {
@@ -215,7 +219,7 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
             drawerList.setItemChecked(2, true);
         if(this.getClass().getSimpleName().equals("StoryActivity"))
             drawerList.setItemChecked(3, true);
-        if(this.getClass().getSimpleName().equals("GalleryFragment"))
+        if(this.getClass().getSimpleName().equals("GalleryActivity"))
             drawerList.setItemChecked(4, true);
         if(this.getClass().getSimpleName().equals("ProgressActivity"))
             drawerList.setItemChecked(5, true);
@@ -290,11 +294,11 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
                     drawerLayout.closeDrawer(drawerList);
                 break;
             case 4:
-                if (!this.getClass().getSimpleName().equals("GalleryFragment")){
+                if (!this.getClass().getSimpleName().equals("GalleryActivity")){
                     intent = new Intent(this,GalleryActivity.class);
                     if(null != currentTrack)
                         intent.putExtra(MainActivity.TRACK_EXTRA,currentTrack);
-                    intent.putExtra("typeGallery",TrackDrawer.TYPE_GALLERY);
+                    intent.putExtra(GalleryActivity.GALLERY_TYPE,GalleryActivity.TRACK_MODE);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     drawerLayout.closeDrawer(drawerList);
                     startActivity(intent);

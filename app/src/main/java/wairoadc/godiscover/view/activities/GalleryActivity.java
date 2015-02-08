@@ -9,10 +9,12 @@ import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.TabsPagerAdapter;
+import wairoadc.godiscover.controller.SpotController;
 import wairoadc.godiscover.controller.TrackController;
+import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Type;
-import wairoadc.godiscover.view.fragments.PicturesFragment;
 import wairoadc.godiscover.view.fragments.SlidingTabLayout;
+import wairoadc.godiscover.view.fragments.StoryFragment;
 
 
 /**
@@ -22,8 +24,13 @@ public class GalleryActivity extends TrackDrawer {
 
     // Tab titles
     private String[] tabs;
-    private int type;
+    private int galleryMode;
     private List<String> imagePaths;
+
+    public static final String GALLERY_TYPE = "galleryType";
+
+    public static final int TRACK_MODE = 0;
+    public static final int SPOT_MODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +38,19 @@ public class GalleryActivity extends TrackDrawer {
         setContentView(R.layout.activity_tab);
         super.onCreate(savedInstanceState);
         Intent intent  = getIntent();
-        type = intent.getIntExtra("typeGallery",2);
-        TrackController trackController = new TrackController(this);
-        imagePaths = trackController.getAllTrackPathsByType(currentTrack,new Type(1));
+        galleryMode = intent.getIntExtra(GALLERY_TYPE,TRACK_MODE);
+        if(galleryMode == TRACK_MODE) {
+            TrackController trackController = new TrackController(this);
+            imagePaths = trackController.getAllTrackPathsByType(currentTrack,new Type(1));
+        } else if (galleryMode == SPOT_MODE) {
+            Spot spot = intent.getParcelableExtra(StoryFragment.SPOT_EXTRA);
+            SpotController spotController = new SpotController(this);
+            imagePaths = spotController.getAllSpotPathsByType(spot,new Type(1));
+        }
+
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new TabsPagerAdapter(getSupportFragmentManager(),GalleryActivity.this,type,imagePaths));
+        viewPager.setAdapter(new TabsPagerAdapter(getSupportFragmentManager(),GalleryActivity.this, galleryMode,imagePaths));
 
         // Give the SlidingTabLayout the ViewPager
         SlidingTabLayout slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);

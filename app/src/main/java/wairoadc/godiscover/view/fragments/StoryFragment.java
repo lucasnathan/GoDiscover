@@ -1,5 +1,7 @@
 package wairoadc.godiscover.view.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,9 +23,13 @@ import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.model.Spot;
+import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.services.BitmapWorkerTask;
 import wairoadc.godiscover.utilities.Utility;
+import wairoadc.godiscover.view.activities.GalleryActivity;
+import wairoadc.godiscover.view.activities.MainActivity;
 import wairoadc.godiscover.view.activities.StoryActivity;
+import wairoadc.godiscover.view.activities.TrackDrawer;
 
 
 /**
@@ -32,6 +39,7 @@ public class StoryFragment extends Fragment {
 
     public static final String CURRENT = "current";
     public static final String MAP_PATH = "map_path";
+    public static final String SPOT_EXTRA = "spot_extra";
 
     private Spot spot;
     private String mapPath;
@@ -62,22 +70,24 @@ public class StoryFragment extends Fragment {
         } else {
             nameTV.setText(spot.getName());
             infoTV.setText(spot.getInformation());
-           // int x = spot.getX();
-            //int y = spot.getY();
 
             ImageView mapIV = (ImageView) view.findViewById(R.id.spotMapIV);
             String imageFullPath = getActivity().getFilesDir().getPath() + mapPath;
             loadBitmap(imageFullPath,mapIV);
-            //Bitmap bitmap = Utility.decodeSampledBitmapFromResource(imageFullPath,mapIV.getWidth(),mapIV.getHeight());
-//            Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.RGB_565);
-//            Canvas canvas = new Canvas(tempBitmap);
-//            canvas.drawBitmap(bitmap, 0, 0, null);
-//            Paint paint = new Paint();
-//            paint.setColor(Color.RED);
-//            canvas.drawCircle(x, y, 5, paint);
-//            if (null != bitmap) {
-//                mapIV.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
-//            }
+            ImageButton imageButton = (ImageButton)view.findViewById(R.id.spotGalleryImgBtn);
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),GalleryActivity.class);
+                    TrackDrawer activity = (TrackDrawer)getActivity();
+                    if(null != activity.getCurrentTrack())
+                        intent.putExtra(MainActivity.TRACK_EXTRA,activity.getCurrentTrack());
+                    intent.putExtra(SPOT_EXTRA,spot);
+                    intent.putExtra(GalleryActivity.GALLERY_TYPE,GalleryActivity.SPOT_MODE);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            });
         }
     }
 }

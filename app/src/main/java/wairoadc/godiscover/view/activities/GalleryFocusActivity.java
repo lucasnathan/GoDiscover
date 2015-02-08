@@ -33,7 +33,6 @@ public class GalleryFocusActivity extends Activity {
         viewPager = (ViewPager) findViewById(R.id.pager);
 
         utils = new UtilsGrid(getApplicationContext());
-        TrackController trackController = new TrackController(this);
         Intent i = getIntent();
         imagePaths = i.getStringArrayListExtra(PicturesFragment.IMAGE_LIST);
         int position = i.getIntExtra("position", 0);
