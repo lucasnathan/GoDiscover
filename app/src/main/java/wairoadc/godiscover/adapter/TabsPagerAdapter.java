@@ -38,13 +38,13 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
         switch (position){
             case 0:
-                return PicturesFragment.newInstance(0,type,imagePaths);
+                return PicturesFragment.newInstance(type,imagePaths);
 
             case 1:
-                return AudioFragment.newInstance(1);
+                return AudioFragment.newInstance(type);
 
             default:
-                return PicturesFragment.newInstance(0,type,imagePaths);
+                return PicturesFragment.newInstance(type,imagePaths);
         }
 
     }

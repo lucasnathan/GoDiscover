@@ -24,20 +24,20 @@ import wairoadc.godiscover.view.models.AppConstantGrid;
  * Created by Lucas on 5/02/2015.
  */
 public class PicturesFragment extends Fragment {
-    public static final String ARG_PAGE = "Picture";
+
     public static final String ARG_TYPE = "galleryMode";
     public static final String IMAGE_LIST = "imageList";
 
-    private int mPage;
+
     private UtilsGrid utils;
     private List<String> imagePaths = new ArrayList<String>();
     private GalleryGridAdapter adapter;
     private GridView gridView;
     private int columnWidth, galleryMode;
 
-    public static PicturesFragment newInstance(int page,int type,List<String> imagePaths) {
+    public static PicturesFragment newInstance(int type,List<String> imagePaths) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PAGE, page);
+
         args.putInt(ARG_TYPE, type);
         args.putStringArrayList(IMAGE_LIST,(ArrayList<String>)imagePaths);
         PicturesFragment fragment = new PicturesFragment();
@@ -48,7 +48,7 @@ public class PicturesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+
         galleryMode = getArguments().getInt(ARG_TYPE);
         imagePaths = getArguments().getStringArrayList(IMAGE_LIST);
     }
@@ -59,7 +59,7 @@ public class PicturesFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_pictures, container, false);
         gridView = (GridView) view;
 
-       utils = new UtilsGrid(getActivity());
+        utils = new UtilsGrid(getActivity());
 
         InitilizeGridLayout();
 
@@ -71,8 +71,6 @@ public class PicturesFragment extends Fragment {
                 Toast.makeText(getActivity(),"spot",Toast.LENGTH_LONG).show();
                 break;
         }
-
-        //imagePaths = utils.getFilePaths();
 
         adapter = new GalleryGridAdapter(getActivity(),imagePaths,columnWidth, galleryMode);
         gridView.setAdapter(adapter);
