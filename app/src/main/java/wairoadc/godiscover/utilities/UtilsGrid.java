@@ -3,6 +3,7 @@ package wairoadc.godiscover.utilities;
 /**
  * Created by Lucas on 7/02/2015.
  */
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -17,93 +18,95 @@ import android.widget.Toast;
 
 import wairoadc.godiscover.view.models.AppConstantGrid;
 
-public class UtilsGrid{
+public class UtilsGrid {
     private Context _context;
 
-        // constructor
-        public UtilsGrid(Context context) {
-            this._context = context;
+    // constructor
+    public UtilsGrid(Context context) {
+        this._context = context;
 
-        }
-        // Reading file paths from SDCard
-        public ArrayList<String> getFilePaths() {
-            ArrayList<String> filePaths = new ArrayList<String>();
+    }
 
-            File directory = new File(
-                    Environment.getExternalStorageDirectory()
-                            + File.separator + AppConstantGrid.PHOTO_ALBUM);
+    // Reading file paths from SDCard
+    public ArrayList<String> getFilePaths() {
+        ArrayList<String> filePaths = new ArrayList<String>();
 
-            // check for directory
-            if (directory.isDirectory()) {
-                // getting list of file paths
-                File[] listFiles = directory.listFiles();
+        File directory = new File(
+                Environment.getExternalStorageDirectory()
+                        + File.separator + AppConstantGrid.PHOTO_ALBUM);
 
-                // Check for count
-                if (listFiles.length > 0) {
+        // check for directory
+        if (directory.isDirectory()) {
+            // getting list of file paths
+            File[] listFiles = directory.listFiles();
 
-                    // loop through all files
-                    for (int i = 0; i < listFiles.length; i++) {
+            // Check for count
+            if (listFiles.length > 0) {
 
-                        // get file path
-                        String filePath = listFiles[i].getAbsolutePath();
+                // loop through all files
+                for (int i = 0; i < listFiles.length; i++) {
 
-                        // check for supported file extension
-                        if (IsSupportedFile(filePath)) {
-                            // Add image path to array list
-                            filePaths.add(filePath);
-                        }
+                    // get file path
+                    String filePath = listFiles[i].getAbsolutePath();
+
+                    // check for supported file extension
+                    if (IsSupportedFile(filePath)) {
+                        // Add image path to array list
+                        filePaths.add(filePath);
                     }
-                } else {
-                    // image directory is empty
-                    Toast.makeText(
-                            _context,
-                            AppConstantGrid.PHOTO_ALBUM
-                                    + " is empty. Please load some images in it !",
-                            Toast.LENGTH_LONG).show();
                 }
-
             } else {
-                AlertDialog.Builder alert = new AlertDialog.Builder(_context);
-                alert.setTitle("Error!");
-                alert.setMessage(AppConstantGrid.PHOTO_ALBUM
-                        + " directory path is not valid! Please set the image directory name AppConstantGrid.java class");
-                alert.setPositiveButton("OK", null);
-                alert.show();
+                // image directory is empty
+                Toast.makeText(
+                        _context,
+                        AppConstantGrid.PHOTO_ALBUM
+                                + " is empty. Please load some images in it !",
+                        Toast.LENGTH_LONG).show();
             }
 
-            return filePaths;
+        } else {
+            AlertDialog.Builder alert = new AlertDialog.Builder(_context);
+            alert.setTitle("Error!");
+            alert.setMessage(AppConstantGrid.PHOTO_ALBUM
+                    + " directory path is not valid! Please set the image directory name AppConstantGrid.java class");
+            alert.setPositiveButton("OK", null);
+            alert.show();
         }
 
-        // Check supported file extensions
-        private boolean IsSupportedFile(String filePath) {
-            String ext = filePath.substring((filePath.lastIndexOf(".") + 1),
-                    filePath.length());
+        return filePaths;
+    }
 
-            if (AppConstantGrid.FILE_EXTN
-                    .contains(ext.toLowerCase(Locale.getDefault())))
-                return true;
-            else
-                return false;
+    // Check supported file extensions
+    private boolean IsSupportedFile(String filePath) {
+        String ext = filePath.substring((filePath.lastIndexOf(".") + 1),
+                filePath.length());
 
+        if (AppConstantGrid.FILE_EXTN
+                .contains(ext.toLowerCase(Locale.getDefault())))
+            return true;
+        else
+            return false;
+
+    }
+
+    /*
+     * getting screen width
+     */
+    public int getScreenWidth() {
+        int columnWidth;
+        WindowManager wm = (WindowManager) _context
+                .getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+
+        final Point point = new Point();
+        try {
+            display.getSize(point);
+        } catch (java.lang.NoSuchMethodError ignore) { // Older device
+            point.x = display.getWidth();
+            point.y = display.getHeight();
         }
+        columnWidth = point.x;
+        return columnWidth;
+    }
 
-        /*
-         * getting screen width
-         */
-        public int getScreenWidth() {
-            int columnWidth;
-            WindowManager wm = (WindowManager) _context
-                    .getSystemService(Context.WINDOW_SERVICE);
-            Display display = wm.getDefaultDisplay();
-
-            final Point point = new Point();
-            try {
-                display.getSize(point);
-            } catch (java.lang.NoSuchMethodError ignore) { // Older device
-                point.x = display.getWidth();
-                point.y = display.getHeight();
-            }
-            columnWidth = point.x;
-            return columnWidth;
-        }
 }

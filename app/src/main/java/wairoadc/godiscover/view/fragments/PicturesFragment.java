@@ -34,7 +34,6 @@ public class PicturesFragment extends Fragment {
     private GalleryGridAdapter adapter;
     private GridView gridView;
     private int columnWidth, galleryMode;
-    private Context context;
 
     public static PicturesFragment newInstance(int page,int type,List<String> imagePaths) {
         Bundle args = new Bundle();

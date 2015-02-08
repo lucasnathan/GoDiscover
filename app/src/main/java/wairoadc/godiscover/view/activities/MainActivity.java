@@ -1,5 +1,6 @@
 package wairoadc.godiscover.view.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,6 +14,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -30,7 +33,7 @@ import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.view.models.ImageItem;
 
-public class MainActivity extends HomeDrawer {
+public class MainActivity extends Activity{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     public final static String TRACK_EXTRA = "track_extra";
@@ -42,8 +45,8 @@ public class MainActivity extends HomeDrawer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         this.gridView = (GridView) findViewById(R.id.gridView);
         this.emptyGrid = (TextView) LayoutInflater.from(this).inflate(R.layout.empty,null);
         RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.grid_container);
@@ -155,5 +158,36 @@ public class MainActivity extends HomeDrawer {
             Toast.makeText(getApplicationContext(), getString(R.string.no_map),
                     Toast.LENGTH_LONG).show();
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        // Handle action bar actions click
+        switch (item.getItemId()) {
+
+            case R.id.action_settings:
+                if (!this.getClass().getSimpleName().equals("SettingsActivity")){
+                    intent = new Intent(this.getBaseContext(),SettingsActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
+                return true;
+            case R.id.action_refresh:
+                if (!this.getClass().getSimpleName().equals("RefreshActivity")){
+                    intent = new Intent(this.getBaseContext(),RefreshActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 }

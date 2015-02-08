@@ -22,8 +22,6 @@ import wairoadc.godiscover.view.fragments.StoryFragment;
  */
 public class GalleryActivity extends TrackDrawer {
 
-    // Tab titles
-    private String[] tabs;
     private int galleryMode;
     private List<String> imagePaths;
 

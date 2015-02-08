@@ -44,7 +44,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
                 return AudioFragment.newInstance(1);
 
             default:
-                return AudioFragment.newInstance(1);
+                return PicturesFragment.newInstance(0,type,imagePaths);
         }
 
     }
