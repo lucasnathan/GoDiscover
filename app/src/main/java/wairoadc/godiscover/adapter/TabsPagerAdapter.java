@@ -18,11 +18,14 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
 
     final int PAGE_COUNT = 2;
+    int type;
     private String tabTitles[] = new String[] { "Pictures", "Audio" };
     private Context context;
-    public TabsPagerAdapter(FragmentManager fm, Context context) {
+    //Type means gallery from spot or from the track
+    public TabsPagerAdapter(FragmentManager fm, Context context,int type) {
         super(fm);
         this.context = context;
+        this.type = type;
     }
     @Override
     public int getCount() {
@@ -34,7 +37,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
         switch (position){
             case 0:
-                return PicturesFragment.newInstance(0);
+                return PicturesFragment.newInstance(0,type);
 
             case 1:
                 return AudioFragment.newInstance(1);

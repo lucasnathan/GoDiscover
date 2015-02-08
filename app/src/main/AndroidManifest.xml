@@ -58,6 +58,10 @@
             android:name=".view.activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name=".view.activities.GalleryFocusActivity"
+            android:label="Pictures" >
+        </activity>
     </application>
 
 </manifest>
