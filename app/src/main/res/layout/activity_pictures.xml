@@ -6,5 +6,6 @@
     android:numColumns="auto_fit"
     android:gravity="center"
     android:stretchMode="columnWidth"
-    android:background="@color/white">
+    android:background="@color/white"
+    >
 </GridView>

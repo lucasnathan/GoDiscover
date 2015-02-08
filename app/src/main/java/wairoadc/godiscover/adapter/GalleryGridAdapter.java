@@ -4,8 +4,6 @@ package wairoadc.godiscover.adapter;
  * Created by Lucas on 8/02/2015.
  */
 
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,21 +13,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import wairoadc.godiscover.R;
 import wairoadc.godiscover.view.activities.GalleryFocusActivity;
 
-public class GalleryGridAdapter extends BaseAdapter {
+public class GalleryGridAdapter extends BaseAdapter{
 
     private Activity _activity;
     private ArrayList<String> _filePaths = new ArrayList<String>();
     private int imageWidth;
-
+    public int _position;
     public GalleryGridAdapter(Activity activity, ArrayList<String> filePaths,
                                 int imageWidth, int type) {
         this._activity = activity;
@@ -60,7 +61,7 @@ public class GalleryGridAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-
+        imageView.setId(R.id.my_image_view);
         // get screen dimensions
         Bitmap image = decodeFile(_filePaths.get(position), imageWidth,
                 imageWidth);
@@ -69,20 +70,39 @@ public class GalleryGridAdapter extends BaseAdapter {
         imageView.setLayoutParams(new GridView.LayoutParams(imageWidth,
                 imageWidth));
         imageView.setImageBitmap(image);
-
+        //imageView.setOnClickListener(this,position);
         // image view click listener
+        _position = position;
+        imageView.setOnTouchListener(new OnTouchImage(position));
         imageView.setOnClickListener(new OnImageClickListener(position));
-
+        imageView.setFocusable(false);
         return imageView;
     }
+    class OnTouchImage implements View.OnTouchListener{
 
+        int _position;
+
+        public OnTouchImage(int position){
+            this._position = position;
+        }
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (MotionEvent.ACTION_POINTER_DOWN == event.getAction()){
+                Intent i = new Intent(_activity, GalleryFocusActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                i.putExtra("position", _position);
+                _activity.startActivity(i);
+            }
+            return false;
+        }
+    }
     class OnImageClickListener implements OnClickListener {
 
-        int _postion;
+        int _position;
 
         // constructor
         public OnImageClickListener(int position) {
-            this._postion = position;
+            this._position = position;
         }
 
         @Override
@@ -90,7 +110,8 @@ public class GalleryGridAdapter extends BaseAdapter {
             // on selecting grid view image
             // launch full screen activity
             Intent i = new Intent(_activity, GalleryFocusActivity.class);
-            i.putExtra("position", _postion);
+            i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            i.putExtra("position", _position);
             _activity.startActivity(i);
         }
 
@@ -123,5 +144,4 @@ public class GalleryGridAdapter extends BaseAdapter {
         }
         return null;
     }
-
 }

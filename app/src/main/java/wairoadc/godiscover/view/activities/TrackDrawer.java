@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -191,6 +192,8 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
         mTitle = title;
         getActionBar().setTitle(mTitle);
     }
+
+
 
     private class SlideMenuClickListener implements
             ListView.OnItemClickListener {

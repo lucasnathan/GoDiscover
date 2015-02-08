@@ -1,8 +1,11 @@
 package wairoadc.godiscover.view.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.TabsPagerAdapter;
@@ -20,6 +23,7 @@ public class GalleryFragment extends TrackDrawer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         setContentView(R.layout.activity_tab);
         super.onCreate(savedInstanceState);
         Intent intent  = getIntent();
@@ -41,5 +45,20 @@ public class GalleryFragment extends TrackDrawer {
         });
         slidingTabLayout.setDistributeEvenly(true);
         slidingTabLayout.setViewPager(viewPager);
+    }
+    private boolean enabled = false;
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (this.enabled) {
+            return super.onTouchEvent(event);
+        }
+
+        return false;
+    }
+
+    public void setPagingEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

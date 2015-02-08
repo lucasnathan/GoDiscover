@@ -65,14 +65,14 @@ public class GalleryFocusAdapter extends PagerAdapter {
         Bitmap bitmap = BitmapFactory.decodeFile(_imagePaths.get(position), options);
         imgDisplay.setImageBitmap(bitmap);
 
-        ((ViewPager) container).addView(viewLayout);
+        container.addView(viewLayout);
 
         return viewLayout;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        ((ViewPager) container).removeView((LinearLayout) object);
+        container.removeView((LinearLayout) object);
 
     }
 }
