@@ -40,9 +40,8 @@ import wairoadc.godiscover.utilities.IntentIntegrator;
 public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
-    private String DEFAULT_MESSAGE;
-    private String DEFAULT_YES;
-    private String DEFAULT_NO;
+    private String DEFAULT_MESSAGE,DEFAULT_YES,DEFAULT_NO;
+    public static final int TYPE_GALLERY = 0;
     Track currentTrack;
 
     // nav drawer title
@@ -294,6 +293,7 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
                     intent = new Intent(this,GalleryFragment.class);
                     if(null != currentTrack)
                         intent.putExtra(MainActivity.TRACK_EXTRA,currentTrack);
+                    intent.putExtra("typeGallery",TrackDrawer.TYPE_GALLERY);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     drawerLayout.closeDrawer(drawerList);
                     startActivity(intent);

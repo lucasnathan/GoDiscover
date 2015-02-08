@@ -113,7 +113,7 @@ public class MainActivity extends HomeDrawer {
     //Positive Answer
     private final class RedirectToMaps implements DialogInterface.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {
-            openPreferredLocationInMap();
+            openLocationInMap();
         }
     }
 
@@ -132,7 +132,7 @@ public class MainActivity extends HomeDrawer {
             startActivity(intent);
         }
     }
-    private void openPreferredLocationInMap() {
+    private void openLocationInMap() {
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(this);
         String location = sharedPrefs.getString(

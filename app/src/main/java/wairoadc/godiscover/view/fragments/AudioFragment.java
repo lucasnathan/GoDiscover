@@ -16,7 +16,7 @@ import wairoadc.godiscover.R;
  * Created by Lucas on 5/02/2015.
  */
 public class AudioFragment extends Fragment {
-    public static final String ARG_PAGE = "ARG_PAGE";
+    public static final String ARG_PAGE = "Audio";
 
     private int mPage;
 

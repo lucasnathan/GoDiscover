@@ -1,5 +1,6 @@
 package wairoadc.godiscover.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
@@ -15,17 +16,18 @@ public class GalleryFragment extends TrackDrawer {
 
     // Tab titles
     private String[] tabs;
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_tab);
         super.onCreate(savedInstanceState);
-
-
+        Intent intent  = getIntent();
+        type = intent.getIntExtra("typeGallery",2);
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new TabsPagerAdapter(getSupportFragmentManager(),
-                GalleryFragment.this));
+                GalleryFragment.this,type));
 
         // Give the SlidingTabLayout the ViewPager
         SlidingTabLayout slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
