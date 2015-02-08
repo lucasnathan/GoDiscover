@@ -36,15 +36,14 @@ import wairoadc.godiscover.view.models.Audio;
  */
 public class AudioFragment extends Fragment {
     public static final String ARG_PAGE = "Audio";
-    public static final String ARG_TYPE = "galleryMode";
-
-    private int type, galleryMode;
 
 
-    public static AudioFragment newInstance(int type) {
+    private int galleryMode;
+
+
+    public static AudioFragment newInstance() {
         Bundle args = new Bundle();
 
-        args.putInt(ARG_TYPE, type);
         AudioFragment fragment = new AudioFragment();
         fragment.setArguments(args);
         return fragment;
@@ -54,7 +53,7 @@ public class AudioFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        galleryMode = getArguments().getInt(ARG_TYPE);
+
 
     }
 
@@ -68,14 +67,6 @@ public class AudioFragment extends Fragment {
         final ArrayList<String> list = utilsGrid.getFilePaths();
         ArrayList<String> dur = this.getMusicDuration(list);
 
-        switch (galleryMode){
-            case GalleryActivity.TRACK_MODE:
-                Toast.makeText(getActivity(), "track", Toast.LENGTH_LONG).show();
-                break;
-            case GalleryActivity.SPOT_MODE:
-                Toast.makeText(getActivity(),"spot",Toast.LENGTH_LONG).show();
-                break;
-        }
         ArrayList<Audio> audios = new ArrayList<Audio>();
         for (int i = 0;i<list.size() && i<dur.size();i++){
             Audio audio = new Audio();

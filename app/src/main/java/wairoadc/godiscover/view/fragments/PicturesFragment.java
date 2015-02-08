@@ -25,7 +25,6 @@ import wairoadc.godiscover.view.models.AppConstantGrid;
  */
 public class PicturesFragment extends Fragment {
 
-    public static final String ARG_TYPE = "galleryMode";
     public static final String IMAGE_LIST = "imageList";
 
 
@@ -35,10 +34,10 @@ public class PicturesFragment extends Fragment {
     private GridView gridView;
     private int columnWidth, galleryMode;
 
-    public static PicturesFragment newInstance(int type,List<String> imagePaths) {
+    public static PicturesFragment newInstance(List<String> imagePaths) {
         Bundle args = new Bundle();
 
-        args.putInt(ARG_TYPE, type);
+
         args.putStringArrayList(IMAGE_LIST,(ArrayList<String>)imagePaths);
         PicturesFragment fragment = new PicturesFragment();
         fragment.setArguments(args);
@@ -49,7 +48,7 @@ public class PicturesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        galleryMode = getArguments().getInt(ARG_TYPE);
+
         imagePaths = getArguments().getStringArrayList(IMAGE_LIST);
     }
 
@@ -62,15 +61,6 @@ public class PicturesFragment extends Fragment {
         utils = new UtilsGrid(getActivity());
 
         InitilizeGridLayout();
-
-        switch (galleryMode){
-            case GalleryActivity.TRACK_MODE:
-                Toast.makeText(getActivity(),"track",Toast.LENGTH_LONG).show();
-                break;
-            case GalleryActivity.SPOT_MODE:
-                Toast.makeText(getActivity(),"spot",Toast.LENGTH_LONG).show();
-                break;
-        }
 
         adapter = new GalleryGridAdapter(getActivity(),imagePaths,columnWidth, galleryMode);
         gridView.setAdapter(adapter);
