@@ -20,6 +20,8 @@ import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.model.Spot;
+import wairoadc.godiscover.services.BitmapWorkerTask;
+import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.StoryActivity;
 
 
@@ -46,6 +48,11 @@ public class StoryFragment extends Fragment {
         return view;
     }
 
+    public void loadBitmap(String currentImage, ImageView imageView) {
+        BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+        task.execute(currentImage,String.valueOf(spot.getX()),String.valueOf(spot.getY()));
+    }
+
     private void setValues(View view) {
         TextView nameTV = (TextView) view.findViewById(R.id.spotNameTV);
         TextView infoTV = (TextView) view.findViewById(R.id.spotInfoTV);
@@ -55,21 +62,22 @@ public class StoryFragment extends Fragment {
         } else {
             nameTV.setText(spot.getName());
             infoTV.setText(spot.getInformation());
-            int x = spot.getX();
-            int y = spot.getY();
+           // int x = spot.getX();
+            //int y = spot.getY();
 
             ImageView mapIV = (ImageView) view.findViewById(R.id.spotMapIV);
             String imageFullPath = getActivity().getFilesDir().getPath() + mapPath;
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFullPath);
-            Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.RGB_565);
-            Canvas canvas = new Canvas(tempBitmap);
-            canvas.drawBitmap(bitmap, 0, 0, null);
-            Paint paint = new Paint();
-            paint.setColor(Color.RED);
-            canvas.drawCircle(x, y, 5, paint);
-            if (null != bitmap) {
-                mapIV.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
-            }
+            loadBitmap(imageFullPath,mapIV);
+            //Bitmap bitmap = Utility.decodeSampledBitmapFromResource(imageFullPath,mapIV.getWidth(),mapIV.getHeight());
+//            Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.RGB_565);
+//            Canvas canvas = new Canvas(tempBitmap);
+//            canvas.drawBitmap(bitmap, 0, 0, null);
+//            Paint paint = new Paint();
+//            paint.setColor(Color.RED);
+//            canvas.drawCircle(x, y, 5, paint);
+//            if (null != bitmap) {
+//                mapIV.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
+//            }
         }
     }
 }

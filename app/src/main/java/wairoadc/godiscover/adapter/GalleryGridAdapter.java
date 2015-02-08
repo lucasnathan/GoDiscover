@@ -4,48 +4,54 @@ package wairoadc.godiscover.adapter;
  * Created by Lucas on 8/02/2015.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.MotionEvent;
+import android.graphics.Picture;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import wairoadc.godiscover.R;
+
+import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.GalleryFocusActivity;
+import wairoadc.godiscover.view.fragments.PicturesFragment;
 
 public class GalleryGridAdapter extends BaseAdapter{
 
-    private Activity _activity;
-    private ArrayList<String> _filePaths = new ArrayList<String>();
+    private Activity activity;
+    private List<String> filePaths = new ArrayList<String>();
     private int imageWidth;
-    public int _position;
-    public GalleryGridAdapter(Activity activity, ArrayList<String> filePaths,
+    public int position;
+    public GalleryGridAdapter(Activity activity, List<String> filePaths,
                                 int imageWidth, int type) {
-        this._activity = activity;
-        this._filePaths = filePaths;
+        this.activity = activity;
+        this.filePaths = filePaths;
         this.imageWidth = imageWidth;
     }
 
     @Override
     public int getCount() {
-        return this._filePaths.size();
+        return this.filePaths.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return this._filePaths.get(position);
+        return this.filePaths.get(position);
     }
 
     @Override
@@ -57,91 +63,145 @@ public class GalleryGridAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {
-            imageView = new ImageView(_activity);
+            imageView = new ImageView(activity);
         } else {
             imageView = (ImageView) convertView;
         }
-        imageView.setId(R.id.my_image_view);
-        // get screen dimensions
-        Bitmap image = decodeFile(_filePaths.get(position), imageWidth,
-                imageWidth);
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLayoutParams(new GridView.LayoutParams(imageWidth,
                 imageWidth));
-        imageView.setImageBitmap(image);
-        //imageView.setOnClickListener(this,position);
-        // image view click listener
-        _position = position;
-        imageView.setOnTouchListener(new OnTouchImage(position));
+
+        loadBitmap(activity.getFilesDir()+filePaths.get(position),imageView);
+        this.position = position;
+        imageView.setFocusable(true);
+        imageView.setFocusableInTouchMode(true);
+        imageView.setClickable(true);
+
         imageView.setOnClickListener(new OnImageClickListener(position));
-        imageView.setFocusable(false);
+        imageView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    v.performClick();
+                }
+            }
+        });
+
         return imageView;
     }
-    class OnTouchImage implements View.OnTouchListener{
 
-        int _position;
-
-        public OnTouchImage(int position){
-            this._position = position;
-        }
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if (MotionEvent.ACTION_POINTER_DOWN == event.getAction()){
-                Intent i = new Intent(_activity, GalleryFocusActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                i.putExtra("position", _position);
-                _activity.startActivity(i);
-            }
-            return false;
-        }
-    }
     class OnImageClickListener implements OnClickListener {
 
-        int _position;
+        int position;
 
         // constructor
         public OnImageClickListener(int position) {
-            this._position = position;
+            this.position = position;
         }
 
         @Override
         public void onClick(View v) {
             // on selecting grid view image
             // launch full screen activity
-            Intent i = new Intent(_activity, GalleryFocusActivity.class);
+            Log.i("GalleryAdapter", "Entered onClick method");
+            Intent i = new Intent(activity, GalleryFocusActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            i.putExtra("position", _position);
-            _activity.startActivity(i);
+            i.putExtra("position", position);
+            i.putStringArrayListExtra(PicturesFragment.IMAGE_LIST,(ArrayList<String>)filePaths);
+            activity.startActivity(i);
         }
 
     }
 
-    /*
-     * Resizing image size
-     */
-    public static Bitmap decodeFile(String filePath, int WIDTH, int HIGHT) {
-        try {
+    static class AsyncDrawable extends BitmapDrawable {
+        private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
 
-            File f = new File(filePath);
+        public AsyncDrawable(Resources res, Bitmap bitmap,
+                             BitmapWorkerTask bitmapWorkerTask) {
+            super(res, bitmap);
+            bitmapWorkerTaskReference =
+                    new WeakReference<BitmapWorkerTask>(bitmapWorkerTask);
+        }
 
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+        public BitmapWorkerTask getBitmapWorkerTask() {
+            return bitmapWorkerTaskReference.get();
+        }
+    }
 
-            final int REQUIRED_WIDTH = WIDTH;
-            final int REQUIRED_HIGHT = HIGHT;
-            int scale = 1;
-            while (o.outWidth / scale / 2 >= REQUIRED_WIDTH
-                    && o.outHeight / scale / 2 >= REQUIRED_HIGHT)
-                scale *= 2;
-
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
+        if (imageView != null) {
+            final Drawable drawable = imageView.getDrawable();
+            if (drawable instanceof AsyncDrawable) {
+                final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+                return asyncDrawable.getBitmapWorkerTask();
+            }
         }
         return null;
     }
+
+    public static boolean cancelPotentialWork(String data, ImageView imageView) {
+        final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+
+        if (bitmapWorkerTask != null) {
+            final String bitmapData = bitmapWorkerTask.data;
+            // If bitmapData is not yet set or it differs from the new data
+            if (bitmapData == null || bitmapData.equals(data)) {
+                // Cancel previous task
+                bitmapWorkerTask.cancel(true);
+            } else {
+                // The same work is already in progress
+                return false;
+            }
+        }
+        // No task associated with the ImageView, or an existing task was cancelled
+        return true;
+    }
+
+    public void loadBitmap(String resId, ImageView imageView) {
+        if (cancelPotentialWork(resId, imageView)) {
+            final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+            Bitmap mPlaceHolderBitmap = BitmapFactory.decodeResource(activity.getResources(),R.drawable.btn_cab_done_default_go_theme);
+
+            final AsyncDrawable asyncDrawable =
+                    new AsyncDrawable(activity.getResources(), mPlaceHolderBitmap, task);
+            imageView.setImageDrawable(asyncDrawable);
+            task.execute(resId);
+        }
+    }
+
+
+    class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
+        private final WeakReference<ImageView> imageViewReference;
+        private String data;
+
+        public BitmapWorkerTask(ImageView imageView) {
+            // Use a WeakReference to ensure the ImageView can be garbage collected
+            imageViewReference = new WeakReference<ImageView>(imageView);
+        }
+
+        // Decode image in background.
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            data = params[0];
+            return Utility.decodeSampledBitmapFromResource(data, 100, 100);
+        }
+
+        // Once complete, see if ImageView is still around and set bitmap.
+        protected void onPostExecute(Bitmap bitmap) {
+            if (isCancelled()) {
+                bitmap = null;
+            }
+
+            if (imageViewReference != null && bitmap != null) {
+                final ImageView imageView = imageViewReference.get();
+                final BitmapWorkerTask bitmapWorkerTask =
+                        getBitmapWorkerTask(imageView);
+                if (this == bitmapWorkerTask && imageView != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }
+        }
+    }
+
 }

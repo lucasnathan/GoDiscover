@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -30,7 +29,6 @@ import wairoadc.godiscover.utilities.IntentResult;
 
 
 import wairoadc.godiscover.utilities.Utility;
-import wairoadc.godiscover.view.fragments.GalleryFragment;
 
 import wairoadc.godiscover.view.models.NavDrawerItem;
 import wairoadc.godiscover.utilities.IntentIntegrator;
@@ -293,7 +291,7 @@ public class TrackDrawer extends FragmentActivity { public DrawerLayout drawerLa
                 break;
             case 4:
                 if (!this.getClass().getSimpleName().equals("GalleryFragment")){
-                    intent = new Intent(this,GalleryFragment.class);
+                    intent = new Intent(this,GalleryActivity.class);
                     if(null != currentTrack)
                         intent.putExtra(MainActivity.TRACK_EXTRA,currentTrack);
                     intent.putExtra("typeGallery",TrackDrawer.TYPE_GALLERY);

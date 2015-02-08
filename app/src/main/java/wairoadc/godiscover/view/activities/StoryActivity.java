@@ -15,19 +15,6 @@ public class StoryActivity extends TrackDrawer {
 
     public static String CURRENT_SPOT = "currentSpot";
 
-    protected void setLockedSpots() {
-        startingItem = 0;
-
-        for(Spot spot : currentTrack.getSpots()) {
-            if (spot.getUnlocked() == 0) {
-                spot.setName("Undiscovered Spot");
-                spot.setInformation("Keep exploring to find this spot.");
-                spot.setX(-1);
-                spot.setY(-1);
-            }
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_story);

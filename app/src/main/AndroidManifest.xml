@@ -51,7 +51,7 @@
             android:label="@string/title_activity_static_map" >
         </activity>
         <activity
-            android:name=".view.fragments.GalleryFragment"
+            android:name=".view.activities.GalleryActivity"
             android:label="@string/title_activity_gallery" >
         </activity>
         <activity

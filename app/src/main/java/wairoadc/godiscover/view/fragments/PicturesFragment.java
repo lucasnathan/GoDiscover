@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GalleryGridAdapter;
@@ -26,20 +27,23 @@ import wairoadc.godiscover.view.models.AppConstantGrid;
  * Created by Lucas on 5/02/2015.
  */
 public class PicturesFragment extends Fragment {
-    public static final String ARG_PAGE = "Picture",ARG_TYPE = "type";
+    public static final String ARG_PAGE = "Picture";
+    public static final String ARG_TYPE = "type";
+    public static final String IMAGE_LIST = "imageList";
 
     private int mPage;
     private UtilsGrid utils;
-    private ArrayList<String> imagePaths = new ArrayList<String>();
+    private List<String> imagePaths = new ArrayList<String>();
     private GalleryGridAdapter adapter;
     private GridView gridView;
     private int columnWidth,type;
     private Context context;
 
-    public static PicturesFragment newInstance(int page,int type) {
+    public static PicturesFragment newInstance(int page,int type,List<String> imagePaths) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         args.putInt(ARG_TYPE, type);
+        args.putStringArrayList(IMAGE_LIST,(ArrayList<String>)imagePaths);
         PicturesFragment fragment = new PicturesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -50,6 +54,7 @@ public class PicturesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
         type = getArguments().getInt(ARG_TYPE);
+        imagePaths = getArguments().getStringArrayList(IMAGE_LIST);
     }
 
     @Override
@@ -58,7 +63,7 @@ public class PicturesFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_pictures, container, false);
         gridView = (GridView) view;
 
-        utils = new UtilsGrid(getActivity());
+       utils = new UtilsGrid(getActivity());
 
         InitilizeGridLayout();
 
@@ -71,11 +76,11 @@ public class PicturesFragment extends Fragment {
                 break;
         }
 
-        imagePaths = utils.getFilePaths();
+        //imagePaths = utils.getFilePaths();
 
         adapter = new GalleryGridAdapter(getActivity(),imagePaths,columnWidth,type);
-
         gridView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         return view;
     }
 
