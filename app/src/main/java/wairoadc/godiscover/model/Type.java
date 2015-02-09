@@ -15,7 +15,7 @@ public class Type implements Parcelable {
     //Just to make it more uniform, this constants can be used when you're setting a type name for
     // the type object you created
     public static final String IMAGE_TYPE = "image";
-    public static final String SOUND_TYPE = "sound";
+    public static final String SOUND_TYPE = "audio";
     public static final String VIDEO_TYPE = "video";
 
 // Getters and setters for the Id and Name.

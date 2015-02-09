@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="wairoadc.godiscover">
+    package="wairoadc.godiscover" >
 
     <!-- Internet Permission -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
@@ -45,6 +47,7 @@
         </activity>
 
         <service android:name=".services.DownloadService" />
+        <service android:name=".services.MusicService"/>
 
         <activity
             android:name=".view.activities.StaticMapActivity"
@@ -61,6 +64,10 @@
         <activity
             android:name=".view.activities.GalleryFocusActivity"
             android:label="Pictures" >
+        </activity>
+        <activity
+            android:name=".view.activities.AudioPlayer"
+            android:label="@string/title_activity_audio_player" >
         </activity>
     </application>
 

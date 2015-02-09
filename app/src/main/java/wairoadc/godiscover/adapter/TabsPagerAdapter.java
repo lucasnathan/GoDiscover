@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
+import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.view.fragments.AudioFragment;
 import wairoadc.godiscover.view.fragments.PicturesFragment;
 
@@ -20,13 +21,15 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     int type;
     private String tabTitles[] = new String[] { "Pictures", "Audio" };
     private Context context;
-    private List<String> imagePaths;
+    private List<Resource> imageResources;
+    private List<Resource> audioResources;
     //Type means gallery from spot or from the track
-    public TabsPagerAdapter(FragmentManager fm, Context context,int type,List<String> imagePaths) {
+    public TabsPagerAdapter(FragmentManager fm, Context context,int type,List<Resource> imageResources,List<Resource> audioResources) {
         super(fm);
         this.context = context;
         this.type = type;
-        this.imagePaths = imagePaths;
+        this.imageResources = imageResources;
+        this.audioResources = audioResources;
     }
     @Override
     public int getCount() {
@@ -38,13 +41,13 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
         switch (position){
             case 0:
-                return PicturesFragment.newInstance(imagePaths);
+                return PicturesFragment.newInstance(imageResources);
 
             case 1:
-                return AudioFragment.newInstance();
+                return AudioFragment.newInstance(audioResources);
 
             default:
-                return PicturesFragment.newInstance(imagePaths);
+                return PicturesFragment.newInstance(imageResources);
         }
 
     }

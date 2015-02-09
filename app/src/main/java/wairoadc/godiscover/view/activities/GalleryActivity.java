@@ -9,8 +9,10 @@ import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.TabsPagerAdapter;
+import wairoadc.godiscover.controller.ResourceController;
 import wairoadc.godiscover.controller.SpotController;
 import wairoadc.godiscover.controller.TrackController;
+import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Type;
 import wairoadc.godiscover.view.fragments.SlidingTabLayout;
@@ -23,7 +25,8 @@ import wairoadc.godiscover.view.fragments.StoryFragment;
 public class GalleryActivity extends TrackDrawer {
 
     private int galleryMode;
-    private List<String> imagePaths;
+    private List<Resource> imageResources;
+    private List<Resource> audioResources;
 
     public static final String GALLERY_TYPE = "galleryType";
 
@@ -37,18 +40,20 @@ public class GalleryActivity extends TrackDrawer {
         super.onCreate(savedInstanceState);
         Intent intent  = getIntent();
         galleryMode = intent.getIntExtra(GALLERY_TYPE,TRACK_MODE);
+        ResourceController resourceController = new ResourceController(this);
         if(galleryMode == TRACK_MODE) {
-            TrackController trackController = new TrackController(this);
-            imagePaths = trackController.getAllTrackPathsByType(currentTrack,new Type(1));
+
+            imageResources = resourceController.loadAllByType(currentTrack,new Type(1));
+            audioResources = resourceController.loadAllByType(currentTrack, new Type(2));
         } else if (galleryMode == SPOT_MODE) {
             Spot spot = intent.getParcelableExtra(StoryFragment.SPOT_EXTRA);
-            SpotController spotController = new SpotController(this);
-            imagePaths = spotController.getAllSpotPathsByType(spot,new Type(1));
+            imageResources = resourceController.loadResByType(spot,new Type(1));
+            audioResources = resourceController.loadResByType(spot,new Type(2));
         }
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new TabsPagerAdapter(getSupportFragmentManager(),GalleryActivity.this, galleryMode,imagePaths));
+        viewPager.setAdapter(new TabsPagerAdapter(getSupportFragmentManager(),GalleryActivity.this, galleryMode, imageResources, audioResources));
 
         // Give the SlidingTabLayout the ViewPager
         SlidingTabLayout slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);

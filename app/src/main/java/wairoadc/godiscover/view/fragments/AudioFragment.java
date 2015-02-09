@@ -1,34 +1,24 @@
 package wairoadc.godiscover.view.fragments;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.MyArrayAdapter;
+import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.utilities.UtilsGrid;
-import wairoadc.godiscover.view.activities.GalleryActivity;
+import wairoadc.godiscover.view.activities.AudioPlayer;
 import wairoadc.godiscover.view.models.Audio;
 
 /**
@@ -36,15 +26,17 @@ import wairoadc.godiscover.view.models.Audio;
  */
 public class AudioFragment extends Fragment {
     public static final String ARG_PAGE = "Audio";
-
-
+    private List<Resource> audioResources = new ArrayList<Resource>();
+    public static final String AUDIO_LIST = "audioList";
     private int galleryMode;
 
 
-    public static AudioFragment newInstance() {
+    public static AudioFragment newInstance(List<Resource> audioResources) {
         Bundle args = new Bundle();
 
         AudioFragment fragment = new AudioFragment();
+        args.putParcelableArrayList(AUDIO_LIST, (ArrayList<Resource>) audioResources);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,9 +44,7 @@ public class AudioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
+        audioResources = getArguments().getParcelableArrayList(AUDIO_LIST);
     }
 
     @Override
@@ -64,14 +54,21 @@ public class AudioFragment extends Fragment {
         ListView listview = (ListView) view.findViewById(R.id.list);
         UtilsGrid utilsGrid = new UtilsGrid(getActivity());
 
-        final ArrayList<String> list = utilsGrid.getFilePaths();
-        ArrayList<String> dur = this.getMusicDuration(list);
+        final ArrayList<Resource> list = (ArrayList<Resource>) audioResources;
+        final ArrayList<String> audioPaths = new ArrayList<>();
+        final ArrayList<String> audioTitles = new ArrayList<>();
+        for(Resource resource : audioResources) {
+            audioPaths.add(resource.getPath());
+            audioTitles.add(resource.getName());
+        }
+        ArrayList<String> dur = this.getMusicDuration(audioPaths);
+
 
         ArrayList<Audio> audios = new ArrayList<Audio>();
         for (int i = 0;i<list.size() && i<dur.size();i++){
             Audio audio = new Audio();
-            audio.setPath(list.get(i));
-            audio.setName(list.get(i));
+            audio.setPath(audioPaths.get(i));
+            audio.setName(audioTitles.get(i));
             audio.setDuration(dur.get(i));
             audios.add(audio);
         }
@@ -81,11 +78,13 @@ public class AudioFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent();
-                intent.setAction(android.content.Intent.ACTION_VIEW);
-                File file = new File(list.get(position));
-                intent.setDataAndType(Uri.fromFile(file), "audio/*");
-                startActivity(intent);
+
+               try {
+                   Intent intent = new Intent(getActivity(), AudioPlayer.class);
+                   intent.putExtra(AudioPlayer.AUDIO_FILE_NAME,getActivity().getFilesDir()+audioPaths.get(position));
+                   startActivity(intent);
+               } catch (Exception e) {e.printStackTrace();}
+
             }
         });
         return view;
@@ -93,9 +92,10 @@ public class AudioFragment extends Fragment {
 
     private ArrayList<String> getMusicDuration(ArrayList<String> filePaths){
         ArrayList<String> durations = new ArrayList<>();
+
         for (String filePath :filePaths){
             MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
-            metaRetriever.setDataSource(filePath);
+            metaRetriever.setDataSource(getActivity().getFilesDir().getAbsolutePath()+filePath);
 
             String out = "";
             // get mp3 info

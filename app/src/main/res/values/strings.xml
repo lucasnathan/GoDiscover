@@ -70,13 +70,13 @@
         <item>Scan</item>
     </string-array>
 
-
-    <!-- Gallery Tab Names-->
+    <!-- Gallery Tab Names -->
     <string-array name="gallery_tab_names">
         <item>Pictures</item>
         <item>Audio</item>
     </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_audio_player">AudioPlayer</string>
 
 </resources>

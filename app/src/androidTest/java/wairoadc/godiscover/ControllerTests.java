@@ -33,7 +33,7 @@ public class ControllerTests  extends AndroidTestCase {
 
 
 
-    public void testGetAllTracksPath() throws Throwable{
+    public void atestGetAllTracksPath() throws Throwable{
         TrackController trackController = new TrackController(getContext());
         List<Track> homeTracks = trackController.loadHomeTracks();
         Track secondTrack = new Track();
@@ -115,15 +115,15 @@ public class ControllerTests  extends AndroidTestCase {
 
         //Testing Resource Controller
         Type type = new Type();
-        type.set_id(1);
+        type.set_id(2);
         ResourceController resourceController = new ResourceController(getContext());
         //int resUnlocked = resourceController.countUnlocked(secondTrack);
         int resUnlockedByType = resourceController.countUnlockedByType(secondTrack,type);
         int resUnlocked = resourceController.countUnlocked(secondTrack);
         List<Resource> resources = resourceController.loadRes(secondTrack.getSpots().get(0));
-
+        List<Resource> allRes = resourceController.loadAllRes(homeTracks.get(0));
         List<Resource> resourceImages = resourceController.loadAllByType(secondTrack,type);
-        List<Resource> allRes = resourceController.loadAllRes(homeTracks.get(1));
+
 
     }
 

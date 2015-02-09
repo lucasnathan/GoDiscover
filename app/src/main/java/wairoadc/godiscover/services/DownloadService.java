@@ -18,6 +18,7 @@ import android.util.Log;
 import com.amazonaws.event.ProgressEvent;
 import com.amazonaws.event.ProgressListener;
 import com.amazonaws.mobileconnectors.s3.transfermanager.*;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -117,6 +118,8 @@ public class DownloadService extends IntentService implements ProgressListener {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (AmazonS3Exception e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

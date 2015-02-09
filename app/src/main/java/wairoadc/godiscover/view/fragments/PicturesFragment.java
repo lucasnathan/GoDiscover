@@ -1,6 +1,5 @@
 package wairoadc.godiscover.view.fragments;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,15 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GalleryGridAdapter;
+import wairoadc.godiscover.controller.TrackController;
+import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.utilities.UtilsGrid;
-import wairoadc.godiscover.view.activities.GalleryActivity;
 import wairoadc.godiscover.view.models.AppConstantGrid;
 
 /**
@@ -29,16 +28,16 @@ public class PicturesFragment extends Fragment {
 
 
     private UtilsGrid utils;
-    private List<String> imagePaths = new ArrayList<String>();
+    private List<Resource> imageResources = new ArrayList<Resource>();
     private GalleryGridAdapter adapter;
     private GridView gridView;
     private int columnWidth, galleryMode;
 
-    public static PicturesFragment newInstance(List<String> imagePaths) {
+    public static PicturesFragment newInstance(List<Resource> imageResources) {
         Bundle args = new Bundle();
 
 
-        args.putStringArrayList(IMAGE_LIST,(ArrayList<String>)imagePaths);
+        args.putParcelableArrayList(IMAGE_LIST, (ArrayList<Resource>) imageResources);
         PicturesFragment fragment = new PicturesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -47,9 +46,7 @@ public class PicturesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        imagePaths = getArguments().getStringArrayList(IMAGE_LIST);
+        imageResources = getArguments().getParcelableArrayList(IMAGE_LIST);
     }
 
     @Override
@@ -61,8 +58,12 @@ public class PicturesFragment extends Fragment {
         utils = new UtilsGrid(getActivity());
 
         InitilizeGridLayout();
+        List<String> imagePaths = new ArrayList<>();
+        for(Resource resource : imageResources) {
+            imagePaths.add(resource.getPath());
+        }
 
-        adapter = new GalleryGridAdapter(getActivity(),imagePaths,columnWidth, galleryMode);
+        adapter = new GalleryGridAdapter(getActivity(), imagePaths,columnWidth, galleryMode);
         gridView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         return view;

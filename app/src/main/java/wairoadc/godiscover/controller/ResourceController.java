@@ -156,6 +156,38 @@ public class ResourceController {
         }
     }
 
+    // Given a spot, retrieves a list of all the resources from that spot.
+    //This is a self contained transaction
+    public List<Resource> loadResByType(Spot spot,Type type) {
+        List<Resource> resources = new ArrayList<>();
+        List<Resource> results = new ArrayList<>();
+        ResourceDAO resourceDAO =  new ResourceDAO(context);
+        SQLiteDatabase db = null;
+        try {
+            db = resourceDAO.open();
+            resourceDAO.setDatabase(db);
+            db.beginTransaction();
+            resources = resourceDAO.getAllSpotResources(spot);
+            for(Resource resource : resources) {
+                if(resource.getType().get_id() == type.get_id()) {
+                    results.add(resource);
+                }
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
+            if(null != results && 0 != results.size()) return results;
+            else return null;
+        } catch(SQLException e) {
+            e.printStackTrace();
+            if(null != db) {
+                db.endTransaction();
+                db.close();
+            }
+            return null;
+        }
+    }
+
     // Retrieves the number of unlocked resources on a track given a type.
     public int countUnlockedByType(Track track, Type type) {
         int countUnlocked = 0;
