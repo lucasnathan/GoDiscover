@@ -1,5 +1,6 @@
 package wairoadc.godiscover.view.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -35,7 +36,7 @@ import wairoadc.godiscover.R;
 import wairoadc.godiscover.services.DownloadService;
 import wairoadc.godiscover.view.fragments.RefreshFragment;
 
-public class RefreshActivity extends HomeDrawer {
+public class RefreshActivity extends Activity {
 
     public static boolean IS_RUNNING;
 

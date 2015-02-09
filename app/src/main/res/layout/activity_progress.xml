@@ -10,92 +10,126 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
         <!-- Add content here -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/linear_layout_progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+
+        <LinearLayout
             android:orientation="vertical"
-            android:layout_margin="10dp">
-            <!-- Checkpoint -->
-            <TextView
-                android:id="@+id/checkpoint_name_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="@string/checkpoints"/>
-            <ProgressBar
-                android:id="@+id/checkpoint_progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="false"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:minHeight="50dp"
-                android:minWidth="200dp"
-                />
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffe5e5e5">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="@dimen/feed_item_margin"
+                android:layout_marginRight="@dimen/feed_item_margin"
+                android:layout_marginTop="@dimen/feed_item_margin"
+                android:background="@drawable/bg_parent_rounded_corner"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/feed_item_padding_top_bottom"
+                android:paddingTop="@dimen/feed_item_padding_top_bottom"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Track Name"
+                    android:id="@+id/progressTrackTV"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="22dp"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="10dp" />
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/linear_layout_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp">
+                    <!-- Checkpoint -->
+
+                    <TextView
+                        android:id="@+id/checkpoint_name_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="@string/checkpoints"/>
+                    <ProgressBar
+                        android:id="@+id/checkpoint_progress_bar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="false"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:minHeight="50dp"
+                        android:minWidth="200dp"
+                        />
 
 
-            <TextView
-                android:id="@+id/checkpoint_ratio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"/>
-            <!-- Pictures -->
-            <TextView
-                android:id="@+id/pictures_name_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="@string/pictures"
-                android:visibility="gone"/>
-            <ProgressBar
-                android:id="@+id/pictures_progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="false"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:minHeight="50dp"
-                android:minWidth="200dp"
-                android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/checkpoint_ratio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"/>
+                    <!-- Pictures -->
+                    <TextView
+                        android:id="@+id/pictures_name_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="@string/pictures"
+                        android:visibility="gone"/>
+                    <ProgressBar
+                        android:id="@+id/pictures_progress_bar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="false"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:minHeight="50dp"
+                        android:minWidth="200dp"
+                        android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/pictures_ratio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"/>
-            <!-- Audio -->
-            <TextView
-                android:id="@+id/audio_name_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="@string/audio"
-                android:visibility="gone"/>
-            <ProgressBar
-                android:id="@+id/audio_progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="false"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:minHeight="50dp"
-                android:minWidth="200dp"
-                android:visibility="gone"
-                 />
+                    <TextView
+                        android:id="@+id/pictures_ratio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+                    <!-- Audio -->
+                    <TextView
+                        android:id="@+id/audio_name_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="@string/audio"
+                        android:visibility="gone"/>
+                    <ProgressBar
+                        android:id="@+id/audio_progress_bar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="false"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:minHeight="50dp"
+                        android:minWidth="200dp"
+                        android:visibility="gone"
+                        />
 
-            <TextView
-                android:id="@+id/audio_ratio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"/>
+                    <TextView
+                        android:id="@+id/audio_ratio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
-        <!-- Add content here -->
+
     </FrameLayout>
 
     <!-- The navigation drawer -->

@@ -23,6 +23,7 @@ import wairoadc.godiscover.view.activities.MainActivity;
 public class InformationFragment extends Fragment {
 
     private TextView descriptionField;
+    private TextView titleField;
     private ImageView mainPicture;
     private Track track;
 
@@ -40,6 +41,9 @@ public class InformationFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_information, container, false);
         descriptionField = (TextView)rootView.findViewById(R.id.txt_description);
         mainPicture = (ImageView)rootView.findViewById(R.id.main_picture);
+        titleField = (TextView)rootView.findViewById(R.id.infoTV);
+        titleField.setText(track.getName());
+
         descriptionField.setText(track.getDescription());
         String imageFullPath = getActivity().getFilesDir().getPath()+track.getResource();
         Bitmap bitmap = BitmapFactory.decodeFile(imageFullPath);

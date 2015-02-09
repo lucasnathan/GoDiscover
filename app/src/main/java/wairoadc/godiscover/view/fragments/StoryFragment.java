@@ -40,8 +40,10 @@ public class StoryFragment extends Fragment {
     public static final String CURRENT = "current";
     public static final String MAP_PATH = "map_path";
     public static final String SPOT_EXTRA = "spot_extra";
+    public static final String TRACK_NAME = "track_name";
 
     private Spot spot;
+    private String trackName;
     private String mapPath;
 
     @Override
@@ -51,6 +53,7 @@ public class StoryFragment extends Fragment {
         if (bundle != null) {
             spot  = bundle.getParcelable(CURRENT);
             mapPath = bundle.getString(MAP_PATH);
+            trackName = bundle.getString(TRACK_NAME);
             setValues(view);
         }
         return view;
@@ -64,6 +67,8 @@ public class StoryFragment extends Fragment {
     private void setValues(View view) {
         TextView nameTV = (TextView) view.findViewById(R.id.spotNameTV);
         TextView infoTV = (TextView) view.findViewById(R.id.spotInfoTV);
+        TextView trackTV = (TextView) view.findViewById(R.id.spotTitleTV);
+        trackTV.setText(trackName);
         if(spot.getUnlocked() == Spot.LOCKED) {
             nameTV.setText("Undiscovered Spot");
             infoTV.setText("Keep exploring to find this spot.");

@@ -1,6 +1,5 @@
-<android.support.v4.widget.DrawerLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +8,7 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        <!-- Add content here -->
+
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/grid_container"
         xmlns:tools="http://schemas.android.com/tools"
@@ -17,32 +16,47 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity" >
 
-        <GridView
-            android:id="@+id/gridView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="3dp"
-            android:columnWidth="100dp"
-            android:gravity="center"
-            android:numColumns="auto_fit"
-            android:verticalSpacing="10dp"
-            android:drawSelectorOnTop="true"
-            android:stretchMode="columnWidth" >
-        </GridView>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="@dimen/feed_item_margin"
+                android:layout_marginRight="@dimen/feed_item_margin"
+                android:layout_marginTop="@dimen/feed_item_margin"
+                android:background="@drawable/bg_parent_rounded_corner"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/feed_item_padding_top_bottom"
+                android:paddingTop="@dimen/feed_item_padding_top_bottom"
+                android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tracksSelectTV"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="22dp"
+                        android:gravity="center"
+                        android:text="Choose a Track"
+                        android:layout_marginBottom="10dp" />
+
+                        <GridView
+                            android:id="@+id/gridView"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_margin="3dp"
+                            android:columnWidth="100dp"
+                            android:gravity="center"
+                            android:numColumns="auto_fit"
+                            android:verticalSpacing="2dp"
+                            android:drawSelectorOnTop="true"
+                            android:stretchMode="columnWidth" >
+                        </GridView>
+
+            </LinearLayout>
 
         </RelativeLayout>
+
     </FrameLayout>
 
-    <!-- The navigation drawer -->
-    <ListView android:id="@+id/left_drawer"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="@color/list_divider"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/list_selector"
-        android:background="@color/list_background"/>
-</android.support.v4.widget.DrawerLayout>
+</RelativeLayout>
 
 

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import wairoadc.godiscover.R;
@@ -28,7 +29,9 @@ public class StaticMapActivity extends TrackDrawer {
         track = intent.getParcelableExtra(MainActivity.TRACK_EXTRA);
 
         ImageView mImageView = (ImageView) findViewById(R.id.iv_photo);
+        TextView titleTV = (TextView) findViewById(R.id.sMapTV);
 
+        titleTV.setText(track.getName());
         String imageFullPath = getFilesDir().getPath()+track.getMapPath();
         Bitmap bitmap = BitmapFactory.decodeFile(imageFullPath);
         if(null != bitmap) {

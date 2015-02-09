@@ -24,10 +24,10 @@
     <string name="title_activity_progress">Progress </string>
     <string name="title_activity_redirect">Redirect </string>
     <string name="title_activity_scan_qr">Scan QR </string>
-    <string name="title_activity_refresh">Download Module</string>
+    <string name="title_activity_refresh">Download Tracks</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
-    <string name="no_map">Please Install a Maps Aplication</string>
+    <string name="no_map">Please Install a Maps Application</string>
 
     <!-- Progress Screen -->
     <string name="checkpoints">Checkpoints</string>

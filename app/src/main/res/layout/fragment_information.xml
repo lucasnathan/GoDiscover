@@ -13,14 +13,41 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#ffe5e5e5">
 
-            <ImageView android:layout_width="wrap_content"
-                android:id="@+id/main_picture"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="@dimen/feed_item_margin"
+                android:layout_marginRight="@dimen/feed_item_margin"
+                android:layout_marginTop="@dimen/feed_item_margin"
+                android:background="@drawable/bg_parent_rounded_corner"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/feed_item_padding_top_bottom"
+                android:paddingTop="@dimen/feed_item_padding_top_bottom"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Track Name"
+                    android:id="@+id/infoTV"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="22dp"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="15dp" />
+
+                <ImageView android:layout_width="wrap_content"
+                    android:id="@+id/main_picture"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center" />
+
+            </LinearLayout>
+
         </RelativeLayout>
 
     </LinearLayout>
@@ -35,25 +62,28 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:requiresFadingEdge="vertical"
                 android:fillViewport="true"
-                android:background="@drawable/text_view_border"
-                android:fadingEdgeLength="50dp">
+                android:background="@drawable/text_view_border">
+
                 <TextView
                     android:id="@+id/txt_description"
                      android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:textSize="16dp"
+                    android:textSize="22dp"
                     android:paddingTop="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                      />
+
             </ScrollView>
+
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

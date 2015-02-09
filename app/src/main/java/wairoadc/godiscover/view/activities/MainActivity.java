@@ -2,11 +2,9 @@ package wairoadc.godiscover.view.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -29,7 +27,6 @@ import java.util.List;
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GridViewAdapter;
 import wairoadc.godiscover.controller.TrackController;
-import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.view.models.ImageItem;
 
@@ -48,10 +45,10 @@ public class MainActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.gridView = (GridView) findViewById(R.id.gridView);
-        this.emptyGrid = (TextView) LayoutInflater.from(this).inflate(R.layout.empty,null);
-        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.grid_container);
-        relativeLayout.addView(emptyGrid,0);
-        this.gridView.setEmptyView(emptyGrid);
+        //this.emptyGrid = (TextView) LayoutInflater.from(this).inflate(R.layout.empty,null);
+        //RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.grid_container);
+        //relativeLayout.addView(emptyGrid, 0);
+        //this.gridView.setEmptyView(emptyGrid);
         customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
         gridView.setAdapter(customGridAdapter);
 

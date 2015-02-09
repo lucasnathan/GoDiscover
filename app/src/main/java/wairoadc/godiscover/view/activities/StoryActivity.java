@@ -23,7 +23,7 @@ public class StoryActivity extends TrackDrawer {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         startingItem = intent.getIntExtra(CURRENT_SPOT,0);
-        storyPageAdapter = new StoryPageAdapter(getSupportFragmentManager(),currentTrack.getSpots(),currentTrack.getMapPath());
+        storyPageAdapter = new StoryPageAdapter(getSupportFragmentManager(),currentTrack.getSpots(),currentTrack.getMapPath(), currentTrack.getName());
         storyPageAdapter.notifyDataSetChanged();
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(storyPageAdapter);

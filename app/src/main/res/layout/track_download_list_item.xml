@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/track_item_download_id"
-        android:text="Lucas"/>
+        android:text="Track Name"/>
 
 </LinearLayout>

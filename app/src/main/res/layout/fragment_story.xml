@@ -13,31 +13,58 @@
 
         <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:background="#ffe5e5e5">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:nestedScrollingEnabled="false">
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="@dimen/feed_item_margin"
+                android:layout_marginRight="@dimen/feed_item_margin"
+                android:layout_marginTop="@dimen/feed_item_margin"
+                android:background="@drawable/bg_parent_rounded_corner"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/feed_item_padding_top_bottom"
+                android:paddingTop="@dimen/feed_item_padding_top_bottom" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Track Name"
+                    android:id="@+id/spotTitleTV"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="22dp"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="10dp" />
+
                 <ImageView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/spotMapIV"
-                    android:background="@android:color/background_light"
                     android:adjustViewBounds="false"
                     android:layout_alignParentTop="true"
                     android:layout_alignRight="@+id/spotGalleryImgBtn"
                     android:paddingBottom="5dp"
                     android:src="@drawable/ic_action_barcode_2_darkgreen_big"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="center" />
 
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:id="@+id/divider1"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@android:color/darker_gray" />
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="@dimen/feed_item_margin"
+                android:layout_marginRight="@dimen/feed_item_margin"
+                android:layout_marginTop="@dimen/feed_item_margin"
+                android:background="@drawable/bg_parent_rounded_corner"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/feed_item_padding_top_bottom"
+                android:paddingTop="@dimen/feed_item_padding_top_bottom" >
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -69,26 +96,19 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp" />
 
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:id="@+id/divider2"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@android:color/darker_gray" />
+                </LinearLayout>
 
                 <ImageButton
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:id="@+id/spotGalleryImgBtn"
                     android:layout_below="@+id/spotInfoTV"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_action_movie"
-                    android:background="@android:color/background_light"
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:layout_gravity="center_horizontal"
                     android:tint="@android:color/holo_green_dark"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp" />
+                    android:backgroundTint="#ffffffff" />
             </LinearLayout>
         </ScrollView>
 

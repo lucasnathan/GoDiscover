@@ -19,11 +19,13 @@ public class StoryPageAdapter extends FragmentPagerAdapter {
 
     private List<Spot> spots;
     private String mapPah;
+    private String trackName;
 
-    public StoryPageAdapter(FragmentManager fm,List<Spot> spots,String mapPath) {
+    public StoryPageAdapter(FragmentManager fm,List<Spot> spots,String mapPath, String trackName) {
         super(fm);
         this.spots = spots;
         this.mapPah = mapPath;
+        this.trackName = trackName;
     }
 
     @Override
@@ -31,6 +33,7 @@ public class StoryPageAdapter extends FragmentPagerAdapter {
         Bundle bundle = new Bundle();
         bundle.putParcelable(StoryFragment.CURRENT,spots.get(position));
         bundle.putString(StoryFragment.MAP_PATH,mapPah);
+        bundle.putString(StoryFragment.TRACK_NAME,trackName);
         StoryFragment storyFragment = new StoryFragment();
         storyFragment.setArguments(bundle);
         return storyFragment;

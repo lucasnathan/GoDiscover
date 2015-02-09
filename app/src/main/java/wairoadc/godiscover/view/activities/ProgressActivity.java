@@ -46,6 +46,9 @@ public class ProgressActivity extends TrackDrawer {
         SpotController spotController = new SpotController(this);
         Type type = new Type();
 
+        TextView progressTV = (TextView) findViewById(R.id.progressTrackTV);
+        progressTV.setText(super.currentTrack.getName());
+
         type.set_id(1);
         List<Resource> imageResources = resourceController.loadAllByType(super.currentTrack,type);
         pictureMax = imageResources.size();
