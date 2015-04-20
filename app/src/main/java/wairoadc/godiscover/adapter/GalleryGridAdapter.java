@@ -18,6 +18,7 @@ import android.graphics.Picture;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +28,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import wairoadc.godiscover.R;
 
+import wairoadc.godiscover.services.BitmapWorkerTask;
 import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.GalleryFocusActivity;
 import wairoadc.godiscover.view.fragments.PicturesFragment;
@@ -37,8 +39,10 @@ public class GalleryGridAdapter extends BaseAdapter{
     private List<String> filePaths = new ArrayList<String>();
     private int imageWidth;
     public int position;
-    public GalleryGridAdapter(Activity activity, List<String> filePaths,
-                                int imageWidth, int type) {
+
+    private static final String ADAPTER_TAG = "GalleryGridAdapter";
+
+    public GalleryGridAdapter(Activity activity, List<String> filePaths,int imageWidth, int type) {
         this.activity = activity;
         this.filePaths = filePaths;
         this.imageWidth = imageWidth;
@@ -104,7 +108,7 @@ public class GalleryGridAdapter extends BaseAdapter{
         public void onClick(View v) {
             // on selecting grid view image
             // launch full screen activity
-            Log.i("GalleryAdapter", "Entered onClick method");
+            Log.i(ADAPTER_TAG, "Entered onClick method");
             Intent i = new Intent(activity, GalleryFocusActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             i.putExtra("position", position);
@@ -140,68 +144,35 @@ public class GalleryGridAdapter extends BaseAdapter{
         return null;
     }
 
-    public static boolean cancelPotentialWork(String data, ImageView imageView) {
+    private boolean cancelPotentialWork(String data, ImageView imageView) {
         final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-
-        if (bitmapWorkerTask != null) {
-            final String bitmapData = bitmapWorkerTask.data;
-            // If bitmapData is not yet set or it differs from the new data
-            if (bitmapData == null || bitmapData.equals(data)) {
-                // Cancel previous task
+        if(bitmapWorkerTask != null) {
+            final String bitmapData = bitmapWorkerTask.getData();
+            if(bitmapData == null || bitmapData == "" || !bitmapData.equals(data)) {
+                Log.i("GalleryGridAdapter","Image Load cancelled");
                 bitmapWorkerTask.cancel(true);
             } else {
-                // The same work is already in progress
                 return false;
             }
         }
-        // No task associated with the ImageView, or an existing task was cancelled
         return true;
     }
 
-    public void loadBitmap(String resId, ImageView imageView) {
-        if (cancelPotentialWork(resId, imageView)) {
-            final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-            Bitmap mPlaceHolderBitmap = BitmapFactory.decodeResource(activity.getResources(),R.drawable.btn_cab_done_default_go_theme);
+    public void loadBitmap(final String resId, final ImageView imageView) {
+        final Bitmap bitmap = BitmapWorkerTask.getBitmapFromMemCache(resId);
+        if(bitmap != null) {
+            Log.i(ADAPTER_TAG,"This image is in cache");
+            imageView.setImageBitmap(bitmap);
+        } else {
+            if (cancelPotentialWork(resId, imageView)) {
+                final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+                Bitmap mPlaceHolderBitmap = BitmapFactory.decodeResource(activity.getResources(),R.drawable.btn_cab_done_default_go_theme);
 
-            final AsyncDrawable asyncDrawable =
-                    new AsyncDrawable(activity.getResources(), mPlaceHolderBitmap, task);
-            imageView.setImageDrawable(asyncDrawable);
-            task.execute(resId);
-        }
-    }
-
-
-    class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
-        private final WeakReference<ImageView> imageViewReference;
-        private String data;
-
-        public BitmapWorkerTask(ImageView imageView) {
-            // Use a WeakReference to ensure the ImageView can be garbage collected
-            imageViewReference = new WeakReference<ImageView>(imageView);
-        }
-
-        // Decode image in background.
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            data = params[0];
-            return Utility.decodeSampledBitmapFromResource(data, 100, 100);
-        }
-
-        // Once complete, see if ImageView is still around and set bitmap.
-        protected void onPostExecute(Bitmap bitmap) {
-            if (isCancelled()) {
-                bitmap = null;
-            }
-
-            if (imageViewReference != null && bitmap != null) {
-                final ImageView imageView = imageViewReference.get();
-                final BitmapWorkerTask bitmapWorkerTask =
-                        getBitmapWorkerTask(imageView);
-                if (this == bitmapWorkerTask && imageView != null) {
-                    imageView.setImageBitmap(bitmap);
-                }
+                final AsyncDrawable asyncDrawable =
+                        new AsyncDrawable(activity.getResources(), mPlaceHolderBitmap, task);
+                imageView.setImageDrawable(asyncDrawable);
+                task.execute(resId);
             }
         }
     }
-
 }

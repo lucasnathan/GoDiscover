@@ -1,8 +1,11 @@
 package wairoadc.godiscover.view.fragments;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.LruCache;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,14 +32,13 @@ public class PicturesFragment extends Fragment {
 
     private UtilsGrid utils;
     private List<Resource> imageResources = new ArrayList<Resource>();
+
     private GalleryGridAdapter adapter;
     private GridView gridView;
     private int columnWidth, galleryMode;
 
     public static PicturesFragment newInstance(List<Resource> imageResources) {
         Bundle args = new Bundle();
-
-
         args.putParcelableArrayList(IMAGE_LIST, (ArrayList<Resource>) imageResources);
         PicturesFragment fragment = new PicturesFragment();
         fragment.setArguments(args);
@@ -47,6 +49,7 @@ public class PicturesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         imageResources = getArguments().getParcelableArrayList(IMAGE_LIST);
+        setRetainInstance(true);
     }
 
     @Override

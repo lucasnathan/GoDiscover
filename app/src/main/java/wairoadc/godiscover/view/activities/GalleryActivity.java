@@ -1,7 +1,9 @@
 package wairoadc.godiscover.view.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 
