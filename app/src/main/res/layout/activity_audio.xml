@@ -6,7 +6,7 @@
     android:background="#ffffff">
 
     <ListView
-        android:id="@+id/list"
+        android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="#ffdbdbdb"
@@ -14,5 +14,14 @@
         android:cacheColorHint="#00000000"
         />
 
+    <TextView android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAlignment="center"
+        android:text="No songs in this spot"
+        android:textColor="#bd424242"
+        android:gravity="center"
+        android:textSize="@dimen/abc_text_size_large_material"
+        />
 
 </LinearLayout>

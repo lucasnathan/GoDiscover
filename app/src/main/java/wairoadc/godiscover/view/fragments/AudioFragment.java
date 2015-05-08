@@ -1,9 +1,13 @@
 package wairoadc.godiscover.view.fragments;
 
+
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
+
+
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +28,13 @@ import wairoadc.godiscover.view.models.Audio;
 /**
  * Created by Lucas on 5/02/2015.
  */
-public class AudioFragment extends Fragment {
+public class AudioFragment extends ListFragment {
     public static final String ARG_PAGE = "Audio";
-    private List<Resource> audioResources = new ArrayList<Resource>();
+    private List<Resource> audioResources;
     public static final String AUDIO_LIST = "audioList";
     private int galleryMode;
-
+    private final ArrayList<String> audioPaths = new ArrayList<>();
+    private final ArrayList<String> audioTitles = new ArrayList<>();
 
     public static AudioFragment newInstance(List<Resource> audioResources) {
         Bundle args = new Bundle();
@@ -42,51 +47,71 @@ public class AudioFragment extends Fragment {
     }
 
     @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        try {
+            Intent intent = new Intent(getActivity(), AudioPlayer.class);
+            intent.putExtra(AudioPlayer.AUDIO_FILE_NAME,getActivity().getFilesDir()+audioPaths.get(position));
+            startActivity(intent);
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         audioResources = getArguments().getParcelableArrayList(AUDIO_LIST);
+        if(null ==audioResources)
+            audioResources = new ArrayList<Resource>();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_audio, container, false);
-        ListView listview = (ListView) view.findViewById(R.id.list);
+        ListView listview = (ListView) view.findViewById(android.R.id.list);
         UtilsGrid utilsGrid = new UtilsGrid(getActivity());
 
         final ArrayList<Resource> list = (ArrayList<Resource>) audioResources;
-        final ArrayList<String> audioPaths = new ArrayList<>();
-        final ArrayList<String> audioTitles = new ArrayList<>();
-        for(Resource resource : audioResources) {
-            audioPaths.add(resource.getPath());
-            audioTitles.add(resource.getName());
-        }
-        ArrayList<String> dur = this.getMusicDuration(audioPaths);
 
+        //Verify if the spot has at lest one audio file in order to render the list
 
-        ArrayList<Audio> audios = new ArrayList<Audio>();
-        for (int i = 0;i<list.size() && i<dur.size();i++){
-            Audio audio = new Audio();
-            audio.setPath(audioPaths.get(i));
-            audio.setName(audioTitles.get(i));
-            audio.setDuration(dur.get(i));
-            audios.add(audio);
-        }
-        MyArrayAdapter adapter = new MyArrayAdapter(getActivity(),audios);
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-               try {
-                   Intent intent = new Intent(getActivity(), AudioPlayer.class);
-                   intent.putExtra(AudioPlayer.AUDIO_FILE_NAME,getActivity().getFilesDir()+audioPaths.get(position));
-                   startActivity(intent);
-               } catch (Exception e) {e.printStackTrace();}
-
+            for(Resource resource : audioResources) {
+                audioPaths.add(resource.getPath());
+                audioTitles.add(resource.getName());
             }
-        });
+            ArrayList<String> dur = this.getMusicDuration(audioPaths);
+
+
+            ArrayList<Audio> audios = new ArrayList<Audio>();
+            for (int i = 0;i<list.size() && i<dur.size();i++){
+                Audio audio = new Audio();
+                audio.setPath(audioPaths.get(i));
+                audio.setName(audioTitles.get(i));
+                audio.setDuration(dur.get(i));
+                audios.add(audio);
+            }
+            MyArrayAdapter adapter = new MyArrayAdapter(getActivity(),audios);
+            listview.setAdapter(adapter);
+            /*
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                    try {
+                        Intent intent = new Intent(getActivity(), AudioPlayer.class);
+                        intent.putExtra(AudioPlayer.AUDIO_FILE_NAME,getActivity().getFilesDir()+audioPaths.get(position));
+                        startActivity(intent);
+                    } catch (Exception e) {e.printStackTrace();}
+
+                }
+            });*/
+
         return view;
     }
 
