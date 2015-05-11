@@ -50,14 +50,14 @@ public class ProgressActivity extends TrackDrawer {
         progressTV.setText(super.currentTrack.getName());
 
         type.set_id(1);
-        List<Resource> imageResources = resourceController.loadAllByType(super.currentTrack,type);
+        List<Resource> imageResources = resourceController.loadAllByType(super.currentTrack,type,false);
         pictureMax = imageResources.size();
-        statusPictures = resourceController.countUnlockedByType(super.currentTrack,type);
+        statusPictures = resourceController.countResoucesByType(super.currentTrack,type,false);
 
         type.set_id(2);
-        List<Resource> soundResources = resourceController.loadAllByType(super.currentTrack,type);
+        List<Resource> soundResources = resourceController.loadAllByType(super.currentTrack,type,false);
         audioMax = soundResources.size();
-        statusAudio = resourceController.countUnlockedByType(super.currentTrack,type);
+        statusAudio = resourceController.countResoucesByType(super.currentTrack,type,false);
 
         checkpointMax = currentTrack.getSpots().size();
         statusCheckpoints= spotController.unlockedSpots(super.currentTrack);

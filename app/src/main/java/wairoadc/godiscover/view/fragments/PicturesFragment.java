@@ -63,9 +63,11 @@ public class PicturesFragment extends Fragment {
         InitilizeGridLayout();
         List<String> imagePaths = new ArrayList<>();
         for(Resource resource : imageResources) {
-            imagePaths.add(resource.getPath());
+            if(null != resource) // unlocked image
+                imagePaths.add(resource.getPath());
+            else //locked image
+                imagePaths.add(null);
         }
-
         adapter = new GalleryGridAdapter(getActivity(), imagePaths,columnWidth, galleryMode);
         gridView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

@@ -63,8 +63,10 @@ public class GalleryFocusAdapter extends PagerAdapter {
 
         imgDisplay = (ImageView) viewLayout.findViewById(R.id.imgDisplay);
         Log.i("GalleryFocus","size: "+imgDisplay.getWidth()+" "+imgDisplay.getHeight());
-
-        loadBitmap(activity.getFilesDir()+imagePaths.get(position),imgDisplay);
+        if(null != imagePaths.get(position))//unlocked spot show focus picture otherwise don't show
+            loadBitmap(activity.getFilesDir()+imagePaths.get(position),imgDisplay);
+        else //locked image show locked icon
+            imgDisplay.setImageResource(R.drawable.locked_resource);
         container.addView(viewLayout);
 
         return viewLayout;

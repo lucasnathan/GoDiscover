@@ -75,8 +75,11 @@ public class GalleryGridAdapter extends BaseAdapter{
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLayoutParams(new GridView.LayoutParams(imageWidth,
                 imageWidth));
+        if(null !=filePaths.get(position)) //an unlocked resource, show icon
+            loadBitmap(activity.getFilesDir()+filePaths.get(position),imageView);
+        else //null object equals resource is locked show locked icon instead
+            imageView.setImageResource(R.drawable.locked_resource);
 
-        loadBitmap(activity.getFilesDir()+filePaths.get(position),imageView);
         this.position = position;
         imageView.setFocusable(true);
         imageView.setFocusableInTouchMode(true);

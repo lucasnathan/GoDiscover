@@ -118,11 +118,11 @@ public class ControllerTests  extends AndroidTestCase {
         type.set_id(2);
         ResourceController resourceController = new ResourceController(getContext());
         //int resUnlocked = resourceController.countUnlocked(secondTrack);
-        int resUnlockedByType = resourceController.countUnlockedByType(secondTrack,type);
+        int resUnlockedByType = resourceController.countResoucesByType(secondTrack,type,false);
         int resUnlocked = resourceController.countUnlocked(secondTrack);
         List<Resource> resources = resourceController.loadRes(secondTrack.getSpots().get(0));
-        List<Resource> allRes = resourceController.loadAllRes(homeTracks.get(0));
-        List<Resource> resourceImages = resourceController.loadAllByType(secondTrack,type);
+        List<Resource> allRes = resourceController.loadAllRes(homeTracks.get(0),false);
+        List<Resource> resourceImages = resourceController.loadAllByType(secondTrack,type,false);
 
 
     }
@@ -150,5 +150,4 @@ public class ControllerTests  extends AndroidTestCase {
         List<Track> results = trackController.getNewTracksToDownload(tracksOnServerSample);
 
     }
-
 }

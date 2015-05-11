@@ -44,9 +44,11 @@ public class GalleryActivity extends TrackDrawer {
         galleryMode = intent.getIntExtra(GALLERY_TYPE,TRACK_MODE);
         ResourceController resourceController = new ResourceController(this);
         if(galleryMode == TRACK_MODE) {
-
-            imageResources = resourceController.loadAllByType(currentTrack,new Type(1));
-            audioResources = resourceController.loadAllByType(currentTrack, new Type(2));
+            imageResources = resourceController.loadAllByType(currentTrack,new Type(1),true);
+            int countAllRes = resourceController.countResoucesByType(currentTrack,new Type(1),false);
+            //insert locked icons
+            for(int i = 0; i < countAllRes - imageResources.size();i++) imageResources.add(null);
+            audioResources = resourceController.loadAllByType(currentTrack, new Type(2),true);
         } else if (galleryMode == SPOT_MODE) {
             Spot spot = intent.getParcelableExtra(StoryFragment.SPOT_EXTRA);
             imageResources = resourceController.loadResByType(spot,new Type(1));

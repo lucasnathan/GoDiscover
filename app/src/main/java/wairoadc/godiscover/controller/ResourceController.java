@@ -28,7 +28,16 @@ public class ResourceController {
     }
 
     // Given a track and a type of resource retrieves a list of all resources of that type from that track.
-    public List<Resource> loadAllByType(Track track,Type type) {
+
+    /**
+     *
+     * @param track
+     * @param type
+     * @param unLockedOnly if true returns unlocked resources of <Type>, locked resources are null objects
+     * this is done in order to preserver the order of appearance of each resource.
+     * @return
+     */
+    public List<Resource> loadAllByType(Track track,Type type,boolean unLockedOnly) {
         List<Resource> typeResources  = new ArrayList<>();
         List<Resource> tempResouces = new ArrayList<>();
         List<Spot> trackSpots = new ArrayList<>();
@@ -47,8 +56,13 @@ public class ResourceController {
                     db.close();
                     if(null != tempResouces && 0 != tempResouces.size()) {
                         for(Resource resource : tempResouces) {
-                            if(resource.getType().get_id() == type.get_id()) {
-                                typeResources.add(resource);
+                            if(resource.getType().get_id() == type.get_id() ) { // Is this resource the type I'm looking for ?
+                                if(unLockedOnly == true && spot.getUnlocked() == 0) { // Is it locked ? If so insert null to the list
+                                    typeResources.add(null);
+                                } else {
+                                    typeResources.add(resource); //the image is unlocked insert the resource at the right position
+                                }
+
                             }
                         }
                     }
@@ -66,7 +80,13 @@ public class ResourceController {
     }
 
     // Given a track, retrieves a list of all resources from that track.
-    public List<Resource> loadAllRes(Track track) {
+    /**
+     *
+     * @param track
+     * @param unLockedOnly if true returns only unlocked resources, if false returns all resources
+     * @return
+     */
+    public List<Resource> loadAllRes(Track track,boolean unLockedOnly) {
         List<Resource> typeResources  = new ArrayList<>();
         List<Resource> tempResouces = new ArrayList<>();
         List<Spot> trackSpots = new ArrayList<>();
@@ -77,6 +97,7 @@ public class ResourceController {
             trackSpots = spotController.loadAllSpots(track);
             if(null != trackSpots && 0 != trackSpots.size()) {
                 for(Spot spot: trackSpots) {
+                    if(unLockedOnly == true && spot.getUnlocked() == 0) continue;
                     db = resourceDAO.open();
                     resourceDAO.setDatabase(db);
                     db.beginTransaction();
@@ -189,7 +210,7 @@ public class ResourceController {
     }
 
     // Retrieves the number of unlocked resources on a track given a type.
-    public int countUnlockedByType(Track track, Type type) {
+    public int countResoucesByType(Track track, Type type,boolean unLockedOnly) {
         int countUnlocked = 0;
         SpotController spotController = new SpotController(context);
         ResourceDAO resourceDAO = new ResourceDAO(context);
@@ -199,11 +220,10 @@ public class ResourceController {
             db = resourceDAO.open();
             db.beginTransaction();
             for(Spot spot : spots) {
-                if(spot.getUnlocked() == 1) {
-                    List<Resource>resources = this.loadByType(spot,db,type);
-                    if(null != resources) {
-                        countUnlocked += resources.size();
-                    }
+                if(unLockedOnly == true && spot.getUnlocked() == 0) continue;
+                List<Resource>resources = this.loadByType(spot,db,type);
+                if(null != resources) {
+                    countUnlocked += resources.size();
                 }
             }
             db.setTransactionSuccessful();
