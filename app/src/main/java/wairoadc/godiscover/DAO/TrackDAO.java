@@ -105,8 +105,8 @@ public class TrackDAO {
     }
 
     //Get all tracks stored on the database on the database
-    public List<Track> getAllTracks(){
-        List<Track> tracks = new ArrayList<Track>();
+    public ArrayList<Track> getAllTracks(){
+        ArrayList<Track> tracks = new ArrayList<Track>();
         Cursor cursor = database.query(TrackTable.TRACK_TABLE,allColumns,null,null,null,null,null);
 
         cursor.moveToFirst();

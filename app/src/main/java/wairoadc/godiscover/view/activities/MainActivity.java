@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -38,7 +39,9 @@ public class MainActivity extends Activity{
     private GridView gridView;
     private GridViewAdapter customGridAdapter;
     private TextView emptyGrid;
-    private List<Track> listHomeTracks;
+    private ArrayList<Track> listHomeTracks;
+    private ArrayList imageItems;
+    private boolean startUp = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +52,30 @@ public class MainActivity extends Activity{
         //RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.grid_container);
         //relativeLayout.addView(emptyGrid, 0);
         //this.gridView.setEmptyView(emptyGrid);
-        customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
+
+        if (savedInstanceState == null) {
+            TrackController trackController = new TrackController(this);
+            listHomeTracks = trackController.loadHomeTracks();
+            imageItems = getData();
+            startUp = false;
+        } else {
+            listHomeTracks = savedInstanceState.getParcelableArrayList("listHomeTracks");
+            imageItems = savedInstanceState.getParcelableArrayList("imageItems");
+            startUp = false;
+        }
+
+        customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, imageItems);
+
         gridView.setAdapter(customGridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,int position, long id) {
-                Toast.makeText(MainActivity.this, position + "#Selected",Toast.LENGTH_LONG).show();
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                //Toast.makeText(MainActivity.this, position + "#Selected",Toast.LENGTH_LONG).show();
                 //showDialog(DIALOG_ALERT);
                 makeDialog(listHomeTracks.get(position));
             }
-
         });
+        Log.i(LOG_TAG, "onCreate");
     }
 
     public void makeDialog(Track track) {
@@ -85,8 +101,6 @@ public class MainActivity extends Activity{
 
     //Will get Track information from the database
     private ArrayList getData() {
-        TrackController trackController = new TrackController(this);
-        listHomeTracks = trackController.loadHomeTracks();
         final ArrayList imageItems = new ArrayList();
         if(null != listHomeTracks && listHomeTracks.size() > 0) {
             // retrieve String drawable array
@@ -105,9 +119,26 @@ public class MainActivity extends Activity{
     @Override
     protected void onResume() {
         super.onResume();
-        customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
+
+        if (startUp) {
+            TrackController trackController = new TrackController(this);
+            listHomeTracks = trackController.loadHomeTracks();
+            imageItems = getData();
+        }
+
+        customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, imageItems);
         gridView.setAdapter(customGridAdapter);
         Log.i(LOG_TAG, "onResume");
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        Log.i(LOG_TAG, "onDestroy");
+        super.onStop();
+        listHomeTracks = null;
+        imageItems = null;
+        System.gc();
     }
 
     //Positive Answer
@@ -128,7 +159,7 @@ public class MainActivity extends Activity{
             TrackController trackController = new TrackController(getApplicationContext());
             track = trackController.loadTrack(track);
             //Creates an empty list for spots and resources in order to not break the parcel
-            intent.putExtra(TRACK_EXTRA,track);
+            intent.putExtra(TRACK_EXTRA, track);
             startActivity(intent);
         }
     }
@@ -156,6 +187,7 @@ public class MainActivity extends Activity{
                     Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
@@ -182,6 +214,14 @@ public class MainActivity extends Activity{
         }
 
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("listHomeTracks", listHomeTracks);
+        outState.putParcelableArrayList("imageItems", imageItems);
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);

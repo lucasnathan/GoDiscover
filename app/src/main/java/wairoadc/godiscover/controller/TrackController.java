@@ -38,11 +38,11 @@ public class TrackController {
 
     // Retrieves basic information of all the tracks, for displaying on the home page.
     //Which Include all the information in the Track table. See the design for more information.
-    public List<Track> loadHomeTracks() {
+    public ArrayList<Track> loadHomeTracks() {
         TrackDAO trackDAO = new TrackDAO(context);
         SQLiteDatabase db = null;
         try {
-            List<Track> tracks = new ArrayList<>();
+            ArrayList<Track> tracks = new ArrayList<>();
             db = trackDAO.open();
             db.beginTransaction();
             tracks = trackDAO.getAllTracks();
