@@ -2,9 +2,16 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+.idea/misc.xml
 .DS_Store
 /build
 app/src/main/assets/api_keys.properties
 app/src/main/java/wairoadc/godiscover/services/DownloadService.java
 
+
+.idea/encodings.xml
+.idea/scopes/scope_settings.xml
+.idea/compiler.xml
 .idea/misc.xml
+
+.idea/

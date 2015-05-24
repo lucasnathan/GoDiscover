@@ -4,7 +4,6 @@ package wairoadc.godiscover.adapter;
  * Created by Lucas on 8/02/2015.
  */
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -30,15 +29,14 @@ public class GalleryFocusAdapter extends PagerAdapter {
     private Activity activity;
     private List<String> imagePaths;
     private LayoutInflater inflater;
-    private ArrayList<String> _story;
+    private List<String> imageStories;
     private static final String ADAPTER_TAG = "GalleryFocusAdapter";
 
     // constructor
-    public GalleryFocusAdapter(Activity activity,List<String> imagePaths) {
+    public GalleryFocusAdapter(Activity activity,List<String> imagePaths,List<String> imageInfo) {
         this.activity = activity;
-        //this._story = story;
+        this.imageStories = imageInfo;
         this.imagePaths = imagePaths;
-
     }
 
     @Override
@@ -52,7 +50,7 @@ public class GalleryFocusAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         ImageView imgDisplay;
         TextView storyText;
 
@@ -62,11 +60,18 @@ public class GalleryFocusAdapter extends PagerAdapter {
                 false);
 
         imgDisplay = (ImageView) viewLayout.findViewById(R.id.imgDisplay);
-        Log.i("GalleryFocus","size: "+imgDisplay.getWidth()+" "+imgDisplay.getHeight());
-        if(null != imagePaths.get(position))//unlocked spot show focus picture otherwise don't show
-            loadBitmap(activity.getFilesDir()+imagePaths.get(position),imgDisplay);
-        else //locked image show locked icon
+        //Log.i("GalleryFocus","size: "+imgDisplay.getWidth()+" "+imgDisplay.getHeight());
+        if(null != imagePaths.get(position)) {//unlocked spot show focus picture otherwise don't show
+            loadBitmap(activity.getFilesDir() + imagePaths.get(position), imgDisplay);
+            imgDisplay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("GalleryFocus", "Image click: " + imageStories.get(position));
+                }
+            });
+        } else { //locked image show locked icon
             imgDisplay.setImageResource(R.drawable.locked_resource);
+        }
         container.addView(viewLayout);
 
         return viewLayout;
@@ -100,7 +105,7 @@ public class GalleryFocusAdapter extends PagerAdapter {
     public void loadBitmap(String currentImage, ImageView imageView) {
         final Bitmap bitmap = BitmapWorkerTask.getBitmapFromMemCache(currentImage);
         if(bitmap != null) {
-            Log.i(ADAPTER_TAG,"This image is in cache");
+            //Log.i(ADAPTER_TAG,"This image is in cache");
             imageView.setImageBitmap(bitmap);
         } else {
             if(cancelPotentialWork(currentImage,imageView)) {

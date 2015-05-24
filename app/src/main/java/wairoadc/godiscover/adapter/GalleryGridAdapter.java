@@ -37,14 +37,16 @@ public class GalleryGridAdapter extends BaseAdapter{
 
     private Activity activity;
     private List<String> filePaths = new ArrayList<String>();
+    private List<String> imageStories = new ArrayList<String>();
     private int imageWidth;
     public int position;
 
     private static final String ADAPTER_TAG = "GalleryGridAdapter";
 
-    public GalleryGridAdapter(Activity activity, List<String> filePaths,int imageWidth, int type) {
+    public GalleryGridAdapter(Activity activity, List<String> filePaths,List<String> imageStories,int imageWidth, int type) {
         this.activity = activity;
         this.filePaths = filePaths;
+        this.imageStories = imageStories;
         this.imageWidth = imageWidth;
     }
 
@@ -116,6 +118,7 @@ public class GalleryGridAdapter extends BaseAdapter{
             i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             i.putExtra("position", position);
             i.putStringArrayListExtra(PicturesFragment.IMAGE_LIST,(ArrayList<String>)filePaths);
+            i.putStringArrayListExtra(PicturesFragment.IMAGE_STORY,(ArrayList<String>)imageStories);
             activity.startActivity(i);
         }
 
