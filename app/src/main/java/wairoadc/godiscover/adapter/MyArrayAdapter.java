@@ -16,8 +16,6 @@ import wairoadc.godiscover.view.models.Audio;
  * Created by Lucas on 9/02/2015.
  */
 public class MyArrayAdapter extends ArrayAdapter<Audio>{
-    private Context context;
-    private String[] names,times;
     public MyArrayAdapter(Context context, ArrayList<Audio> audios){
         super(context, 0, audios);
     }

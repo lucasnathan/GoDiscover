@@ -5,25 +5,20 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GridViewAdapter;
@@ -38,7 +33,6 @@ public class MainActivity extends Activity{
 
     private GridView gridView;
     private GridViewAdapter customGridAdapter;
-    private TextView emptyGrid;
     private ArrayList<Track> listHomeTracks;
     private ArrayList imageItems;
     private boolean startUp = true;
@@ -48,10 +42,6 @@ public class MainActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.gridView = (GridView) findViewById(R.id.gridView);
-        //this.emptyGrid = (TextView) LayoutInflater.from(this).inflate(R.layout.empty,null);
-        //RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.grid_container);
-        //relativeLayout.addView(emptyGrid, 0);
-        //this.gridView.setEmptyView(emptyGrid);
 
         if (savedInstanceState == null) {
             TrackController trackController = new TrackController(this);
@@ -70,8 +60,6 @@ public class MainActivity extends Activity{
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                //Toast.makeText(MainActivity.this, position + "#Selected",Toast.LENGTH_LONG).show();
-                //showDialog(DIALOG_ALERT);
                 makeDialog(listHomeTracks.get(position));
             }
         });

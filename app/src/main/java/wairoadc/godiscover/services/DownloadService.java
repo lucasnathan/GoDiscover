@@ -8,10 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -34,7 +31,6 @@ import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.utilities.TrackXMLParser;
 import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.MainActivity;
-import wairoadc.godiscover.view.activities.RefreshActivity;
 
 //Based on:
 //http://www.vogella.com/tutorials/AndroidServices/article.html
@@ -64,10 +60,8 @@ public class DownloadService extends IntentService implements ProgressListener {
 
     private File output;
 
-    public static final int MSG_REGISTER_CLIENT = 1;
     private TransferManager transferManager;
     private Download download;
-    private Messenger messenger;
     private NotificationCompat.Builder notificationBuilder;
 
 

@@ -2,7 +2,6 @@ package wairoadc.godiscover.controller;
 
 import android.content.Context;
 
-import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
 
 /**

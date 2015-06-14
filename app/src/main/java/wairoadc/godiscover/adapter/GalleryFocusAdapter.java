@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.services.BitmapWorkerTask;
@@ -29,13 +28,19 @@ public class GalleryFocusAdapter extends PagerAdapter {
     private Activity activity;
     private List<String> imagePaths;
     private LayoutInflater inflater;
+<<<<<<< HEAD
+=======
     private List<String> imageStories;
+>>>>>>> origin/master
     private static final String ADAPTER_TAG = "GalleryFocusAdapter";
 
     // constructor
     public GalleryFocusAdapter(Activity activity,List<String> imagePaths,List<String> imageInfo) {
         this.activity = activity;
+<<<<<<< HEAD
+=======
         this.imageStories = imageInfo;
+>>>>>>> origin/master
         this.imagePaths = imagePaths;
     }
 
@@ -46,13 +51,12 @@ public class GalleryFocusAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((LinearLayout) object);
+        return view == object;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         ImageView imgDisplay;
-        TextView storyText;
 
         inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -4,7 +4,6 @@ package wairoadc.godiscover.adapter;
  * Created by Lucas on 13/01/2015.
  */
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

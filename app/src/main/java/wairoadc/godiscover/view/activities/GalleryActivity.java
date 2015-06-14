@@ -1,9 +1,7 @@
 package wairoadc.godiscover.view.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 
@@ -12,14 +10,11 @@ import java.util.List;
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.TabsPagerAdapter;
 import wairoadc.godiscover.controller.ResourceController;
-import wairoadc.godiscover.controller.SpotController;
-import wairoadc.godiscover.controller.TrackController;
 import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Type;
 import wairoadc.godiscover.view.fragments.SlidingTabLayout;
 import wairoadc.godiscover.view.fragments.StoryFragment;
-
 
 /**
  * Created by Lucas on 5/02/2015.
@@ -84,7 +79,4 @@ public class GalleryActivity extends TrackDrawer {
         return false;
     }
 
-    public void setPagingEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 }

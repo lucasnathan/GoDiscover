@@ -1,11 +1,8 @@
 package wairoadc.godiscover.view.fragments;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.LruCache;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,6 @@ import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GalleryGridAdapter;
-import wairoadc.godiscover.controller.TrackController;
 import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.utilities.UtilsGrid;
 import wairoadc.godiscover.view.models.AppConstantGrid;

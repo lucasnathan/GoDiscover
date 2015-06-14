@@ -6,10 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import wairoadc.godiscover.dao.TrackDAO;
 import wairoadc.godiscover.model.Resource;
@@ -29,11 +27,6 @@ public class TrackController {
 
     public TrackController(Context context) {
         this.context = context;
-    }
-
-    // Retrieves all the tracks on the database.
-    public List<Track> loadAllTracks() {
-        return null;
     }
 
     // Retrieves basic information of all the tracks, for displaying on the home page.

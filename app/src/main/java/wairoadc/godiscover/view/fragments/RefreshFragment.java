@@ -1,6 +1,5 @@
 package wairoadc.godiscover.view.fragments;
 
-
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -8,33 +7,17 @@ import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.event.ProgressEvent;
-import com.amazonaws.event.ProgressListener;
-
 import java.util.ArrayList;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 import wairoadc.godiscover.R;
@@ -43,7 +26,6 @@ import wairoadc.godiscover.controller.TrackController;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.services.DownloadIndexTask;
 import wairoadc.godiscover.services.DownloadService;
-import wairoadc.godiscover.view.activities.RefreshActivity;
 
 
 /**

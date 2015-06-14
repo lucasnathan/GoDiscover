@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 
-
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -32,7 +29,6 @@ public class AudioFragment extends ListFragment {
     public static final String ARG_PAGE = "Audio";
     private List<Resource> audioResources;
     public static final String AUDIO_LIST = "audioList";
-    private int galleryMode;
     private final ArrayList<String> audioPaths = new ArrayList<>();
     private final ArrayList<String> audioTitles = new ArrayList<>();
 
@@ -76,7 +72,6 @@ public class AudioFragment extends ListFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_audio, container, false);
         ListView listview = (ListView) view.findViewById(android.R.id.list);
-        UtilsGrid utilsGrid = new UtilsGrid(getActivity());
 
         final ArrayList<Resource> list = (ArrayList<Resource>) audioResources;
 
@@ -107,20 +102,6 @@ public class AudioFragment extends ListFragment {
             }
             MyArrayAdapter adapter = new MyArrayAdapter(getActivity(),audios);
             listview.setAdapter(adapter);
-            /*
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                    try {
-                        Intent intent = new Intent(getActivity(), AudioPlayer.class);
-                        intent.putExtra(AudioPlayer.AUDIO_FILE_NAME,getActivity().getFilesDir()+audioPaths.get(position));
-                        startActivity(intent);
-                    } catch (Exception e) {e.printStackTrace();}
-
-                }
-            });*/
 
         return view;
     }

@@ -17,7 +17,6 @@ import wairoadc.godiscover.view.activities.AudioPlayer;
  */
 public class MusicService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,MediaController.MediaPlayerControl, MediaPlayer.OnCompletionListener {
     public static final String ACTION_PLAY = "wairoadc.godiscover.action.PLAY";
-    public static boolean IS_PLAYING = false;
     public static final String TAG = "MusicService";
     private final IBinder mBinder = new LocalBinder();
     private static String audioFile;

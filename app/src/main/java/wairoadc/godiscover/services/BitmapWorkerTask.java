@@ -13,7 +13,6 @@ import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
-
 public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
 
     private final WeakReference<ImageView> imageViewReference;
@@ -47,7 +46,7 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
         //Normal draw
         if(params.length == 1) {
             data = params[0];
-            final Bitmap bitmap = this.decodeSampledBitmapFromFile(data,200,200);
+            final Bitmap bitmap = this.decodeSampledBitmapFromFile(data, 200, 200);
             BitmapWorkerTask.addBitmapToMemoryCache(data,bitmap);
             return bitmap;
         }
@@ -56,14 +55,14 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
             data = params[0];
             int x = Integer.parseInt(params[1]);
             int y = Integer.parseInt(params[2]);
-            final Bitmap bitmap = this.decodeSampledBitmapFromFile(data,200,200);
-            BitmapWorkerTask.addBitmapToMemoryCache(data,bitmap);
+            final Bitmap bitmap = this.decodeSampledBitmapforSize(data);
+            BitmapWorkerTask.addBitmapToMemoryCache(data, bitmap);
             final Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.RGB_565);
             final Canvas canvas = new Canvas(tempBitmap);
             canvas.drawBitmap(bitmap, 0, 0, null);
             final Paint paint = new Paint();
             paint.setColor(Color.RED);
-            canvas.drawCircle(x, y, 5, paint);
+            canvas.drawCircle(x, y, 10, paint);
             return tempBitmap;
         }
     }
@@ -76,6 +75,17 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
 
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        //Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(file,options);
+    }
+
+    private static Bitmap decodeSampledBitmapforSize(String file) {
+        //First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(file,options);
 
         //Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;

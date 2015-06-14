@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import android.media.MediaPlayer.OnPreparedListener;
 import android.view.MotionEvent;
 import android.widget.MediaController;
 
@@ -33,8 +31,6 @@ public class AudioPlayer extends Activity {
     private boolean first;
 
     private boolean mBound;
-
-    private Handler handler = new Handler();
 
     @Override
     protected void onStart() {
@@ -115,5 +111,4 @@ public class AudioPlayer extends Activity {
         }
         return false;
     }
-    //--------------------------------------------------------------------------------
 }

@@ -35,8 +35,6 @@ package wairoadc.godiscover.utilities;
         import android.os.Bundle;
         import android.util.Log;
 
-        import wairoadc.godiscover.R;
-
 /**
  * <p>A utility class which helps ease integration with Barcode Scanner via {@link Intent}s. This is a simple
  * way to invoke barcode scanning and receive the result, without any need to integrate, modify, or learn the
