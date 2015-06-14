@@ -15,3 +15,8 @@ app/src/main/java/wairoadc/godiscover/services/DownloadService.java
 .idea/misc.xml
 
 .idea/
+.idea/gradle.xml
+.idea/gradle.xml
+GoDiscover.iml
+.idea/gradle.xml
+app/app.iml
