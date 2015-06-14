@@ -18,7 +18,7 @@ public class ImageItem implements Parcelable {
     }
 
     public ImageItem(Parcel in) {
-        this.image = (Bitmap) in.readParcelable(getClass().getClassLoader());
+        this.image = in.readParcelable(getClass().getClassLoader());
         this.title = in.readString();
     }
 

@@ -2,15 +2,10 @@ package wairoadc.godiscover.services;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.amazonaws.event.ProgressEvent;
-import com.amazonaws.event.ProgressListener;
 import com.amazonaws.mobileconnectors.s3.transfermanager.Download;
 import com.amazonaws.mobileconnectors.s3.transfermanager.TransferManager;
-import com.amazonaws.mobileconnectors.s3.transfermanager.TransferProgress;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -20,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import wairoadc.godiscover.model.Track;

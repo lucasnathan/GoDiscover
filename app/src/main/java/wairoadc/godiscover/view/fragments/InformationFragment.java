@@ -4,16 +4,13 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import wairoadc.godiscover.R;
-import wairoadc.godiscover.controller.TrackController;
 import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.view.activities.MainActivity;
 
@@ -53,4 +50,5 @@ public class InformationFragment extends Fragment {
 
         return rootView;
     }
+
 }

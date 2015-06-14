@@ -3,6 +3,7 @@ package wairoadc.godiscover.view.fragments;
 /**
  * Created by Lucas on 5/02/2015.
  */
+
 import android.R;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -26,8 +27,6 @@ class SlidingTabStrip extends LinearLayout {
     private final int mSelectedIndicatorThickness;
     private final Paint mSelectedIndicatorPaint;
 
-    private final int mDefaultBottomBorderColor;
-
     private int mSelectedPosition;
     private float mSelectionOffset;
 
@@ -48,7 +47,7 @@ class SlidingTabStrip extends LinearLayout {
         context.getTheme().resolveAttribute(R.attr.colorForeground, outValue, true);
         final int themeForegroundColor =  outValue.data;
 
-        mDefaultBottomBorderColor = setColorAlpha(themeForegroundColor,
+        int mDefaultBottomBorderColor = setColorAlpha(themeForegroundColor,
                 DEFAULT_BOTTOM_BORDER_COLOR_ALPHA);
 
         mDefaultTabColorizer = new SimpleTabColorizer();

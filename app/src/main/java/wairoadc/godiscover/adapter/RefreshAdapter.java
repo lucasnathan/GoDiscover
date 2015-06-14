@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -21,7 +19,6 @@ public class RefreshAdapter extends ArrayAdapter<String> {
 
     private Context context;
     private List<String> values;
-
 
     public RefreshAdapter(Context context, int resource, List<String> values) {
         super(context, resource, values);

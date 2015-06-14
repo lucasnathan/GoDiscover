@@ -38,7 +38,8 @@
                     android:text="Track Name"
                     android:id="@+id/spotTitleTV"
                     android:layout_gravity="center_horizontal"
-                    android:textSize="22dp"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
                     android:gravity="center_horizontal"
                     android:layout_marginBottom="10dp" />
 
@@ -71,7 +72,8 @@
                     android:layout_height="wrap_content"
                     android:text="Spot Name"
                     android:id="@+id/spotNameTV"
-                    android:textSize="22dp"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
                     android:textAlignment="gravity"
                     android:gravity="center"
                     android:layout_below="@+id/spotMapIV"
@@ -85,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:text="Spot Info"
                     android:id="@+id/spotInfoTV"
-                    android:textSize="22dp"
+                    android:textSize="18dp"
                     android:textAlignment="gravity"
                     android:gravity="left"
                     android:layout_below="@+id/spotNameTV"

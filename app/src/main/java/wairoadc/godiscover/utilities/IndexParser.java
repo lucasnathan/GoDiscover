@@ -10,9 +10,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import wairoadc.godiscover.model.Spot;
 import wairoadc.godiscover.model.Track;
-
 
 /**
  * Created by Xinxula on 27/01/2015.
@@ -33,7 +31,6 @@ public class IndexParser extends XMLParser {
             parser.setInput(in,null);
             parser.nextTag();
             parser.require(XmlPullParser.START_TAG,ns,INDEX_TAG);
-            Track track = new Track();//Just an Information carrier
             while(parser.next() != XmlPullParser.END_TAG) {
                 if (parser.getEventType() != XmlPullParser.START_TAG) {
                     continue;

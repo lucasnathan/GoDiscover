@@ -4,7 +4,6 @@ package wairoadc.godiscover.adapter;
  * Created by Lucas on 8/02/2015.
  */
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -20,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.services.BitmapWorkerTask;
@@ -30,13 +28,11 @@ public class GalleryFocusAdapter extends PagerAdapter {
     private Activity activity;
     private List<String> imagePaths;
     private LayoutInflater inflater;
-    private ArrayList<String> _story;
     private static final String ADAPTER_TAG = "GalleryFocusAdapter";
 
     // constructor
     public GalleryFocusAdapter(Activity activity,List<String> imagePaths) {
         this.activity = activity;
-        //this._story = story;
         this.imagePaths = imagePaths;
 
     }
@@ -48,13 +44,12 @@ public class GalleryFocusAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((LinearLayout) object);
+        return view == object;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imgDisplay;
-        TextView storyText;
 
         inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

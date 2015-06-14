@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import wairoadc.godiscover.dao.ResourceDAO;
 import wairoadc.godiscover.dao.SpotDAO;
 import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.model.Spot;

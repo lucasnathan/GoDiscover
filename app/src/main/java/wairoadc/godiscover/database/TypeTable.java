@@ -1,8 +1,5 @@
 package wairoadc.godiscover.database;
 
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 /**
  * Created by Lucas on 8/01/2015.
  */

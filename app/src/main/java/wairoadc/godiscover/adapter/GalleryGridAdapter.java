@@ -4,7 +4,6 @@ package wairoadc.godiscover.adapter;
  * Created by Lucas on 8/02/2015.
  */
 
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +13,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Picture;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,7 +25,6 @@ import android.widget.ImageView;
 import wairoadc.godiscover.R;
 
 import wairoadc.godiscover.services.BitmapWorkerTask;
-import wairoadc.godiscover.utilities.Utility;
 import wairoadc.godiscover.view.activities.GalleryFocusActivity;
 import wairoadc.godiscover.view.fragments.PicturesFragment;
 

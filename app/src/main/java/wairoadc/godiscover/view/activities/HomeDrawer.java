@@ -83,15 +83,11 @@ public class HomeDrawer extends Activity {
             public void onDrawerClosed(View view)
             {
                 getActionBar().setTitle(mTitle);
-                // calling onPrepareOptionsMenu() to show action bar icons
-                //invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView)
             {
                 getActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
-                //invalidateOptionsMenu();
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);
@@ -164,19 +160,6 @@ public class HomeDrawer extends Activity {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
     }
-    /* *
-	 * Called when invalidateOptionsMenu() is triggered
-	 */
-    /*
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // if nav drawer is opened, hide the action items
-        boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
-        menu.findItem(R.id.action_refresh).setVisible(false);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
-    */
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -191,7 +174,7 @@ public class HomeDrawer extends Activity {
         Intent intent;
         switch (position) {
             case 0:
-                if (!this.getClass().getSimpleName().equals("MainActivitjhy")){
+                if (!this.getClass().getSimpleName().equals("MainActivity")){
                     intent = new Intent(this.getBaseContext(),GalleryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -207,9 +190,6 @@ public class HomeDrawer extends Activity {
                     drawerLayout.closeDrawer(drawerList);
                     IntentIntegrator scanIntegrator = new IntentIntegrator(this,DEFAULT_MESSAGE, DEFAULT_YES, DEFAULT_NO);
                     scanIntegrator.initiateScan();
-                    //intent = new Intent(this.getBaseContext(),ScanQRActivity.class);
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    //startActivity(intent);
                 }else
                 drawerLayout.closeDrawer(drawerList);
                 break;

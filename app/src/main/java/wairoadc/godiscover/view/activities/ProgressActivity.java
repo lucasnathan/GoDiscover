@@ -1,26 +1,11 @@
 package wairoadc.godiscover.view.activities;
 
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import wairoadc.godiscover.R;
@@ -28,7 +13,6 @@ import wairoadc.godiscover.controller.ResourceController;
 import wairoadc.godiscover.controller.SpotController;
 import wairoadc.godiscover.model.Resource;
 import wairoadc.godiscover.model.Type;
-import wairoadc.godiscover.view.models.ProgressModel;
 
 public class ProgressActivity extends TrackDrawer {
 
@@ -37,7 +21,6 @@ public class ProgressActivity extends TrackDrawer {
     private TextView picturesLabel,picturesRatio,audioLabel,audioRatio,checkpointRatio;
     private int audioMax, pictureMax, checkpointMax;
 
-    //private ArrayList<ProgressModel> progressModels = new ArrayList<ProgressModel>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_progress);
@@ -71,7 +54,6 @@ public class ProgressActivity extends TrackDrawer {
         checkpointRatio =(TextView) findViewById(R.id.checkpoint_ratio);
         checkpointRatio.setText(statusCheckpoints+"/"+checkpointMax);
 
-        //Linking the audio information
         if(audioMax > 0) {
             audioBar = (ProgressBar) findViewById(R.id.audio_progress_bar);
             audioBar.setVisibility(ProgressBar.VISIBLE);

@@ -1,15 +1,11 @@
 package wairoadc.godiscover.view.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import wairoadc.godiscover.R;
-import wairoadc.godiscover.model.Track;
 import wairoadc.godiscover.view.fragments.InformationFragment;
 
 public class InformationActivity extends TrackDrawer {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +17,9 @@ public class InformationActivity extends TrackDrawer {
                 return;
             InformationFragment informationFragment = new InformationFragment();
             Bundle b = new Bundle();
-            b.putParcelable(MainActivity.TRACK_EXTRA,super.currentTrack);
+            b.putParcelable(MainActivity.TRACK_EXTRA, super.currentTrack);
             informationFragment.setArguments(b);
-            getFragmentManager().beginTransaction().add(R.id.content_frame,informationFragment).commit();
+            getFragmentManager().beginTransaction().add(R.id.content_frame, informationFragment).commit();
         }
     }
 }

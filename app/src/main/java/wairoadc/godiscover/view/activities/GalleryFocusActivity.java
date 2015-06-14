@@ -9,8 +9,6 @@ import java.util.List;
 
 import wairoadc.godiscover.R;
 import wairoadc.godiscover.adapter.GalleryFocusAdapter;
-import wairoadc.godiscover.controller.TrackController;
-import wairoadc.godiscover.model.Type;
 import wairoadc.godiscover.utilities.UtilsGrid;
 import wairoadc.godiscover.view.fragments.PicturesFragment;
 
@@ -28,7 +26,6 @@ public class GalleryFocusActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_gallery_focus);
         super.onCreate(savedInstanceState);
-
 
         viewPager = (ViewPager) findViewById(R.id.pager);
 
