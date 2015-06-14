@@ -24,6 +24,7 @@ import wairoadc.godiscover.view.models.AppConstantGrid;
 public class PicturesFragment extends Fragment {
 
     public static final String IMAGE_LIST = "imageList";
+    public static final String IMAGE_STORY = "imageStory";
 
 
     private UtilsGrid utils;
@@ -58,13 +59,17 @@ public class PicturesFragment extends Fragment {
 
         InitilizeGridLayout();
         List<String> imagePaths = new ArrayList<>();
+        List<String> imageStories = new ArrayList<>();
         for(Resource resource : imageResources) {
-            if(null != resource) // unlocked image
+            if(null != resource) { // unlocked image
                 imagePaths.add(resource.getPath());
-            else //locked image
+                imageStories.add(resource.getStory());
+            } else { //locked image
                 imagePaths.add(null);
+                imageStories.add("Locked Spot, Keep Exploring!!!");
+            }
         }
-        adapter = new GalleryGridAdapter(getActivity(), imagePaths,columnWidth, galleryMode);
+        adapter = new GalleryGridAdapter(getActivity(), imagePaths,imageStories,columnWidth, galleryMode);
         gridView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         return view;

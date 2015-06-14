@@ -45,9 +45,11 @@ public class AudioFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         try {
-            Intent intent = new Intent(getActivity(), AudioPlayer.class);
-            intent.putExtra(AudioPlayer.AUDIO_FILE_NAME,getActivity().getFilesDir()+audioPaths.get(position));
-            startActivity(intent);
+            if(null != audioPaths.get(position)) {
+                Intent intent = new Intent(getActivity(), AudioPlayer.class);
+                intent.putExtra(AudioPlayer.AUDIO_FILE_NAME,getActivity().getFilesDir()+audioPaths.get(position));
+                startActivity(intent);
+            }
         } catch (Exception e) {e.printStackTrace();}
     }
 
@@ -75,9 +77,17 @@ public class AudioFragment extends ListFragment {
 
         //Verify if the spot has at lest one audio file in order to render the list
 
-            for(Resource resource : audioResources) {
-                audioPaths.add(resource.getPath());
-                audioTitles.add(resource.getName());
+            for(int i = 0; i < audioResources.size(); i++) {
+                //check if audio resource is null(it means that this audio resource is blocked)
+                final Resource resource = audioResources.get(i);
+                if(null != resource) {
+                    audioPaths.add(resource.getPath());
+                    audioTitles.add(resource.getName());
+                } else {
+                    audioPaths.add(null);
+                    audioTitles.add("Locked Audio "+(i+1));
+                }
+
             }
             ArrayList<String> dur = this.getMusicDuration(audioPaths);
 
@@ -100,31 +110,36 @@ public class AudioFragment extends ListFragment {
         ArrayList<String> durations = new ArrayList<>();
 
         for (String filePath :filePaths){
-            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
-            metaRetriever.setDataSource(getActivity().getFilesDir().getAbsolutePath()+filePath);
+            if(null != filePath) {
+                MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+                metaRetriever.setDataSource(getActivity().getFilesDir().getAbsolutePath() + filePath);
 
-            String out = "";
-            // get mp3 info
-            String txtTime = "";
-            // convert duration to minute:seconds
-            String duration =
-                    metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-            Log.v("time", duration);
-            long dur = Long.parseLong(duration);
-            String seconds = String.valueOf((dur % 60000) / 1000);
+                String out = "";
+                // get mp3 info
+                String txtTime = "";
+                // convert duration to minute:seconds
+                String duration =
+                        metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                Log.v("time", duration);
+                long dur = Long.parseLong(duration);
+                String seconds = String.valueOf((dur % 60000) / 1000);
 
-            Log.v("seconds", seconds);
-            String minutes = String.valueOf(dur / 60000);
-            out = minutes + ":" + seconds;
-            if (seconds.length() == 1) {
-                txtTime = "0" + minutes + ":0" + seconds;
-            }else {
-                txtTime = "0" + minutes + ":" + seconds;
+                Log.v("seconds", seconds);
+                String minutes = String.valueOf(dur / 60000);
+                out = minutes + ":" + seconds;
+                if (seconds.length() == 1) {
+                    txtTime = "0" + minutes + ":0" + seconds;
+                } else {
+                    txtTime = "0" + minutes + ":" + seconds;
+                }
+                Log.v("minutes", minutes);
+                // close object
+                durations.add(txtTime);
+                metaRetriever.release();
+            } else {
+                durations.add("???");
             }
-            Log.v("minutes", minutes);
-            // close object
-            durations.add(txtTime);
-            metaRetriever.release();
+
         }
         return durations;
     }

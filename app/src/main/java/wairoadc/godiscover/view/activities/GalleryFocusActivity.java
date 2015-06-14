@@ -21,6 +21,7 @@ public class GalleryFocusActivity extends Activity {
     private GalleryFocusAdapter adapter;
     private ViewPager viewPager;
     private List<String> imagePaths;
+    private List<String> imageStories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +33,9 @@ public class GalleryFocusActivity extends Activity {
         utils = new UtilsGrid(getApplicationContext());
         Intent i = getIntent();
         imagePaths = i.getStringArrayListExtra(PicturesFragment.IMAGE_LIST);
+        imageStories = i.getStringArrayListExtra(PicturesFragment.IMAGE_STORY);
         int position = i.getIntExtra("position", 0);
-        adapter = new GalleryFocusAdapter(GalleryFocusActivity.this,imagePaths);
+        adapter = new GalleryFocusAdapter(GalleryFocusActivity.this,imagePaths,imageStories);
         viewPager.setAdapter(adapter);
 
         // displaying selected image first
