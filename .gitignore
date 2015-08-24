@@ -20,3 +20,5 @@ app/src/main/java/wairoadc/godiscover/services/DownloadService.java
 GoDiscover.iml
 .idea/gradle.xml
 app/app.iml
+inlKeystore.jks
+app/app-release.apk
