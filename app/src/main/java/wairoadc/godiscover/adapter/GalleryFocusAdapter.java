@@ -80,7 +80,7 @@ public class GalleryFocusAdapter extends PagerAdapter {
         } else { //locked image show locked icon
             imgInfo.setText("Go Discover to Unlock this Image");
             int gradientStartColor = Color.argb(0, 0, 0, 0);
-            int gradientEndColor = Color.argb(255, 0, 0, 0);
+            int gradientEndColor = Color.argb(155, 0, 0, 0);
             Bitmap lockedBitmap = BitmapFactory.decodeResource(this.activity.getResources(), R.drawable.locked_resource);
             GradientOverImageDrawable gradientDrawable = new GradientOverImageDrawable(this.activity.getResources(), lockedBitmap);
             gradientDrawable.setGradientColors(gradientStartColor, gradientEndColor);
@@ -119,7 +119,7 @@ public class GalleryFocusAdapter extends PagerAdapter {
     public void loadBitmap(String currentImage, ImageView imageView) {
         final Bitmap bitmap = BitmapWorkerTask.getBitmapFromMemCache(currentImage);
         int gradientStartColor = Color.argb(0, 0, 0, 0);
-        int gradientEndColor = Color.argb(255, 0, 0, 0);
+        int gradientEndColor = Color.argb(155, 0, 0, 0);
         if(bitmap != null) {
             //Log.i(ADAPTER_TAG,"This image is in cache");
             GradientOverImageDrawable gradientDrawable = new GradientOverImageDrawable(this.activity.getResources(), bitmap);

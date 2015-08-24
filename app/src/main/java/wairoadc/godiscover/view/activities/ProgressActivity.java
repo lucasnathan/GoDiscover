@@ -3,6 +3,7 @@ package wairoadc.godiscover.view.activities;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,12 +36,12 @@ public class ProgressActivity extends TrackDrawer {
         type.set_id(1);
         List<Resource> imageResources = resourceController.loadAllByType(super.currentTrack,type,false);
         pictureMax = imageResources.size();
-        statusPictures = resourceController.countResoucesByType(super.currentTrack,type,false);
+        statusPictures = resourceController.countResoucesByType(super.currentTrack,type,true);
 
         type.set_id(2);
         List<Resource> soundResources = resourceController.loadAllByType(super.currentTrack,type,false);
         audioMax = soundResources.size();
-        statusAudio = resourceController.countResoucesByType(super.currentTrack,type,false);
+        statusAudio = resourceController.countResoucesByType(super.currentTrack,type,true);
 
         checkpointMax = currentTrack.getSpots().size();
         statusCheckpoints= spotController.unlockedSpots(super.currentTrack);
