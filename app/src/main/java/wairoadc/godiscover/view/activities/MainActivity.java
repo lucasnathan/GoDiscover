@@ -76,7 +76,7 @@ public class MainActivity extends Activity{
         alertDialogBuilder
                 .setMessage("If so, show me on google maps")
                 .setCancelable(false)
-                .setPositiveButton("Yes, to maps",new RedirectToMaps())
+                .setPositiveButton("Yes, to maps",new RedirectToMaps(track))
                 .setNegativeButton("No, open the track",new GoToInfo(track));
 
         // create alert dialog
@@ -131,8 +131,13 @@ public class MainActivity extends Activity{
 
     //Positive Answer
     private final class RedirectToMaps implements DialogInterface.OnClickListener {
+        private Track track;
+        public RedirectToMaps(Track track) { this.track = track; }
         public void onClick(DialogInterface dialog, int which) {
-            openLocationInMap();
+            Intent intent= new Intent(MainActivity.this,InformationActivity.class);
+            TrackController trackController = new TrackController(getApplicationContext());
+            track = trackController.loadTrack(track);
+            openLocationInMap(track);
         }
     }
 
@@ -151,12 +156,13 @@ public class MainActivity extends Activity{
             startActivity(intent);
         }
     }
-    private void openLocationInMap() {
+    private void openLocationInMap(Track track) {
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(this);
+
         String location = sharedPrefs.getString(
                 "location",
-                "-39.033064, 177.419115");
+                track.getSpots().get(0).getLatitude() + ", " + track.getSpots().get(0).getLongitude());
 
         // Using the URI scheme for showing a location found on a map.  This super-handy
         // intent can is detailed in the "Common Intents" page of Android's developer site:
